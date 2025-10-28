@@ -1,27 +1,422 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Observatorio del Servicio Civil</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observatorio del Servicio Civil - Dashboard Gerencial</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;700&family=Open+Sans:wght@700&family=Roboto:wght@400;700&display=swap">
+    <style>
+        /* 1. Variables Globales y Reset (Según Manual de Estilo) */
+        :root {
+            --color-principal: #C41B3F; /* Rojo SERVIR */
+            --color-principal-oscuro: #90142E; /* Rojo oscuro */
+            --color-secundario: #014B94; /* Azul (Botones/Enlaces) */
+            --color-secundario-hover: #012447; /* Azul oscuro para hover */
+            --color-texto: #737373; /* Gris para textos */
+            --color-fondo: #FAFAFA; /* Fondo base claro */
+            --color-blanco: #FFFFFF;
+            --color-alerta: #FFC729; /* Amarillo para alertas */
+            --color-header-bg: #EAEAEA;
+            
+            /* Tipografías */
+            --font-titulo: 'Open Sans', sans-serif;
+            --font-parrafo: 'Calibri', 'Roboto', sans-serif;
+            --font-botones: 'Cabin', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-parrafo);
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+        
+        /* Barra Superior Fija */
+        .header-servir {
+            width: 100%;
+            height: 50px;
+            background-color: var(--color-header-bg);
+            color: var(--color-principal);
+            text-align: center;
+            line-height: 50px;
+            font-family: var(--font-titulo);
+            font-size: 1.1rem;
+            font-weight: 700;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #D5D5D5;
+        }
+
+        /* Layout Principal */
+        .contenedor-observatorio {
+            display: flex;
+            min-height: calc(100vh - 50px);
+            margin-top: 50px;
+        }
+
+        /* Navegación Lateral */
+        .nav-sidebar {
+            width: 250px;
+            background-color: var(--color-principal);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 50px;
+            left: 0;
+            height: calc(100% - 50px);
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 999;
+        }
+
+        .logo-container {
+            text-align: center;
+            padding: 20px 20px 10px;
+            background-color: var(--color-principal-oscuro);
+        }
+        
+        .logo-container .logo-img {
+            max-width: 80px;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+        }
+        
+        .logo-container .logo-text {
+            color: var(--color-blanco);
+            font-family: var(--font-titulo);
+            font-size: 1.1rem;
+            line-height: 1.2;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
+        .nav-sidebar ul {
+            list-style: none;
+            padding-top: 10px;
+        }
+
+        .nav-sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: var(--color-blanco);
+            text-decoration: none;
+            transition: background-color 0.2s, opacity 0.2s;
+            font-family: var(--font-parrafo);
+            font-size: 16px;
+        }
+
+        .nav-sidebar a i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .nav-sidebar a:hover, .nav-sidebar a.active {
+            background-color: var(--color-principal-oscuro);
+        }
+
+        /* Contenido Principal */
+        .contenido-principal {
+            margin-left: 250px;
+            flex-grow: 1;
+            padding: 30px;
+        }
+        
+        /* ------------------------------------------------ */
+        /* --------- ESTILO DE TABLERO Y TEXTO ------------ */
+        /* ------------------------------------------------ */
+        .seccion-tablero {
+            background-color: var(--color-blanco);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .seccion-tablero h1 {
+            font-family: var(--font-titulo);
+            font-size: 1.75rem;
+            color: #000000;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--color-secundario); /* Línea de acento azul */
+            margin-bottom: 30px;
+        }
+        
+        .layout-explicacion {
+            display: flex;
+            gap: 30px;
+            align-items: stretch; /* Asegura que ambas columnas tengan la misma altura visual */
+        }
+        
+        .columna-texto {
+            flex: 1;
+            padding: 20px;
+            background-color: var(--color-fondo);
+            border-left: 5px solid var(--color-alerta); /* Línea amarilla para destacar el resumen */
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .columna-texto h2 {
+            font-family: var(--font-titulo);
+            font-size: 1.3rem;
+            color: var(--color-secundario);
+            margin-bottom: 10px;
+        }
+        
+        .columna-texto p {
+            font-size: 1rem;
+            color: var(--color-texto);
+        }
+        
+        .columna-dashboard {
+            flex: 2; /* El dashboard ocupa el doble de espacio que la explicación (2/3 vs 1/3) */
+            min-height: 500px;
+            background-color: #ECECEC; /* Gris claro para el dashboard */
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-texto);
+            font-family: var(--font-botones);
+            font-size: 1.2rem;
+        }
+
+
+        /* Media Queries para Responsividad */
+        @media (max-width: 992px) {
+            .header-servir {
+                position: static;
+                height: auto;
+                line-height: normal;
+                padding: 10px 20px;
+            }
+            .contenedor-observatorio {
+                margin-top: 0;
+            }
+            .nav-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                box-shadow: none;
+            }
+            .contenido-principal {
+                margin-left: 0;
+            }
+            .layout-explicacion {
+                flex-direction: column; /* Apila las columnas en móvil */
+            }
+            .columna-texto {
+                border-radius: 8px; /* Borde completo en móvil */
+                border-left: none;
+                border-top: 5px solid var(--color-alerta);
+            }
+            .columna-dashboard {
+                min-height: 350px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  <header style="background:#C41B3F;color:#fff;padding:14px 18px;display:flex;align-items:center;gap:12px">
-    <img src="assets/img/osc_logo_observatorio.svg" alt="Observatorio" height="42">
-    <strong>Observatorio del Servicio Civil</strong>
-  </header>
+    
+    <header class="header-servir">
+        Autoridad Nacional del Servicio Civil - SERVIR
+    </header>
 
-  <main style="padding:18px">
-    <div style="max-width:1200px;margin:auto">
-      <iframe
-        src="https://app.powerbi.com/view?r=eyJrIjoiZjE2MGI3NTUtNTdiYi00NzIxLWE4N2YtM2ZkNWY4ZmM2OWVjIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9"
-        width="100%" height="620" style="border:0;border-radius:12px" allowfullscreen>
-      </iframe>
+    <div class="contenedor-observatorio">
+        <aside class="nav-sidebar">
+            <div class="logo-container">
+                <img src="https://i.imgur.com/k699G8q.png" alt="Icono SERVIR" class="logo-img">
+                <span class="logo-text">OBSERVATORIO DEL SERVICIO CIVIL</span>
+            </div>
+            <ul>
+                <li><a href="#inicio" class="active"><i class="material-icons">home</i> Inicio del Observatorio</a></li>
+                <li><a href="#gdgp"><i class="material-icons">person_pin</i> Gerencia de Desarrollo Gerencial Pública</a></li>
+                <li><a href="#gpsc"><i class="material-icons">policy</i> Gerencia de Políticas del Servicio Civil</a></li>
+                <li><a href="#gdsrh"><i class="material-icons">settings</i> Gerencia de Desarrollo del Sistema de RR.HH.</a></li>
+                <li><a href="#gdcrsc"><i class="material-icons">school</i> Gerencia de Desarrollo de Capacidades y Rendimiento</a></li>
+                <li><a href="#enap"><i class="material-icons">book</i> Escuela Nacional de la Administración Pública</a></li>
+                <li><a href="#tsc"><i class="material-icons">gavel</i> Tribunal del Servicio Civil</a></li>
+            </ul>
+        </aside>
+
+        <main class="contenido-principal">
+            
+            <section id="inicio" class="seccion-tablero">
+                <h1>Visión General del Servicio Civil (Métricas Clave)</h1>
+                <div class="layout-explicacion">
+                    <div class="columna-texto">
+                        <h2>Resumen Ejecutivo</h2>
+                        <p>El Observatorio proporciona datos estratégicos sobre el talento humano estatal. Aquí puede ver las métricas consolidadas sobre la implementación de políticas, la ejecución de la capacitación y el impacto del Sistema de Recursos Humanos en todo el país. Esta vista inicial es crucial para entender el panorama completo y planificar las intervenciones necesarias.</p>
+                        <p style="margin-top: 15px;">**Última Actualización:** 01 de Octubre de 2025.</p>
+                    </div>
+                    <div class="columna-dashboard">
+                        [TABLERO CONSOLIDAD DE KPIs GENERALES]
+                    </div>
+                </div>
+            </section>
+            
+            <section id="gdgp" class="seccion-tablero">
+                <h1>Gerencia de Desarrollo Gerencial Pública (GDGP)</h1>
+                <div class="layout-explicacion">
+                    <div class="columna-texto">
+                        <h2>Resumen</h2>
+                        <p>La GDGP se enfoca en la captación, evaluación y desarrollo de los Gerentes Públicos de alto nivel. Este tablero muestra el desempeño y la evolución del Cuerpo de Gerentes Públicos (CGP), incluyendo métricas de colocación, rotación, evaluación de desempeño y el impacto de los líderes en las entidades clave.</p>
+                        <p style="margin-top: 15px;">**Métrica Clave:** Nivel de colocación y tasa de éxito de los Gerentes Públicos.</p>
+                    </div>
+                    <div class="columna-dashboard">
+                        [TABLERO DE LA GDGP: Cuerpo de Gerentes Públicos y Desempeño]
+                    </div>
+                </div>
+            </section>
+
+            <section id="gpsc" class="seccion-tablero">
+                <h1>Gerencia de Políticas del Servicio Civil (GPSC)</h1>
+                <div class="layout-explicacion">
+                    <div class="columna-texto">
+                        <h2>Resumen</h2>
+                        <p>La GPSC es responsable de diseñar y evaluar las políticas que rigen el sistema de RR.HH. en el Estado. Este panel ilustra el grado de implementación de las políticas, la adherencia de las entidades a los nuevos marcos normativos y los resultados de las evaluaciones de política, como la gestión del rendimiento y la simplificación administrativa en RR.HH.</p>
+                        <p style="margin-top: 15px;">**Métrica Clave:** Porcentaje de entidades que implementaron la Gestión del Rendimiento.</p>
+                    </div>
+                    <div class="columna-dashboard">
+                        [TABLERO DE LA GPSC: Implementación y Evaluación de Políticas]
+                    </div>
+                </div>
+            </section>
+
+            <section id="gdsrh" class="seccion-tablero">
+                <h1>Gerencia de Desarrollo del Sistema de Recursos Humanos (GDSRH)</h1>
+                <div class="layout-explicacion">
+                    <div class="columna-texto">
+                        <h2>Resumen</h2>
+                        <p>La GDSRH apoya a las entidades en el tránsito y consolidación del nuevo Sistema del Servicio Civil. Este tablero monitoriza el avance de las entidades en cada fase del tránsito (Planificación, Ingreso, Desarrollo), el uso de herramientas de gestión de RR.HH. y la correcta clasificación de puestos en el marco de la Ley SERVIR.</p>
+                        <p style="margin-top: 15px;">**Métrica Clave:** Avance promedio de las entidades en el proceso de Tránsito.</p>
+                    </div>
+                    <div class="columna-dashboard">
+                        [TABLERO DE LA GDSRH: Monitoreo del Tránsito y Sistema de Puestos]
+                    </div>
+                </div>
+            </section>
+
+            <section id="gdcrsc" class="seccion-tablero">
+                <h1>Gerencia de Desarrollo de Capacidades y Rendimiento del Servicio Civil (GDCRSC)</h1>
+                <div class="layout-explicacion">
+                    <div class="columna-texto">
+                        <h2>Resumen</h2>
+                        <p>Esta Gerencia gestiona la capacitación y la evaluación del rendimiento de los servidores. El dashboard ofrece información sobre la planificación de la capacitación, la asistencia, la inversión por servidor, la tasa de aplicación de conocimientos post-curso (lo que mide la efectividad) y los resultados agregados de la evaluación de desempeño anual.</p>
+                        <p style="margin-top: 15px;">**Métrica Clave:** Tasa de Aplicación de Conocimientos (IAC).</p>
+                    </div>
+                    <div class="columna-dashboard">
+                        [TABLERO DE LA GDCRSC: Capacitación y Gestión del Rendimiento]
+                    </div>
+                </div>
+            </section>
+            
+            <section id="enap" class="seccion-tablero">
+                <h1>Escuela Nacional de la Administración Pública (ENAP)</h1>
+                <div class="layout-explicacion">
+                    <div class="columna-texto">
+                        <h2>Resumen</h2>
+                        <p>La ENAP es el brazo académico que forma a los líderes y servidores. Este panel presenta las métricas de la actividad formativa: número de cursos ofrecidos, participantes por programa (Maestrías, Especializaciones), distribución geográfica de los estudiantes y el impacto de los programas en la mejora de competencias directivas y profesionales.</p>
+                        <p style="margin-top: 15px;">**Métrica Clave:** Cobertura de la oferta académica por nivel de servidor.</p>
+                    </div>
+                    <div class="columna-dashboard">
+                        [TABLERO DE LA ENAP: Oferta Académica y Cobertura]
+                    </div>
+                </div>
+            </section>
+
+            <section id="tsc" class="seccion-tablero">
+                <h1>Tribunal del Servicio Civil (TSC)</h1>
+                <div class="layout-explicacion">
+                    <div class="columna-texto">
+                        <h2>Resumen</h2>
+                        <p>El TSC resuelve las controversias que surgen en el Sistema Administrativo de Gestión de Recursos Humanos. Este dashboard muestra las estadísticas de los expedientes: número de casos recibidos, temas más recurrentes (sanciones, ceses, evaluaciones), tiempo promedio de resolución y el sentido de las decisiones por tipo de materia.</p>
+                        <p style="margin-top: 15px;">**Métrica Clave:** Tiempo promedio de resolución de expedientes (TPE).</p>
+                    </div>
+                    <div class="columna-dashboard">
+                        [TABLERO DEL TSC: Estadística de Expedientes y Resoluciones]
+                    </div>
+                </div>
+            </section>
+
+        </main>
     </div>
-  </main>
 
-  <footer style="text-align:center;color:#666;padding:18px">© 2025 Observatorio del Servicio Civil - SERVIR</footer>
+    <footer class="footer">
+        © 2024 Observatorio del Servicio Civil - SERVIR. Todos los derechos reservados.
+    </footer>
+    
+    <script>
+        // Script para la navegación (scroll suave y resaltado)
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarLinks = document.querySelectorAll('.nav-sidebar a');
+            const sections = document.querySelectorAll('section');
+
+            const updateActiveClass = (id) => {
+                sidebarLinks.forEach(link => link.classList.remove('active'));
+                const currentLink = document.querySelector(`.nav-sidebar a[href="#${id}"]`);
+                if (currentLink) {
+                    currentLink.classList.add('active');
+                }
+            };
+
+            // Observer para resaltar la opción del menú mientras se hace scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+                        updateActiveClass(entry.target.id);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: "0px 0px -80% 0px", // Resalta la sección cuando está en la parte superior
+                threshold: 0.2
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Scroll suave al hacer click
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        // Desplazamiento suave, ajustando por el header superior (50px)
+                        const offset = 50; 
+                        const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - offset;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        updateActiveClass(targetId);
+                    }
+                });
+            });
+
+            // Asegurar que la primera sección esté activa al cargar
+            if (sections.length > 0) {
+                updateActiveClass(sections[0].id);
+            }
+        });
+    </script>
+
 </body>
 </html>
