@@ -7,8 +7,6 @@
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;700&family=Open+Sans:wght@700&family=Roboto:wght@400;700&display=swap">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<!-- Font Awesome para íconos de redes -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 /* -------------------- Variables & Reset -------------------- */
@@ -57,8 +55,6 @@ body{
   line-height:1.5;
   font-size:16px;
   overflow-x:hidden;
-  /* Evita que el contenido quede tapado por la barra fija */
-  padding-bottom:72px;
 }
 
 /* -------------------- Header fijo -------------------- */
@@ -72,15 +68,19 @@ body{
 .header-servir .title-text{ color:#fff; }
 :root:not([data-theme="dark"]) .header-servir .title-text{ color:#111; }
 
-/* Alinear logo cabecera al centro del área del sidebar */
+/* MODIFICACIÓN CLAVE: Mover el logo a la derecha (260px - 10px) = 270px */
 .header-logo-observatorio{
-  position:absolute; left:0; top:0; bottom:0; display:flex; 
-  align-items:center; width:260px; justify-content:center;
+  position:absolute; left:0; top:0; bottom:0; display:flex; align-items:center; 
+  padding-left: 270px; /* Ancho de sidebar (260px) + margen (10px) */
 }
+
 .header-logo-observatorio img{
-  height:44px; width:auto; display:block; 
+  height:44px; /* Ajustado para mejor visualización */
+  width:auto; 
+  display:block; 
   filter:drop-shadow(0 1px 1px rgba(0,0,0,.12));
 }
+/* FIN DE MODIFICACIÓN */
 
 /* Toggle tema */
 .theme-toggle{
@@ -106,42 +106,87 @@ input:checked + .slider:before{ transform:translateX(22px); }
 .nav-sidebar{
   width:260px; position:fixed; top:64px; left:0; height:calc(100% - 64px); z-index:999;
   background:linear-gradient(180deg,var(--color-principal) 0%, var(--color-principal-oscuro) 100%);
-  display:flex; flex-direction:column; overflow-y:auto; 
-  padding:16px 14px 24px;
+  display:flex; flex-direction:column; overflow-y:auto; padding:16px 14px 24px;
   box-shadow: 6px 0 20px rgba(0,0,0,.18);
 }
+
+/* Botón colapsar/expandir */
 .collapse-btn{
-  position: absolute; right:4px; top:12px;
+  position: absolute; right:-14px; top:12px;
   width:28px; height:28px; border-radius:999px; border:0; cursor:pointer;
-  background:#fff; box-shadow:0 4px 12px rgba(0,0,0,.22);
+  background:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,.22);
   display:flex; align-items:center; justify-content:center;
 }
 .collapse-btn img{ width:18px; height:18px; display:block; }
 
-.logo-container{ text-align:center; padding:0; height:0; overflow:hidden; }
+/* MODIFICACIÓN DE SIDEBAR: Se elimina el estilo .logo-img y .logo-text ya que el contenedor estará vacío */
+.logo-container{ 
+  text-align:center; 
+  padding:0; /* Se ajusta el padding si ya no hay contenido */
+  height: 0; /* Asegurar que no ocupe espacio si está vacío */
+  overflow: hidden; /* Asegurar que no muestre nada si tiene algo residual */
+}
+/* FIN DE MODIFICACIÓN */
 
-.nav-list{ display:grid; gap:10px; list-style:none; margin-top:32px; }
+.nav-list{ display:grid; gap:10px; list-style:none; margin-top:8px; }
 
+/* Íconos + etiquetas */
 .nav-icon{ width:22px; height:22px; flex:0 0 22px; display:block; }
 .nav-btn{
   display:flex; align-items:center; gap:12px;
-  padding:12px 14px; border-radius:18px;
-  text-decoration:none; font-family:var(--font-botones);
-  font-weight:700; font-size:15px; color:#fff;
-  background:var(--color-principal);
+  padding:12px 14px;
+  border-radius:18px; /* Más redondeado como en la imagen */
+  text-decoration:none;
+  font-family:var(--font-botones);
+  font-weight:700; font-size:15px;
+  color:#fff;
+  background:var(--color-principal); /* Rojo principal */
   border:1px solid rgba(255,255,255,.1);
-  box-shadow:0 4px 10px rgba(0,0,0,.2), inset 0 2px 4px rgba(255,255,255,.2);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,.2),
+    inset 0 2px 4px rgba(255,255,255,.2); /* Sombra para darle profundidad */
   transition:transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), opacity var(--transition-fast);
   cursor:pointer;
 }
-.nav-btn .nav-icon{ filter: invert(1) grayscale(100%); }
-.nav-btn:hover{ transform:translateY(-1px); background:var(--color-principal-oscuro); box-shadow: 0 6px 14px rgba(0,0,0,.3); }
-.nav-btn.active{ background:#fff; color:var(--color-principal-oscuro); border-color:rgba(17,17,17,.08); }
-.nav-btn.active .nav-icon{ filter:none; }
-.nav-btn .label{
-  white-space:normal; line-height:1.1; text-align:left; overflow:visible; text-overflow:unset; word-break:break-word;
+
+/* Iconos blancos por defecto: Asume que las imágenes SVG originales son oscuras y las invierte */
+.nav-btn .nav-icon{
+  filter: invert(1) grayscale(100%);
 }
 
+.nav-btn:hover{
+  transform:translateY(-1px);
+  background:var(--color-principal-oscuro); /* Rojo más oscuro al pasar el mouse */
+  box-shadow: 0 6px 14px rgba(0,0,0,.3);
+}
+
+/* Estado activo (Fondo blanco, texto rojo oscuro) */
+.nav-btn.active{
+  background:var(--color-blanco); /* Fondo blanco */
+  color:var(--color-principal-oscuro); /* Texto rojo oscuro */
+  box-shadow:
+    0 4px 10px rgba(0,0,0,.1),
+    inset 0 0 0 rgba(0,0,0,0);
+  border-color:rgba(17,17,17,.08);
+}
+
+/* Icono activo (SOLO 'Inicio'): Quitar filtro para que tome su color original oscuro */
+.nav-btn.active .nav-icon{
+  filter: none;
+}
+/* ← ÚNICO CAMBIO: permitir 2 líneas en la etiqueta */
+.nav-btn .label{
+  white-space: normal;      /* permite salto de línea */
+  line-height: 1.1;
+  text-align: left;
+  overflow: visible;
+  text-overflow: unset;
+  word-break: break-word;
+}
+
+
+/* Estado colapsado: solo iconos */
 .nav-sidebar.collapsed{ width:72px; }
 .nav-sidebar.collapsed .logo-container{ display:none; }
 .nav-sidebar.collapsed .nav-btn{ justify-content:center; padding:12px; }
@@ -150,26 +195,31 @@ input:checked + .slider:before{ transform:translateX(22px); }
 
 /* Contenido principal */
 .contenido-principal{
-  margin-left:260px; flex-grow:1; padding:28px; position:relative; overflow:hidden;
+  margin-left:260px; flex-grow:1; padding:28px; position:relative;
+  overflow:hidden;
   min-height:calc(100vh - 64px);
 }
-body.nav-collapsed .contenido-principal{ margin-left:120px; }
 
-/* Marca/footers anteriores (se pueden dejar) */
-body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
-.marca, .footer{ margin-left:292px; }
+/* Ajuste del contenido cuando el menú está colapsado */
+body.nav-collapsed .contenido-principal{ margin-left:120px; }
+body.nav-collapsed .marca, 
+body.nav-collapsed .footer{ margin-left:104px; }
 
 /* -------------------- Contenedores & Neumorfismo -------------------- */
 .neu{
   background:var(--color-blanco);
   border-radius:var(--neu-radius);
-  box-shadow:10px 12px var(--neu-blur) var(--neu-shadow-dark), -10px -12px var(--neu-blur) var(--neu-shadow-light);
+  box-shadow:
+    10px 12px var(--neu-blur) var(--neu-shadow-dark),
+    -10px -12px var(--neu-blur) var(--neu-shadow-light);
   border:1px solid rgba(17,17,17,0.06);
 }
 .neu:hover{
   transform:translateY(-2px);
   transition:transform .15s ease, box-shadow .15s ease;
-  box-shadow:14px 18px 32px rgba(0,0,0,.22), -12px -14px 28px var(--neu-shadow-light);
+  box-shadow:
+    14px 18px 32px rgba(0,0,0,.22),
+    -12px -14px 28px var(--neu-shadow-light);
 }
 
 /* -------------------- Vistas SPA -------------------- */
@@ -178,7 +228,9 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
   display:none; opacity:0; transform:scale(.985);
   transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
-.view.active{ display:block; opacity:1; transform:scale(1); }
+.view.active{
+  display:block; opacity:1; transform:scale(1);
+}
 
 /* Títulos/secciones internas */
 .seccion-tablero{ padding:26px; margin-bottom:28px; position:relative; }
@@ -188,150 +240,144 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
 }
 :root:not([data-theme="dark"]) .seccion-tablero h1{ color:#0F172A; }
 
-.layout-explicacion{
-  display:flex;
-  gap:26px;
-  align-items:stretch;
-  flex-wrap:wrap;
-  min-height:320px;
-}
-
+.layout-explicacion{ display:flex; gap:26px; align-items:stretch; flex-wrap:wrap; }
 .columna-texto{
-  flex:1 1 520px;
-  padding:18px;
-  background:linear-gradient(180deg,rgba(249,251,252,.75) 0%, rgba(243,246,249,.75) 100%);
-  border-radius:14px;
-  border:1px dashed rgba(1,75,148,.18);
+  flex:1 1 520px; padding:18px; background:linear-gradient(180deg,rgba(249,251,252,.75) 0%, rgba(243,246,249,.75) 100%);
+  border-radius:14px; border:1px dashed rgba(1,75,148,.18);
 }
 :root[data-theme="dark"] .columna-texto{
   background:linear-gradient(180deg,rgba(15,23,42,.8) 0%, rgba(17,24,39,.8) 100%);
   border-color:rgba(1,75,148,.35);
 }
-.columna-texto h2{ font-family:var(--font-titulo); font-size:1.15rem; color:var(--color-secundario); margin-bottom:8px; }
+.columna-texto h2{
+  font-family:var(--font-titulo); font-size:1.15rem; color:var(--color-secundario); margin-bottom:8px;
+}
 .columna-texto p{ font-size:1rem; color:var(--color-texto); }
 
-/* === Columna del gráfico con wrapper para no romper los KPIs === */
-.columna-media{
-  flex:1 1 520px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-/* Lienzo del gráfico: ajusta tamaño aquí */
-.media-frame{
-  width: 820px;      /* ⇦ cambia ancho si necesitas (900/1000) */
-  height: 420px;     /* ⇦ cambia alto si necesitas (460/520) */
-  border-radius:16px;
+.columna-media{ flex:1 1 520px; display:flex; align-items:center; justify-content:center; }
+.columna-media img{
+  max-width:520px; width:100%; height:auto; border-radius:16px;
+  box-shadow:0 10px 24px rgba(0,0,0,.20);
   background:#fff;
-  box-shadow:0 12px 26px rgba(0,0,0,.20);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
-
-/* La imagen se adapta al lienzo sin deformarse */
-.media-frame img{
-  width:100%;
-  height:100%;
-  object-fit:contain;    /* usa 'cover' si quieres llenar recortando */
-  display:block;
-  border-radius:16px;
 }
 
 /* ---------- KPI Cards ---------- */
-.kpi-grid{ display:grid; gap:18px; grid-template-columns: repeat(4, minmax(180px, 1fr)); }
-@media (max-width: 1200px){ .kpi-grid{ grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px){ .kpi-grid{ grid-template-columns: 1fr; } }
+.kpi-grid{
+  display:grid; gap:18px;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+}
+@media (max-width: 1200px){
+  .kpi-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px){
+  .kpi-grid{ grid-template-columns: 1fr; }
+}
 .kpi-card{
   position:relative; padding:18px 18px 16px; border-radius:18px;
   background:var(--color-blanco);
-  box-shadow:12px 14px 30px rgba(0,0,0,.16), -10px -12px 28px var(--neu-shadow-light), inset 2px 2px 6px rgba(255,255,255,.6);
+  box-shadow:
+    12px 14px 30px rgba(0,0,0,.16),
+    -10px -12px 28px var(--neu-shadow-light),
+    inset 2px 2px 6px rgba(255,255,255,.6);
   border:1px solid rgba(17,17,17,.06);
 }
 .kpi-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-.kpi-top .label{ font-family:var(--font-botones); font-weight:700; font-size:.9rem; color:#6B7280; }
-.kpi-top .chip{ font-size:.75rem; padding:4px 8px; border-radius:999px; background:rgba(1,75,148,.08); color:var(--color-secundario); border:1px solid rgba(1,75,148,.18); }
-.kpi-value{ font-family:var(--font-titulo); font-size:2rem; font-weight:800; color:#0F172A; }
+.kpi-top .label{
+  font-family:var(--font-botones); font-weight:700; font-size:.9rem; color:#6B7280;
+}
+.kpi-top .chip{
+  font-size:.75rem; padding:4px 8px; border-radius:999px; background:rgba(1,75,148,.08); color:var(--color-secundario);
+  border:1px solid rgba(1,75,148,.18);
+}
+.kpi-value{
+  font-family:var(--font-titulo); font-size:2rem; font-weight:800; color:#0F172A;
+}
 :root[data-theme="dark"] .kpi-value{ color:#E5E7EB; }
 .kpi-foot{ font-size:.85rem; color:#6B7280; margin-top:6px; }
-.kpi-icon{ position:absolute; right:12px; bottom:12px; opacity:.18; font-size:46px; color:#111; }
+.kpi-icon{
+  position:absolute; right:12px; bottom:12px; opacity:.18; font-size:46px; color:#111;
+}
 
 /* ---------- Placeholder "Pendientes" ---------- */
-.pendiente-grid{ display:grid; gap:18px; grid-template-columns: repeat(2, minmax(240px, 1fr)); }
-@media (max-width: 900px){ .pendiente-grid{ grid-template-columns: 1fr; } }
+.pendiente-grid{
+  display:grid; gap:18px;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+}
+@media (max-width: 900px){
+  .pendiente-grid{ grid-template-columns: 1fr; }
+}
 .pendiente-card{
-  padding:24px; border-radius:18px; background:var(--color-blanco);
+  padding:24px; border-radius:18px;
+  background:var(--color-blanco);
   text-align:center; font-weight:800; letter-spacing:.4px;
-  box-shadow:12px 14px 30px rgba(0,0,0,.16), -10px -12px 28px var(--neu-shadow-light);
-  border:1px solid rgba(17,17,17,.06); color:#9CA3AF;
+  box-shadow:
+    12px 14px 30px rgba(0,0,0,.16),
+    -10px -12px 28px var(--neu-shadow-light);
+  border:1px solid rgba(17,17,17,.06);
+  color:#9CA3AF;
 }
 .pendiente-card .material-icons{ display:block; margin:0 auto 8px; opacity:.35; }
 
-/* Marca institucional superior al footer clásico */
-.marca{ margin:8px 32px 4px 292px; font-size:.85rem; color:#9CA3AF; font-style:italic; }
+/* Marca institucional superior al footer */
+.marca{
+  margin:8px 32px 4px 292px;
+  font-size:.85rem;
+  color:#9CA3AF;
+  font-style:italic;
+}
 :root[data-theme="dark"] .marca{ color:#A3A3A3; }
-.footer{ margin:4px 32px 40px 292px; color:#9CA3AF; font-size:.9rem; }
+
+/* Footer */
+.footer{
+  margin:4px 32px 40px 292px; color:#9CA3AF; font-size:.9rem;
+}
 :root:not([data-theme="dark"]) .footer{ color:#6B7280; }
 
-/* --------- SELLO / MARCA DE AGUA --------- */
+/* --------- SELLO / MARCA DE AGUA (inferior derecha, global) --------- */
 .sello{
-  position:fixed; right:24px; bottom:84px; z-index:950;
-  width:180px; height:180px; border-radius:50%; background:var(--color-blanco);
+  position:fixed;
+  right:24px; bottom:84px; z-index:950;
+  width:180px; height:180px; border-radius:50%;
+  background:var(--color-blanco);
   border:2px solid rgba(17,17,17,.08);
-  box-shadow:14px 18px 32px rgba(0,0,0,.22), -12px -14px 28px var(--neu-shadow-light), inset 2px 2px 8px rgba(255,255,255,.65);
-  display:flex; align-items:center; justify-content:center; user-select:none; pointer-events:none; opacity:.22; backdrop-filter: blur(1px);
+  box-shadow:
+    14px 18px 32px rgba(0,0,0,.22),
+    -12px -14px 28px var(--neu-shadow-light),
+    inset 2px 2px 8px rgba(255,255,255,.65);
+  display:flex; align-items:center; justify-content:center;
+  user-select:none; pointer-events:none;
+  opacity:.22; /* marca de agua */
+  backdrop-filter: blur(1px);
 }
-.sello .sello-texto{ text-align:center; line-height:1.2; font-family:var(--font-titulo); font-weight:800; letter-spacing:.4px; color:#0F172A; font-size:.95rem; text-transform:uppercase; }
-.sello .sello-sub{ display:block; margin-top:6px; font-size:.7rem; font-weight:700; letter-spacing:.6px; opacity:.9; }
+.sello .sello-texto{
+  text-align:center; line-height:1.2;
+  font-family:var(--font-titulo);
+  font-weight:800; letter-spacing:.4px;
+  color:#0F172A;
+  font-size:.95rem;
+  text-transform:uppercase;
+}
+.sello .sello-sub{
+  display:block; margin-top:6px;
+  font-size:.7rem; font-weight:700; letter-spacing:.6px; opacity:.9;
+}
 :root[data-theme="dark"] .sello{
   border-color:rgba(255,255,255,.08);
-  box-shadow:14px 18px 32px rgba(0,0,0,.5), -12px -14px 28px rgba(255,255,255,.06), inset 2px 2px 8px rgba(255,255,255,.08);
+  box-shadow:
+    14px 18px 32px rgba(0,0,0,.5),
+    -12px -14px 28px rgba(255,255,255,.06),
+    inset 2px 2px 8px rgba(255,255,255,.08);
   color:#E5E7EB;
 }
 
-/* === BARRA INFERIOR FIJA CON LOGOS + REDES === */
-.fixed-footer{
-  position:fixed; left:0; right:0; bottom:0; height:72px;
-  background:#2f2f2f; border-top:1px solid rgba(0,0,0,.35); z-index:1200;
-  display:flex; align-items:center; justify-content:center; padding:0 40px;
-}
-/* Logos por defecto sin filtro */
-.fixed-footer img{ height:40px; width:auto; display:block; filter:none; }
-/* PCM a la izquierda */
-.fixed-footer .logo-pcm{ margin-right:auto; }
-/* SERVIR centrado y en blanco */
-.fixed-footer .logo-servir{
-  position:absolute; left:50%; transform:translateX(-50%);
-  filter:brightness(0) invert(1);
-}
-/* Redes a la derecha */
-.fixed-footer .social-right{
-  position:absolute; right:40px; display:flex; align-items:center; gap:14px; white-space:nowrap;
-}
-.fixed-footer .social-right .label{
-  font-family:var(--font-titulo); font-weight:800; font-size:18px; color:#fff; margin-right:6px;
-}
-.fixed-footer .social-right .icons{ display:flex; gap:10px; }
-.fixed-footer .social-right .icons a{
-  width:34px; height:34px; border-radius:9999px; background:#fff;
-  display:inline-flex; align-items:center; justify-content:center;
-  text-decoration:none; border:1px solid rgba(0,0,0,.25);
-  transition:transform .15s ease, opacity .15s ease;
-}
-.fixed-footer .social-right .icons a:hover{ transform:translateY(-1px); opacity:.9; }
-.fixed-footer .social-right .icons i{ font-size:16px; color:#111; }
-
 /* Responsivo */
-@media (max-width:1100px){
+@media (max-width: 1100px){
   .layout-explicacion{ flex-direction:column; }
   .marca, .footer{ margin-left:28px; }
+  .sello{ width:140px; height:140px; bottom:82px; right:18px; }
+  .sello .sello-texto{ font-size:.85rem; }
 }
-@media (max-width:700px){
-  .fixed-footer .social-right .label{ display:none; }
-}
-@media (max-width:600px){
+@media (max-width: 600px){
   .sello{ width:120px; height:120px; }
   .sello .sello-texto{ font-size:.8rem; }
 }
@@ -356,7 +402,8 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
 
   <div class="contenedor-observatorio">
     <aside class="nav-sidebar">
-      <div class="logo-container"></div>
+      <div class="logo-container">
+        </div>
 
       <button id="toggleNav" class="collapse-btn" aria-label="Contraer menú" title="Contraer/Expandir menú">
         <img id="collapseIcon" src="assets/icons/arrow-left.svg" alt="">
@@ -439,61 +486,102 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
             <div class="columna-texto">
               <h2>Resumen Ejecutivo</h2>
               <p>
-                SERVIR es la entidad rectora del Sistema Administrativo de Gestión de Recursos Humanos del Estado peruano, responsable de promover la profesionalización y meritocracia en el servicio civil. A través de políticas, normas y herramientas de gestión, busca fortalecer las capacidades institucionales y el desempeño de los servidores públicos. Su labor se orienta a garantizar una administración pública moderna, eficiente y transparente, centrada en el ciudadano y basada en resultados. La Ley N° 30057 respalda su accionar, consolidando su rol estratégico en la reforma del servicio civil peruano.
+                SERVIR es crucial para la administración pública peruana como ente rector del Sistema de Gestión de Recursos Humanos, respaldada por la Ley N° 30057. Su importancia radica en impulsar la meritocracia y la profesionalización del personal estatal, aumentando la eficacia y eficiencia en la prestación de servicios orientados al ciudadano.
               </p>
             </div>
-
             <div class="columna-media">
-              <div class="media-frame">
-                <a href="https://app.powerbi.com/view?r=eyJrIjoiOTEwODk2OTgtYjk3Zi00NjFmLWEyNmUtY2E0YWI0OTFkMzdmIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9"
-                   target="_blank"
-                   title="Ver tablero interactivo en Power BI">
-                  <img src="assets/images/tablero.png" alt="Tablero interactivo Power BI">
-                </a>
-              </div>
+              <img src="assets/images/logo1.png" alt="Logo institucional SERVIR">
             </div>
-
           </div>
         </section>
       </section>
 
-      <!-- Vistas restantes (placeholders) -->
-      <section id="view-caracteristicas" class="view"><section class="seccion-tablero neu"><h1>Características del Servidor Público</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
-      <section id="view-gestion-talento" class="view"><section class="seccion-tablero neu"><h1>Gestión del talento humano</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
-      <section id="view-desarrollo-competencias" class="view"><section class="seccion-tablero neu"><h1>Desarrollo de competencias</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
-      <section id="view-liderazgo-gp" class="view"><section class="seccion-tablero neu"><h1>Liderazgo en la gestión pública</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
-      <section id="view-capacitacion-dc" class="view"><section class="seccion-tablero neu"><h1>Capacitación y desarrollo continuo</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
-      <section id="view-justicia-adm" class="view"><section class="seccion-tablero neu"><h1>Justicia administrativa</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
-      <section id="view-publicaciones" class="view"><section class="seccion-tablero neu"><h1>Publicaciones</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
-      <section id="view-datos-abiertos" class="view"><section class="seccion-tablero neu"><h1>Datos abiertos</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
-    </main>
-  </div>
+      <section id="view-caracteristicas" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Características del Servidor Público</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
 
-  <!-- Barra inferior fija con logos + redes -->
-  <div class="fixed-footer" role="contentinfo" aria-label="Barra inferior fija">
-    <!-- Izquierda -->
-    <img src="assets/logos/PCM_logo.png" alt="PCM" class="logo-pcm">
-    <!-- Centro -->
-    <img src="assets/logos/Servir_logo.png" alt="SERVIR" class="logo-servir">
-    <!-- Derecha: Redes -->
-    <div class="social-right">
-      <span class="label">Síguenos en:</span>
-      <div class="icons">
-        <a href="#" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" aria-label="X" title="X / Twitter"><i class="fab fa-x-twitter"></i></a>
-        <a href="#" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="#" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-        <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-        <a href="#" aria-label="Flickr" title="Flickr"><i class="fab fa-flickr"></i></a>
-        <a href="#" aria-label="Spotify" title="Spotify"><i class="fab fa-spotify"></i></a>
-      </div>
-    </div>
+      <section id="view-gestion-talento" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Gestión del talento humano</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-desarrollo-competencias" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Desarrollo de competencias</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-liderazgo-gp" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Liderazgo en la gestión pública</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-capacitacion-dc" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Capacitación y desarrollo continuo</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-justicia-adm" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Justicia administrativa</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-publicaciones" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Publicaciones</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-datos-abiertos" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Datos abiertos</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+    </main>
   </div>
 
   <div class="marca">
     Por una gestión de alta calidad, aportando liderazgo, eficiencia, ética y vocación de servicio.
   </div>
+
   <footer class="footer">
     © 2025 Observatorio del Servicio Civil - SERVIR. Todos los derechos reservados.
   </footer>

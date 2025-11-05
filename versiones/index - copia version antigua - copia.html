@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Observatorio del Servicio Civil - Dashboard Gerencial</title>
+
+<!-- Tipografías -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;700&family=Open+Sans:wght@700&family=Roboto:wght@400;700&display=swap">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* -------------------- Variables & Reset -------------------- */
+:root{
+  --color-principal:#C41B3F;        /* Rojo SERVIR */
+  --color-principal-oscuro:#90142E;
+  --color-secundario:#014B94;        /* Azul */
+  --color-secundario-hover:#012447;
+  --color-texto:#606060;
+  --color-fondo:#F3F5F7;             /* Fondo claro */
+  --color-blanco:#FFFFFF;
+  --color-alerta:#FFC729;
+  --color-header-bg:#ECEFF2;
+
+  /* Neumorfismo base */
+  --neu-shadow-dark:rgba(0,0,0,0.12);
+  --neu-shadow-light:rgba(255,255,255,0.9);
+  --neu-radius:18px;
+  --neu-blur:24px;
+
+  /* Tipografías */
+  --font-titulo:'Open Sans',sans-serif;
+  --font-parrafo:'Calibri','Roboto',sans-serif;
+  --font-botones:'Cabin',sans-serif;
+
+  /* Transiciones SPA */
+  --transition-fast: .22s ease;
+}
+
+/* Modo oscuro */
+:root[data-theme="dark"]{
+  --color-texto:#E6E6E6;
+  --color-fondo:#0F172A;
+  --color-blanco:#0B1220;
+  --color-header-bg:#111827;
+  --neu-shadow-dark:rgba(0,0,0,0.6);
+  --neu-shadow-light:rgba(255,255,255,0.07);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;}
+body{
+  font-family:var(--font-parrafo);
+  background:var(--color-fondo);
+  color:var(--color-texto);
+  line-height:1.5;
+  font-size:16px;
+  overflow-x:hidden;
+}
+
+/* -------------------- Header fijo -------------------- */
+.header-servir{
+  position:fixed; inset:0 0 auto 0; height:64px; z-index:1000;
+  display:flex; align-items:center; gap:14px; justify-content:center;
+  background:var(--color-header-bg);
+  border-bottom:1px solid rgba(17,17,17,.15);
+  font-family:var(--font-titulo); font-weight:700; color:#fff;
+}
+.header-servir .title-text{ color:#fff; }
+:root:not([data-theme="dark"]) .header-servir .title-text{ color:#111; }
+
+.header-brand{
+  position:absolute; left:16px; top:0; bottom:0; display:flex; align-items:center; gap:10px;
+}
+.header-brand img{
+  height:38px; width:auto; display:block; filter:drop-shadow(0 1px 1px rgba(0,0,0,.12));
+}
+.header-brand .brand-text{
+  font-weight:800; letter-spacing:.2px; color:var(--color-principal);
+}
+
+/* Toggle tema */
+.theme-toggle{
+  position:absolute; right:16px; display:flex; align-items:center; gap:8px;
+  font-family:var(--font-botones); font-weight:700; font-size:14px;
+}
+.switch{ position:relative; display:inline-block; width:46px; height:24px; }
+.switch input{ display:none; }
+.slider{
+  position:absolute; cursor:pointer; inset:0; background:#c7cbd1; transition:.2s; border-radius:999px;
+}
+.slider:before{
+  content:""; position:absolute; height:18px; width:18px; left:3px; top:3px; background:white; transition:.2s; border-radius:50%;
+}
+input:checked + .slider{ background:#4b5563; }
+input:checked + .slider:before{ transform:translateX(22px); }
+
+/* -------------------- Layout -------------------- */
+.contenedor-observatorio{
+  display:flex; min-height:calc(100vh - 64px); margin-top:64px;
+}
+
+.nav-sidebar{
+  width:260px; position:fixed; top:64px; left:0; height:calc(100% - 64px); z-index:999;
+  background:linear-gradient(180deg,var(--color-principal) 0%, var(--color-principal-oscuro) 100%);
+  display:flex; flex-direction:column; overflow-y:auto; padding:16px 14px 24px;
+  box-shadow: 6px 0 20px rgba(0,0,0,.18);
+}
+
+.logo-container{ text-align:center; padding:8px 8px 14px; }
+.logo-container .logo-img{ max-width:170px; height:auto; margin:0 auto 8px; display:block;}
+.logo-container .logo-text{ color:#fff; font-family:var(--font-titulo); font-size:1.05rem; font-weight:800; opacity:.95; }
+
+.nav-list{ display:grid; gap:10px; list-style:none; margin-top:8px; }
+.nav-btn{
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px;
+  border-radius:14px;
+  text-decoration:none;
+  font-family:var(--font-botones);
+  font-weight:700; font-size:15px;
+  color:#fff; background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:
+    6px 6px 16px rgba(0,0,0,.22),
+    -6px -6px 16px rgba(255,255,255,.08);
+  transition:transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), opacity var(--transition-fast);
+  cursor:pointer;
+}
+.nav-btn .material-icons{ font-size:20px; opacity:.95; }
+.nav-btn:hover{ transform:translateY(-1px); background:rgba(255,255,255,.10); }
+.nav-btn.active{
+  background:#fff; color:var(--color-principal-oscuro);
+  box-shadow:
+    inset 6px 6px 14px rgba(0,0,0,.12),
+    inset -6px -6px 14px rgba(255,255,255,.75),
+    0 6px 16px rgba(0,0,0,.18);
+  border-color:rgba(0,0,0,.06);
+}
+
+/* Contenido principal */
+.contenido-principal{
+  margin-left:260px; flex-grow:1; padding:28px; position:relative;
+  overflow:hidden;
+  min-height:calc(100vh - 64px);
+}
+
+/* -------------------- Contenedores & Neumorfismo -------------------- */
+.neu{
+  background:var(--color-blanco);
+  border-radius:var(--neu-radius);
+  box-shadow:
+    10px 12px var(--neu-blur) var(--neu-shadow-dark),
+    -10px -12px var(--neu-blur) var(--neu-shadow-light);
+  border:1px solid rgba(17,17,17,0.06);
+}
+.neu:hover{
+  transform:translateY(-2px);
+  transition:transform .15s ease, box-shadow .15s ease;
+  box-shadow:
+    14px 18px 32px rgba(0,0,0,.22),
+    -12px -14px 28px var(--neu-shadow-light);
+}
+
+/* -------------------- Vistas SPA -------------------- */
+.view{
+  position:absolute; inset:0; padding:28px; overflow:auto;
+  display:none; opacity:0; transform:scale(.985);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+.view.active{
+  display:block; opacity:1; transform:scale(1);
+}
+
+/* Títulos/secciones internas */
+.seccion-tablero{ padding:26px; margin-bottom:28px; position:relative; }
+.seccion-tablero h1{
+  font-family:var(--font-titulo); font-size:1.7rem; color:#E5E7EB; margin-bottom:20px;
+  padding-bottom:10px; border-bottom:3px solid var(--color-secundario);
+}
+:root:not([data-theme="dark"]) .seccion-tablero h1{ color:#0F172A; }
+
+.layout-explicacion{ display:flex; gap:26px; align-items:stretch; flex-wrap:wrap; }
+.columna-texto{
+  flex:1 1 520px; padding:18px; background:linear-gradient(180deg,rgba(249,251,252,.75) 0%, rgba(243,246,249,.75) 100%);
+  border-radius:14px; border:1px dashed rgba(1,75,148,.18);
+}
+:root[data-theme="dark"] .columna-texto{
+  background:linear-gradient(180deg,rgba(15,23,42,.8) 0%, rgba(17,24,39,.8) 100%);
+  border-color:rgba(1,75,148,.35);
+}
+.columna-texto h2{
+  font-family:var(--font-titulo); font-size:1.15rem; color:var(--color-secundario); margin-bottom:8px;
+}
+.columna-texto p{ font-size:1rem; color:var(--color-texto); }
+
+.columna-media{ flex:1 1 520px; display:flex; align-items:center; justify-content:center; }
+.columna-media img{
+  max-width:520px; width:100%; height:auto; border-radius:16px;
+  box-shadow:0 10px 24px rgba(0,0,0,.20);
+  background:#fff;
+}
+
+/* ---------- KPI Cards ---------- */
+.kpi-grid{
+  display:grid; gap:18px;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+}
+@media (max-width: 1200px){
+  .kpi-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px){
+  .kpi-grid{ grid-template-columns: 1fr; }
+}
+.kpi-card{
+  position:relative; padding:18px 18px 16px; border-radius:18px;
+  background:var(--color-blanco);
+  box-shadow:
+    12px 14px 30px rgba(0,0,0,.16),
+    -10px -12px 28px var(--neu-shadow-light),
+    inset 2px 2px 6px rgba(255,255,255,.6);
+  border:1px solid rgba(17,17,17,.06);
+}
+.kpi-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.kpi-top .label{
+  font-family:var(--font-botones); font-weight:700; font-size:.9rem; color:#6B7280;
+}
+.kpi-top .chip{
+  font-size:.75rem; padding:4px 8px; border-radius:999px; background:rgba(1,75,148,.08); color:var(--color-secundario);
+  border:1px solid rgba(1,75,148,.18);
+}
+.kpi-value{
+  font-family:var(--font-titulo); font-size:2rem; font-weight:800; color:#0F172A;
+}
+:root[data-theme="dark"] .kpi-value{ color:#E5E7EB; }
+.kpi-foot{ font-size:.85rem; color:#6B7280; margin-top:6px; }
+.kpi-icon{
+  position:absolute; right:12px; bottom:12px; opacity:.18; font-size:46px; color:#111;
+}
+
+/* ---------- Placeholder "Pendientes" ---------- */
+.pendiente-grid{
+  display:grid; gap:18px;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+}
+@media (max-width: 900px){
+  .pendiente-grid{ grid-template-columns: 1fr; }
+}
+.pendiente-card{
+  padding:24px; border-radius:18px;
+  background:var(--color-blanco);
+  text-align:center; font-weight:800; letter-spacing:.4px;
+  box-shadow:
+    12px 14px 30px rgba(0,0,0,.16),
+    -10px -12px 28px var(--neu-shadow-light);
+  border:1px solid rgba(17,17,17,.06);
+  color:#9CA3AF;
+}
+.pendiente-card .material-icons{ display:block; margin:0 auto 8px; opacity:.35; }
+
+/* Marca institucional superior al footer */
+.marca{
+  margin:8px 32px 4px 292px;
+  font-size:.85rem;
+  color:#9CA3AF;
+  font-style:italic;
+}
+:root[data-theme="dark"] .marca{ color:#A3A3A3; }
+
+/* Footer */
+.footer{
+  margin:4px 32px 40px 292px; color:#9CA3AF; font-size:.9rem;
+}
+:root:not([data-theme="dark"]) .footer{ color:#6B7280; }
+
+/* --------- SELLO / MARCA DE AGUA (inferior derecha, global) --------- */
+.sello{
+  position:fixed;
+  right:24px; bottom:84px; z-index:950;
+  width:180px; height:180px; border-radius:50%;
+  background:var(--color-blanco);
+  border:2px solid rgba(17,17,17,.08);
+  box-shadow:
+    14px 18px 32px rgba(0,0,0,.22),
+    -12px -14px 28px var(--neu-shadow-light),
+    inset 2px 2px 8px rgba(255,255,255,.65);
+  display:flex; align-items:center; justify-content:center;
+  user-select:none; pointer-events:none;
+  opacity:.22; /* marca de agua */
+  backdrop-filter: blur(1px);
+}
+.sello .sello-texto{
+  text-align:center; line-height:1.2;
+  font-family:var(--font-titulo);
+  font-weight:800; letter-spacing:.4px;
+  color:#0F172A;
+  font-size:.95rem;
+  text-transform:uppercase;
+}
+.sello .sello-sub{
+  display:block; margin-top:6px;
+  font-size:.7rem; font-weight:700; letter-spacing:.6px; opacity:.9;
+}
+:root[data-theme="dark"] .sello{
+  border-color:rgba(255,255,255,.08);
+  box-shadow:
+    14px 18px 32px rgba(0,0,0,.5),
+    -12px -14px 28px rgba(255,255,255,.06),
+    inset 2px 2px 8px rgba(255,255,255,.08);
+  color:#E5E7EB;
+}
+
+/* Responsivo */
+@media (max-width: 1100px){
+  .layout-explicacion{ flex-direction:column; }
+  .marca, .footer{ margin-left:28px; }
+  .sello{ width:140px; height:140px; bottom:82px; right:18px; }
+  .sello .sello-texto{ font-size:.85rem; }
+}
+@media (max-width: 600px){
+  .sello{ width:120px; height:120px; }
+  .sello .sello-texto{ font-size:.8rem; }
+}
+</style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header-servir">
+    <div class="header-brand">
+      <img id="logoHeader" alt="SERVIR" src="data:image/svg+xml;utf8,
+        <svg xmlns='http://www.w3.org/2000/svg' width='180' height='50'>
+          <rect width='100%' height='100%' fill='%23C41B3F'/>
+          <text x='50%' y='55%' text-anchor='middle' font-size='24' font-family='Arial' fill='white' font-weight='700'>SERVIR</text>
+        </svg>">
+      <span class="brand-text">Observatorio del Servicio Civil</span>
+    </div>
+    <span class="title-text">Autoridad Nacional del Servicio Civil - SERVIR</span>
+
+    <div class="theme-toggle">
+      <span class="material-icons" aria-hidden="true">dark_mode</span>
+      <label class="switch" title="Cambiar tema">
+        <input type="checkbox" id="toggleTheme" aria-label="Cambiar entre modo claro y oscuro">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <div class="contenedor-observatorio">
+    <!-- Sidebar -->
+    <aside class="nav-sidebar">
+      <div class="logo-container">
+        <img class="logo-img" src="assets/images/logo_servir.png" alt="Logo SERVIR">
+        <div class="logo-text">OBSERVATORIO DEL SERVICIO CIVIL</div>
+      </div>
+
+      <ul class="nav-list">
+        <li><a class="nav-btn active" data-route="inicio"><i class="material-icons">home</i>Inicio del Observatorio</a></li>
+        <li><a class="nav-btn" data-route="gdgp"><i class="material-icons">person_pin</i>GDGP</a></li>
+        <li><a class="nav-btn" data-route="gpsc"><i class="material-icons">policy</i>GPSC</a></li>
+        <li><a class="nav-btn" data-route="gdsrh"><i class="material-icons">settings</i>GDSRH</a></li>
+        <li><a class="nav-btn" data-route="gdcrsc"><i class="material-icons">school</i>Capacidades y Rendimiento</a></li>
+        <li><a class="nav-btn" data-route="enap"><i class="material-icons">book</i>ENAP</a></li>
+        <li><a class="nav-btn" data-route="tsc"><i class="material-icons">gavel</i>TSC</a></li>
+        <li><a class="nav-btn" data-route="publicaciones"><i class="material-icons">article</i>Publicaciones</a></li>
+        <li><a class="nav-btn" data-route="estadisticas"><i class="material-icons">insights</i>Estadísticas</a></li>
+      </ul>
+    </aside>
+
+    <!-- Contenido -->
+    <main class="contenido-principal">
+      <!-- Vista: INICIO (KPI + Resumen/Logo) -->
+      <section id="view-inicio" class="view active">
+        <!-- KPI CARDS EN ALTO RELIEVE -->
+        <section class="seccion-tablero neu" aria-label="Indicadores Clave">
+          <h1>Indicadores Clave</h1>
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="label">Servidores Civiles</span>
+                <span class="chip">Actual</span>
+              </div>
+              <div class="kpi-value" data-kpi>—</div>
+              <div class="kpi-foot">Fuente: registros SERVIR</div>
+              <span class="material-icons kpi-icon">groups</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="label">Entidades Integradas</span>
+                <span class="chip">+ QoQ</span>
+              </div>
+              <div class="kpi-value" data-kpi>—</div>
+              <div class="kpi-foot">Interoperabilidad y captura</div>
+              <span class="material-icons kpi-icon">domain</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="label">Capacitaciones ENAP</span>
+                <span class="chip">Año</span>
+              </div>
+              <div class="kpi-value" data-kpi>—</div>
+              <div class="kpi-foot">Cursos y horas dictadas</div>
+              <span class="material-icons kpi-icon">school</span>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <span class="label">% Procedimientos TSC</span>
+                <span class="chip">SLA</span>
+              </div>
+              <div class="kpi-value" data-kpi>—</div>
+              <div class="kpi-foot">Oportunidad y cumplimiento</div>
+              <span class="material-icons kpi-icon">gavel</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESUMEN EJECUTIVO + LOGO (dos cuadros) -->
+        <section class="seccion-tablero neu">
+          <h1>Inicio del Observatorio</h1>
+          <div class="layout-explicacion">
+            <!-- Resumen Ejecutivo -->
+            <div class="columna-texto">
+              <h2>Resumen Ejecutivo</h2>
+              <p>
+                SERVIR es crucial para la administración pública peruana como ente rector del Sistema de Gestión de Recursos Humanos, respaldada legalmente por la Ley N° 30057, Ley del Servicio Civil. Su importancia radica en impulsar la meritocracia y la profesionalización del personal estatal. El principal beneficio para la administración es el aumento de la eficacia y eficiencia en la prestación de servicios, garantizando que estos sean de calidad y orientados al ciudadano. Al estandarizar procesos de gestión y capacitación, SERVIR moderniza el Estado, promoviendo la transparencia y fortaleciendo la confianza en las instituciones públicas.
+              </p>
+            </div>
+            <!-- Logo del mismo tamaño visual -->
+            <div class="columna-media">
+              <img src="assets/images/logo1.png" alt="Logo institucional SERVIR">
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Vista: GDGP (MODIFICADA) -->
+      <section id="view-gdgp" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Gerencia de Desarrollo Gerencial Pública (GDGP)</h1>
+          <div class="layout-explicacion">
+            <div class="columna-texto">
+              <h2>Resumen</h2>
+              <p>La <strong>GDGP</strong> gestiona el Cuerpo de Gerentes Públicos (CGP): captación, evaluación, colocación y seguimiento de desempeño.</p>
+              <p style="margin-top:12px;">
+                Las funciones de los Gerentes Públicos , que conforman un cuerpo de profesionales rigurosamente seleccionados por méritos, están enfocadas en reforzar la capacidad gerencial del Estado en puestos clave. Su rol principal es ser catalizadores de la mejora y la eficiencia de las instituciones.
+                Estos gerentes se asignan a cargos directivos y gerencias de mando medio, donde tienen la enorme responsabilidad de gestión. Específicamente, sus funciones incluyen:
+                <br><br>
+                • Liderar la modernización de los sistemas administrativos, como presupuesto, logística y recursos humanos.<br>
+                • Ejecutar inversiones y presupuestos de manera eficiente, buscando el mejor gasto público.<br>
+                • Cumplir metas e indicadores concretos de desempeño, siendo esta una condición clave para su permanencia.<br>
+                • Implementar políticas públicas y operativas para mejorar la calidad de los servicios que se brindan al ciudadano.<br>
+                • Fortalecer la capacidad de planificación, la toma de decisiones basada en indicadores y la gestión en situaciones de crisis.
+              </p>
+            </div>
+
+            <!-- Imagen con enlace -->
+            <div class="columna-media neu" style="padding:10px;">
+              <a href="https://app.powerbi.com/view?r=eyJrIjoiOTEwODk2OTgtYjk3Zi00NjFmLWEyNmUtY2E0YWI0OTFkMzdmIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" 
+                 target="_blank" rel="noopener">
+                <img src="assets/images/gerente_pub.png" 
+                     alt="Tablero GDGP - Cuerpo de Gerentes Públicos"
+                     style="width:100%; max-width:520px; border-radius:18px; 
+                            box-shadow:0 8px 20px rgba(0,0,0,0.25); 
+                            cursor:pointer; transition:transform .2s ease;">
+              </a>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Vistas pendientes -->
+      <section id="view-gpsc" class="view">
+        <section class="seccion-tablero neu">
+          <h1>GPSC</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-gdsrh" class="view">
+        <section class="seccion-tablero neu">
+          <h1>GDSRH</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-gdcrsc" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Capacidades y Rendimiento</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-enap" class="view">
+        <section class="seccion-tablero neu">
+          <h1>ENAP</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-tsc" class="view">
+        <section class="seccion-tablero neu">
+          <h1>TSC</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-publicaciones" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Publicaciones</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+      <section id="view-estadisticas" class="view">
+        <section class="seccion-tablero neu">
+          <h1>Estadísticas</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+            <div class="pendiente-card"><span class="material-icons">pending</span>PENDIENTES EN DESARROLLO</div>
+          </div>
+        </section>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Marca institucional sobre el footer -->
+  <div class="marca">
+    Por una gestión de alta calidad, aportando liderazgo, eficiencia, ética y vocación de servicio.
+  </div>
+
+  <footer class="footer">
+    © 2025 Observatorio del Servicio Civil - SERVIR. Todos los derechos reservados.
+  </footer>
+
+  <!-- SELLO / MARCA DE AGUA GLOBAL -->
+  <div class="sello" aria-hidden="true">
+    <div class="sello-texto">
+      Eduardo Magno<br>Fabian
+      <span class="sello-sub">Econ.-Consultoría</span>
+    </div>
+  </div>
+
+<script>
+/* ---------- Persistencia del tema ---------- */
+(function(){
+  const root = document.documentElement;
+  const saved = localStorage.getItem('osc-theme');
+  if(saved === 'dark'){ root.setAttribute('data-theme','dark'); }
+})();
+
+/* Toggle de tema */
+document.addEventListener('DOMContentLoaded', () => {
+  const checkbox = document.getElementById('toggleTheme');
+  const root = document.documentElement;
+  const isDark = root.getAttribute('data-theme') === 'dark';
+  checkbox.checked = isDark;
+
+  checkbox.addEventListener('change', () => {
+    if(checkbox.checked){
+      root.setAttribute('data-theme','dark');
+      localStorage.setItem('osc-theme','dark');
+    }else{
+      root.removeAttribute('data-theme');
+      localStorage.setItem('osc-theme','light');
+    }
+  });
+});
+
+/* ---------- Router SPA ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const views = document.querySelectorAll('.view');
+
+  const showView = (route) => {
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.route === route));
+    views.forEach(v => v.classList.toggle('active', v.id === `view-${route}`));
+    history.pushState({route}, "", `#${route}`);
+  };
+
+  navBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      showView(btn.dataset.route);
+    });
+  });
+
+  const initRoute = (location.hash || '#inicio').replace('#', '');
+  showView(initRoute);
+});
+</script>
+</body>
+</html>
