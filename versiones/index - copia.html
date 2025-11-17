@@ -255,16 +255,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
 .kpi-value{ font-family:var(--font-titulo); font-size:2rem; font-weight:800; color:#0F172A; }
 :root[data-theme="dark"] .kpi-value{ color:#E5E7EB; }
 .kpi-foot{ font-size:.85rem; color:#6B7280; margin-top:6px; }
-/* CORRECCIÓN: Ajuste de posición, tamaño y opacidad del icono de fondo para evitar superposición */
-.kpi-icon{ 
-  position:absolute; 
-  right:16px; /* Ajuste de posición horizontal */
-  bottom:16px; /* Ajuste de posición vertical */
-  opacity:.12; /* Reducción de opacidad para efecto de marca de agua */
-  font-size:52px; /* Aumento de tamaño */
-  color:var(--color-principal-oscuro); /* Mejorar el contraste */
-  pointer-events:none; /* Asegura que el icono no bloquee la interacción */
-}
+.kpi-icon{ position:absolute; right:12px; bottom:12px; opacity:.18; font-size:46px; color:#111; }
 
 /* ---------- Placeholder "Pendientes" ---------- */
 .pendiente-grid{ display:grid; gap:18px; grid-template-columns: repeat(2, minmax(240px, 1fr)); }
@@ -437,25 +428,25 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
               <div class="kpi-top"><span class="label">Servidores Civiles</span><span class="chip">Diciembre 2024</span></div>
               <div class="kpi-value" data-kpi>1,589,245</div>
               <div class="kpi-foot">Fuente: Planilla electrónica MTPPE</div>
-              <i class="material-icons kpi-icon">groups</i>
+              <span class="material-icons kpi-icon">groups</span>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Servidores capacitados mediante PDP</span><span class="chip">2024</span></div>
               <div class="kpi-value" data-kpi>267,886</div>
               <div class="kpi-foot">Fuente: GDCRSG-SERVIR 2024</div>
-              <i class="material-icons kpi-icon">school</i>
+              <span class="material-icons kpi-icon">school</span>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Entidades en proceso de tránsito</span><span class="chip">2025</span></div>
               <div class="kpi-value" data-kpi>534</div>
               <div class="kpi-foot">Fuente: GDGDRH-SERVIR 2025</div>
-              <i class="material-icons kpi-icon">domain</i>
+              <span class="material-icons kpi-icon">domain</span>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Gerentes públicos asignados</span><span class="chip">Total</span></div>
               <div class="kpi-value" data-kpi>1,066</div>
               <div class="kpi-foot">Fuente: GDGP-SERVIR 2009-2025</div>
-              <i class="material-icons kpi-icon">analytics</i>
+              <span class="material-icons kpi-icon">analytics</span>
             </div>
           </div>
         </section>
@@ -513,10 +504,12 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
         </section>
       </section>
       <section id="view-liderazgo-gp" class="view"><section class="seccion-tablero neu"><h1>Dirección de la Gestión Pública</h1><div class="pendiente-grid"><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div><div class="pendiente-card"><span class="material-icons">pending</span>EN DESARROLLO</div></div></section></section>
+      <!-- INICIO DE LA MODIFICACIÓN: Inserción del iframe en la vista de Fortalecimiento de Capacidades -->
       <section id="view-capacitacion-dc" class="view">
         <section class="seccion-tablero neu">
           <h1>Fortalecimiento de Capacidades</h1>
           <div class="full-iframe-container">
+            <!-- IFRAME SOLICITADO -->
             <iframe title="DASHBOARD ENAP" width="100%" height="100%" 
               src="https://app.powerbi.com/view?r=eyJrIjoiNGM4NmYwOWMtMTM5Ni00MWM3LThkOGEtMTE4MjNiNGY1ZTY4IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" 
               frameborder="0" allowFullScreen="true">
@@ -524,6 +517,8 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:104px; }
           </div>
         </section>
       </section>
+      <!-- FIN DE LA MODIFICACIÓN -->
+      
       <section id="view-justicia-adm" class="view">
         <section class="seccion-tablero neu">
           <h1>Justicia Administrativa</h1>
