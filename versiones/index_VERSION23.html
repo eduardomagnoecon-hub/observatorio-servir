@@ -134,18 +134,6 @@ input:checked + .slider:before{ transform:translateX(22px); }
   cursor:pointer;
 }
 .nav-btn .nav-icon{ filter: invert(1) grayscale(100%); }
-/* Ajuste específico para el ícono Material del botón "Manual de Usuario" */
-/* Ícono del botón "Manual de Usuario" alineado al tono gris de los demás */
-.nav-btn .nav-icon.material-icons{
-  filter:none;
-  color:#E5E7EB;   /* gris claro, similar al resultado del filter */
-}
-
-.nav-btn.active .nav-icon.material-icons{
-  color:var(--color-principal-oscuro); /* cuando está activo sigue igual que el texto */
-}
-
-
 .nav-btn:hover{ transform:translateY(-1px); background:var(--color-principal-oscuro); box-shadow: 0 6px 14px rgba(0,0,0,.3); }
 .nav-btn.active{ background:#fff; color:var(--color-principal-oscuro); border-color:rgba(17,17,17,.08); }
 .nav-btn.active .nav-icon{ filter:none; }
@@ -229,10 +217,10 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   justify-content:center;
 }
 
-/* Lienzo del gráfico responsivo */
+/* Lienzo del gráfico: ahora responsivo */
 .media-frame{
   width:100%;
-  max-width:820px;
+  max-width:820px;   /* límite en pantallas grandes */
   height:420px;
   border-radius:16px;
   background:#fff;
@@ -242,6 +230,8 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   justify-content:center;
   overflow:hidden;
 }
+
+/* La imagen se adapta al lienzo sin deformarse */
 .media-frame img{
   width:100%;
   height:100%;
@@ -363,6 +353,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   gap:12px;
   margin-bottom:18px;
 }
+
 .pub-btn{
   border-radius:18px;
   border:1px solid rgba(17,17,17,.08);
@@ -376,14 +367,17 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   box-shadow:0 4px 10px rgba(0,0,0,.12);
   transition:background .2s, color .2s, transform .2s, box-shadow .2s;
 }
+
 .pub-btn:hover{
   transform:translateY(-1px);
   box-shadow:0 6px 14px rgba(0,0,0,.18);
 }
+
 .pub-btn.active{
   background:var(--color-principal);
   color:#fff;
 }
+
 .pub-viewer{
   margin-top:4px;
   width:100%;
@@ -394,118 +388,12 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   box-shadow:0 12px 26px rgba(0,0,0,.14);
   background:#fff;
 }
+
 .pub-viewer iframe{
   width:100%;
   height:100%;
   border:0;
   display:block;
-}
-
-/* ===== DATOS ABIERTOS ===== */
-.datos-box{
-  padding:26px;
-  text-align:center;
-}
-.datos-texto{
-  font-size:1.05rem;
-  color:var(--color-texto);
-  max-width:740px;
-  margin:0 auto 28px auto;
-  line-height:1.6;
-}
-.datos-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:12px 20px;
-  font-family:var(--font-botones);
-  font-weight:700;
-  font-size:1rem;
-  background:var(--color-principal);
-  color:#fff;
-  border-radius:16px;
-  text-decoration:none;
-  border:1px solid rgba(0,0,0,.2);
-  box-shadow:0 4px 10px rgba(0,0,0,.18), inset 0 1px 2px rgba(255,255,255,.3);
-  transition:transform .15s ease, background .2s;
-}
-.datos-btn:hover{
-  transform:translateY(-2px);
-  background:var(--color-principal-oscuro);
-}
-.datos-btn .material-icons{
-  font-size:22px;
-}
-
-/* ===== MANUAL DE USUARIO ===== */
-.manual-layout{
-  display:flex;
-  flex-wrap:wrap;
-  gap:24px;
-  align-items:flex-start;
-}
-.manual-main{
-  flex:2 1 540px;
-  font-size:1rem;
-  color:var(--color-texto);
-  line-height:1.7;
-}
-.manual-main h2{
-  font-family:var(--font-titulo);
-  font-size:1.3rem;
-  margin-bottom:14px;
-  color:var(--color-secundario);
-}
-.manual-main p{
-  margin-bottom:12px;
-  text-align:justify;
-}
-.manual-main ul{
-  margin:8px 0 16px 1.4rem;
-  text-align:left;
-}
-.manual-main li{
-  margin-bottom:8px;
-}
-.manual-main strong{
-  color:#111827;
-}
-:root[data-theme="dark"] .manual-main strong{
-  color:#E5E7EB;
-}
-
-.manual-side{
-  flex:1 1 260px;
-  border-radius:16px;
-  border:1px dashed rgba(1,75,148,.25);
-  background:linear-gradient(180deg,rgba(249,251,252,.85) 0%, rgba(243,246,249,.9) 100%);
-  padding:18px 16px;
-  font-size:.9rem;
-  color:#374151;
-}
-.manual-side h3{
-  font-family:var(--font-titulo);
-  font-size:1rem;
-  margin-bottom:6px;
-  color:var(--color-secundario);
-}
-.manual-side p{
-  margin-bottom:8px;
-}
-.manual-side .tag{
-  display:inline-block;
-  margin-top:4px;
-  padding:4px 8px;
-  border-radius:999px;
-  font-size:.75rem;
-  background:rgba(196,27,63,.08);
-  color:var(--color-principal-oscuro);
-  font-weight:700;
-}
-:root[data-theme="dark"] .manual-side{
-  background:linear-gradient(180deg,rgba(15,23,42,.85) 0%, rgba(17,24,39,.9) 100%);
-  border-color:rgba(1,75,148,.45);
-  color:#E5E7EB;
 }
 
 /* Responsivo */
@@ -548,77 +436,98 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       </button>
 
       <ul class="nav-list">
-        <li><a class="nav-btn active" data-route="inicio" title="Inicio">
-          <img class="nav-icon" src="assets/icons/inicio.svg" alt=""> <span class="label">Inicio</span>
-        </a></li>
+        <li>
+          <a class="nav-btn active" data-route="inicio" href="#inicio" title="Inicio">
+            <img class="nav-icon" src="assets/icons/inicio.svg" alt="">
+            <span class="label">Inicio</span>
+          </a>
+        </li>
 
-        <li><a class="nav-btn" data-route="caracteristicas" title="Características del Servicio Civil">
-          <img class="nav-icon" src="assets/icons/caracteristicas_servidorp.svg" alt=""> <span class="label">Características del Servicio Civil</span>
-        </a></li>
+        <li>
+          <a class="nav-btn" data-route="caracteristicas" href="#caracteristicas" title="Características del Servicio Civil">
+            <img class="nav-icon" src="assets/icons/caracteristicas_servidorp.svg" alt="">
+            <span class="label">Características del Servicio Civil</span>
+          </a>
+        </li>
 
-        <li><a class="nav-btn" data-route="sagrh" title="Monitoreo y Supervisión del SAGRH">
-          <img class="nav-icon" src="assets/icons/gestion_talento.svg" alt=""> <span class="label">Monitoreo y Supervisión del SAGRH</span>
-        </a></li>
+        <li>
+          <a class="nav-btn" data-route="gestion-talento" href="#gestion-talento" title="Monitoreo y Supervisión del SAGRH">
+            <img class="nav-icon" src="assets/icons/gestion_talento.svg" alt="">
+            <span class="label">Monitoreo y Supervisión del SAGRH</span>
+          </a>
+        </li>
 
-        <li><a class="nav-btn" data-route="competencias" title="Desarrollo de Competencias">
-          <img class="nav-icon" src="assets/icons/desarrollo_competencias.svg" alt=""> <span class="label">Desarrollo de Competencias</span>
-        </a></li>
+        <li>
+          <a class="nav-btn" data-route="desarrollo-competencias" href="#desarrollo-competencias" title="Desarrollo de competencias">
+            <img class="nav-icon" src="assets/icons/desarrollo_competencias.svg" alt="">
+            <span class="label">Desarrollo de Competencias</span>
+          </a>
+        </li>
 
-        <li><a class="nav-btn" data-route="gestion-publica" title="Dirección de la Gestión Pública">
-          <img class="nav-icon" src="assets/icons/liderazgo_gp.svg" alt=""> <span class="label">Dirección de la Gestión Pública</span>
-        </a></li>
+        <li>
+          <a class="nav-btn" data-route="liderazgo-gp" href="#liderazgo-gp" title="Dirección de la Gestión Pública">
+            <img class="nav-icon" src="assets/icons/liderazgo_gp.svg" alt="">
+            <span class="label">Dirección de la Gestión Pública</span>
+          </a>
+        </li>
 
-        <li><a class="nav-btn" data-route="capacitacion" title="Fortalecimiento de Capacidades">
-          <img class="nav-icon" src="assets/icons/Capacitacion_desarrollo_con.svg" alt=""> <span class="label">Fortalecimiento de Capacidades</span>
-        </a></li>
+        <li>
+          <a class="nav-btn" data-route="capacitacion-dc" href="#capacitacion-dc" title="Fortalecimiento de Capacidades">
+            <img class="nav-icon" src="assets/icons/Capacitacion_desarrollo_con.svg" alt="">
+            <span class="label">Fortalecimiento de Capacidades</span>
+          </a>
+        </li>
 
-        <li><a class="nav-btn" data-route="justicia" title="Justicia Administrativa">
-          <img class="nav-icon" src="assets/icons/justicia_adm.svg" alt=""> <span class="label">Justicia Administrativa</span>
-        </a></li>
+        <li>
+          <a class="nav-btn" data-route="justicia-adm" href="#justicia-adm" title="Justicia Administrativa">
+            <img class="nav-icon" src="assets/icons/justicia_adm.svg" alt="">
+            <span class="label">Justicia Administrativa</span>
+          </a>
+        </li>
 
-        <li><a class="nav-btn" data-route="publicaciones" title="Publicaciones">
-          <img class="nav-icon" src="assets/icons/publicaciones.svg" alt=""> <span class="label">Publicaciones</span>
-        </a></li>
+        <li>
+          <a class="nav-btn" data-route="publicaciones" href="#publicaciones" title="Publicaciones">
+            <img class="nav-icon" src="assets/icons/publicaciones.svg" alt="">
+            <span class="label">Publicaciones</span>
+          </a>
+        </li>
 
-        <li><a class="nav-btn" data-route="datos-abiertos" title="Datos Abiertos">
-          <img class="nav-icon" src="assets/icons/Datos_abiertos.svg" alt=""> <span class="label">Datos abiertos</span>
-        </a></li>
-
-        <li><a class="nav-btn" data-route="manual" title="Manual de Usuario">
-          <span class="material-icons nav-icon" aria-hidden="true">menu_book</span>
-          <span class="label">Manual de Usuario</span>
-        </a></li>
+        <li>
+          <a class="nav-btn" data-route="datos-abiertos" href="#datos-abiertos" title="Datos abiertos">
+            <img class="nav-icon" src="assets/icons/Datos_abiertos.svg" alt="">
+            <span class="label">Datos abiertos</span>
+          </a>
+        </li>
       </ul>
     </aside>
 
     <main class="contenido-principal">
-
-      <!-- ====================== INICIO ====================== -->
+      <!-- INICIO -->
       <section id="view-inicio" class="view active">
-        <section class="seccion-tablero neu">
+        <section class="seccion-tablero neu" aria-label="Indicadores Clave">
           <h1>Indicadores Clave</h1>
           <div class="kpi-grid">
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Servidores Civiles</span><span class="chip">Diciembre 2024</span></div>
-              <div class="kpi-value">1,589,245</div>
+              <div class="kpi-value" data-kpi>1,589,245</div>
               <div class="kpi-foot">Fuente: Planilla electrónica MTPPE</div>
               <i class="material-icons kpi-icon">groups</i>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Servidores capacitados mediante PDP</span><span class="chip">2024</span></div>
-              <div class="kpi-value">267,886</div>
+              <div class="kpi-value" data-kpi>267,886</div>
               <div class="kpi-foot">Fuente: GDCRSG-SERVIR 2024</div>
               <i class="material-icons kpi-icon">school</i>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Entidades en proceso de tránsito</span><span class="chip">2025</span></div>
-              <div class="kpi-value">534</div>
+              <div class="kpi-value" data-kpi>534</div>
               <div class="kpi-foot">Fuente: GDGDRH-SERVIR 2025</div>
               <i class="material-icons kpi-icon">domain</i>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Gerentes públicos asignados</span><span class="chip">Total</span></div>
-              <div class="kpi-value">1,066</div>
+              <div class="kpi-value" data-kpi>1,066</div>
               <div class="kpi-foot">Fuente: GDGP-SERVIR 2009-2025</div>
               <i class="material-icons kpi-icon">analytics</i>
             </div>
@@ -631,17 +540,18 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
             <div class="columna-texto">
               <h2>Observatorio del Servicio Civil</h2>
               <p>
-                Es una plataforma institucional diseñada para consolidar y articular la información clave sobre el empleo público en el Perú, permitiendo una visión integral y estratégica de la gestión de los recursos humanos del Estado.
-              </p>
-              <p>
-                Su finalidad es promover una gestión pública más transparente, eficiente y centrada en el ciudadano, facilitando el acceso a información actualizada, confiable y relevante.
+                Es una plataforma institucional diseñada para consolidar y articular la información clave sobre el empleo público en el Perú, permitiendo una visión integral y estratégica de la gestión de los recursos humanos del Estado. Surge como respuesta a la actual necesidad de fortalecer el uso de evidencia en la toma de decisiones.
+                Este observatorio transforma la información en un activo público de alto valor, impulsando la gobernanza de datos, la formulación de políticas basadas en evidencia y la rendición de cuentas, en línea con los estándares internacionales de modernización administrativa.
+                Su finalidad es promover una gestión pública más transparente, eficiente y centrada en el ciudadano, facilitando el acceso a información actualizada, confiable y relevante para directivos, servidores públicos, investigadores y la ciudadanía en general.
+                La información vinculada al servidor público y al servicio civil se presenta a través de tableros BI interactivos, reportes coyunturales, estudios y boletines especializados.
               </p>
             </div>
 
             <div class="columna-media">
               <div class="media-frame">
                 <a href="https://app.powerbi.com/view?r=eyJrIjoiOTEwODk2OTgtYjk3Zi00NjFmLWEyNmUtY2E0YWI0OTFkMzdmIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9"
-                   target="_blank">
+                   target="_blank"
+                   title="Ver tablero interactivo en Power BI">
                   <img src="assets/images/tablero.png" alt="Tablero interactivo Power BI">
                 </a>
               </div>
@@ -650,240 +560,157 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
         </section>
       </section>
 
-
-      <!-- ====================== CARACTERÍSTICAS ====================== -->
+      <!-- CARACTERÍSTICAS DEL SERVICIO CIVIL -->
       <section id="view-caracteristicas" class="view">
         <section class="seccion-tablero neu">
           <h1>Características del Servicio Civil</h1>
           <div class="full-iframe-container">
-            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNjA5ZWMzZjgtNmU5Mi00YWZhLWE0N2EtMzQ4ZmM4MTI4Yzk5IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+            <iframe title="DASHBOARD GPGSC" width="100%" height="100%"
+              src="https://app.powerbi.com/view?r=eyJrIjoiNjA5ZWMzZjgtNmU5Mi00YWZhLWE0N2EtMzQ4ZmM4MTI4Yzk5IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" 
+              frameborder="0" allowFullScreen="true">
+            </iframe>
           </div>
         </section>
       </section>
-
-
-      <!-- ====================== SAGRH ====================== -->
-      <section id="view-sagrh" class="view">
+      
+      <!-- MONITOREO Y SUPERVISIÓN DEL SAGRH -->
+      <section id="view-gestion-talento" class="view">
         <section class="seccion-tablero neu">
           <h1>Monitoreo y Supervisión del SAGRH</h1>
           <div class="full-iframe-container">
-            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNTZiNDIwNjAtZDQ5YS00NDRhLWFiMWItNTE5MDkzMDQzNmMzIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+            <iframe title="DASHBOARD GDSRH" width="100%" height="100%" 
+              src="https://app.powerbi.com/view?r=eyJrIjoiNTZiNDIwNjAtZDQ5YS00NDRhLWFiMWItNTE5MDkzMDQzNmMzIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" 
+              frameborder="0" allowFullScreen="true">
+            </iframe>
           </div>
         </section>
       </section>
-
-
-      <!-- ====================== COMPETENCIAS ====================== -->
-      <section id="view-competencias" class="view">
+      
+      <!-- DESARROLLO DE COMPETENCIAS -->
+      <section id="view-desarrollo-competencias" class="view">
         <section class="seccion-tablero neu">
           <h1>Desarrollo de Competencias</h1>
           <div class="full-iframe-container">
-            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiZjYyMjVhMzctOTYxYS00ZDY3LWE1OWEtYjI3MzQ2OWMzYTNkIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+            <iframe title="DASHBOARD GDCRSC" width="100%" height="100%" 
+              src="https://app.powerbi.com/view?r=eyJrIjoiZjYyMjVhMzctOTYxYS00ZDY3LWE1OWEtYjI3MzQ2OWMzYTNkIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" 
+              frameborder="0" allowFullScreen="true">
+            </iframe>
           </div>
         </section>
       </section>
 
-
-      <!-- ====================== GESTIÓN PÚBLICA ====================== -->
-      <section id="view-gestion-publica" class="view">
+      <!-- DIRECCIÓN DE LA GESTIÓN PÚBLICA -->
+      <section id="view-liderazgo-gp" class="view">
         <section class="seccion-tablero neu">
           <h1>Dirección de la Gestión Pública</h1>
           <div class="full-iframe-container">
-            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNWVjNmQ3NTEtYjE5OC00MWY1LWJjZWQtZDIzZWQ0YTk5MDc5IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+            <iframe 
+              title="DASHBOARD GDGP"
+              width="100%"
+              height="100%"
+              src="https://app.powerbi.com/view?r=eyJrIjoiNWVjNmQ3NTEtYjE5OC00MWY1LWJjZWQtZDIzZWQ0YTk5MDc5IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9"
+              frameborder="0"
+              allowFullScreen="true">
+            </iframe>
           </div>
         </section>
       </section>
 
-
-      <!-- ====================== CAPACITACIÓN ====================== -->
-      <section id="view-capacitacion" class="view">
+      <!-- FORTALECIMIENTO DE CAPACIDADES -->
+      <section id="view-capacitacion-dc" class="view">
         <section class="seccion-tablero neu">
           <h1>Fortalecimiento de Capacidades</h1>
           <div class="full-iframe-container">
-            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNGM4NmYwOWMtMTM5Ni00MWM3LThkOGEtMTE4MjNiNGY1ZTY4IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+            <iframe title="DASHBOARD ENAP" width="100%" height="100%" 
+              src="https://app.powerbi.com/view?r=eyJrIjoiNGM4NmYwOWMtMTM5Ni00MWM3LThkOGEtMTE4MjNiNGY1ZTY4IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" 
+              frameborder="0" allowFullScreen="true">
+            </iframe>
           </div>
         </section>
       </section>
 
-
-      <!-- ====================== JUSTICIA ====================== -->
-      <section id="view-justicia" class="view">
+      <!-- JUSTICIA ADMINISTRATIVA -->
+      <section id="view-justicia-adm" class="view">
         <section class="seccion-tablero neu">
           <h1>Justicia Administrativa</h1>
           <div class="full-iframe-container">
-            <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNmRhMmVmYzMtNTE1YS00M2M4LWI3ZDEtMmI2MTdmYjIzODgyIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+            <iframe title="DASHBOARD TSC" width="100%" height="100%" 
+              src="https://app.powerbi.com/view?r=eyJrIjoiNmRhMmVmYzMtNTE1YS00M2M4LWI3ZDEtMmI2MTdmYjIzODgyIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" 
+              frameborder="0" allowFullScreen="true">
+            </iframe>
           </div>
         </section>
       </section>
 
-
-      <!-- ====================== PUBLICACIONES ====================== -->
+      <!-- PUBLICACIONES -->
       <section id="view-publicaciones" class="view">
         <section class="seccion-tablero neu">
           <h1>Publicaciones</h1>
 
           <div class="pub-tabs">
-            <button class="pub-btn active" data-src="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">Características del Servicio Civil</button>
+            <button
+              class="pub-btn active"
+              type="button"
+              data-src="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">
+              Características del Servicio Civil
+            </button>
 
-            <button class="pub-btn" data-src="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">La mujer en el Servicio Civil</button>
+            <button
+              class="pub-btn"
+              type="button"
+              data-src="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">
+              La mujer en el Servicio Civil
+            </button>
 
-            <button class="pub-btn" data-src="https://cdn.www.gob.pe/uploads/document/file/7341602/6266346-personas-con-discapacidad-en-el-empleo-publico-analisis-y-propuesta-de-calculo-de-la-cuota-de-empleo-en-la-administracion-publica.pdf?v=1733761163">Otras Publicaciones</button>
+            <button
+              class="pub-btn"
+              type="button"
+              data-src="https://cdn.www.gob.pe/uploads/document/file/7341602/6266346-personas-con-discapacidad-en-el-empleo-publico-analisis-y-propuesta-de-calculo-de-la-cuota-de-empleo-en-la-administracion-publica.pdf?v=1733761163">
+              Otras Publicaciones
+            </button>
           </div>
 
           <div class="pub-viewer">
-            <iframe id="pub-frame" src="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715"></iframe>
+            <iframe
+              id="pub-frame"
+              title="Publicaciones del Servicio Civil"
+              src="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">
+            </iframe>
           </div>
         </section>
       </section>
 
-
-      <!-- ====================== DATOS ABIERTOS ====================== -->
+      <!-- DATOS ABIERTOS -->
       <section id="view-datos-abiertos" class="view">
         <section class="seccion-tablero neu">
-          <h1>Datos Abiertos</h1>
-
-          <div class="datos-box">
-            <p class="datos-texto">
-              Consolida las bases de datos empleadas para realizar los estudios e informes publicados por 
-              la Autoridad Nacional del Servicio Civil, útil para la academia y el público en general que 
-              necesite datos desagregados.
-            </p>
-
-            <a href="https://www.gob.pe/institucion/servir/informes-publicaciones/2775933-datos-abiertos-servir"
-               target="_blank"
-               class="datos-btn">
-               <i class="material-icons">dataset</i>
-               Ir a Datos Abiertos SERVIR
-            </a>
-          </div>
-        </section>
-      </section>
-
-
-      <!-- ====================== MANUAL DE USUARIO ====================== -->
-      <section id="view-manual" class="view">
-        <section class="seccion-tablero neu">
-          <h1>Manual de Usuario</h1>
-
-          <div class="manual-layout">
-            <div class="manual-main">
-              <h2>Instructivo del Observatorio del Servicio Civil</h2>
-
-              <p>
-                <strong>¿Qué es el Observatorio del Servicio Civil?</strong><br>
-                Es un espacio para mirar con lupa —pero también con perspectiva— cómo evoluciona el servicio civil y 
-                el Sistema Administrativo de Gestión de Recursos Humanos (SAGRH) en el Perú. Reúne información de 
-                diversas fuentes para entender quiénes son los servidores públicos, cómo se capacitan, cómo se gestiona 
-                su desempeño, cómo se fortalecen las entidades donde trabajan, entre otros aspectos.
-              </p>
-
-              <p>
-                Su objetivo es convertir los datos en conocimiento claro y útil para apoyar decisiones, mejorar la 
-                transparencia y promover políticas públicas basadas en evidencia. El Observatorio ofrece información y 
-                análisis para gestores públicos, investigadores y ciudadanía, permitiendo evaluar con mayor precisión 
-                cómo funciona y qué impacto tiene el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Y por qué debería interesarme?</strong><br>
-                Porque detrás de cada número hay una historia del Estado en acción. Saber cómo se distribuyen los 
-                servidores por regímenes laborales, cómo se supervisan a las entidades, o qué porcentaje del presupuesto 
-                en capacitación se ejecuta, ayuda a entender cómo se está transformando el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Qué puedo encontrar aquí?</strong><br>
-                Indicadores y secciones que resumen grandes temas:
-              </p>
-
-              <ul>
-                <li>
-                  <strong>Características del servicio civil:</strong>
-                  ¿Cómo ha evolucionado la composición del empleo público y la distribución del gasto en personal en los últimos años? 
-                  ¿Cómo se distribuyen los servidores por régimen, edad, sexo o educación?
-                </li>
-                <li>
-                  <strong>Gestión del talento humano:</strong>
-                  ¿Cuál es el nivel de implementación del SAGRH? ¿Cuál es el avance del tránsito al régimen del servicio civil? 
-                  ¿Cómo se ha avanzado en el diseño de herramientas de gestión? ¿Qué tanto se responden las solicitudes de las entidades 
-                  y se cumplen las recomendaciones? ¿Cuáles son las modalidades y coberturas de las convocatorias públicas?
-                </li>
-                <li>
-                  <strong>Desarrollo de competencias:</strong>
-                  ¿Cuántas entidades implementan la gestión del rendimiento? ¿Qué tanto se cumplen con las capacitaciones planificadas?
-                </li>
-                <li>
-                  <strong>Liderazgo en la gestión pública:</strong>
-                  ¿Cuántos gerentes públicos han sido incorporados y asignados? ¿Cómo se distribuyen los gerentes por edad, sexo, entre otros?
-                </li>
-                <li>
-                  <strong>Capacitación y desarrollo continuo:</strong>
-                  ¿Cómo se distribuyen las capacitaciones por edad, sexo o nivel de gobierno gestionadas por la ENAP?
-                </li>
-                <li>
-                  <strong>Justicia administrativa:</strong>
-                  ¿Cuántos expedientes ingresados y resueltos reporta el Tribunal del Servicio Civil?
-                </li>
-                <li>
-                  <strong>Publicaciones:</strong>
-                  ¿Cuáles son los estudios e informes más relevantes y vigentes sobre el servicio civil?
-                </li>
-                <li>
-                  <strong>Datos abiertos:</strong>
-                  ¿Dónde están los datos más relevantes sobre el SAGRH?
-                </li>
-              </ul>
-
-              <p>
-                <strong>¿Y cuál es el objetivo de mostrar todo esto?</strong><br>
-                Que la información sea una herramienta de gestión, no solo de reporte. El observatorio busca visibilizar 
-                patrones, contrastar esfuerzos entre niveles de gobierno y abrir preguntas sobre qué está funcionando y qué no, 
-                para ir construyendo una cultura de medición y evidencia en el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Qué sigue después?</strong><br>
-                Seguir conectando los datos: integrar bases, mejorar la periodicidad, comparar entre segmentos más desagregados. 
-                En el fondo, el observatorio busca que los datos sirvan para tomar decisiones más informadas y transparentes sobre 
-                cómo se gestiona el talento público en el Perú.
-              </p>
+          <h1>Datos abiertos</h1>
+          <div class="pendiente-grid">
+            <div class="pendiente-card">
+              <span class="material-icons">pending</span>EN DESARROLLO
             </div>
-
-            <div class="manual-side">
-              <h3>Cómo usar este Observatorio</h3>
-              <p>
-                Recorre las secciones desde el menú lateral para explorar indicadores, tableros y publicaciones especializadas. 
-                Cada pestaña corresponde a un eje clave de la política de servicio civil.
-              </p>
-              <p>
-                Te sugerimos iniciar por <strong>Características del Servicio Civil</strong> y luego revisar los módulos de 
-                <strong>Gestión del Talento Humano</strong>, <strong>Desarrollo de Competencias</strong> y 
-                <strong>Justicia Administrativa</strong>.
-              </p>
-              <span class="tag">Versión inicial del Manual</span>
+            <div class="pendiente-card">
+              <span class="material-icons">pending</span>EN DESARROLLO
             </div>
           </div>
         </section>
       </section>
-
     </main>
   </div>
 
-  <div class="fixed-footer">
+  <div class="fixed-footer" role="contentinfo" aria-label="Barra inferior fija">
     <img src="assets/logos/PCM_logo.png" alt="PCM" class="logo-pcm">
     <img src="assets/logos/Servir_logo.png" alt="SERVIR" class="logo-servir">
-
     <div class="social-right">
       <span class="label">Síguenos en:</span>
       <div class="icons">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-x-twitter"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        <a href="#"><i class="fab fa-tiktok"></i></a>
-        <a href="#"><i class="fab fa-flickr"></i></a>
-        <a href="#"><i class="fab fa-spotify"></i></a>
+        <a href="#" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="X" title="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="#" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="#" aria-label="Flickr" title="Flickr"><i class="fab fa-flickr"></i></a>
+        <a href="#" aria-label="Spotify" title="Spotify"><i class="fab fa-spotify"></i></a>
       </div>
     </div>
   </div>
@@ -894,122 +721,147 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   <footer class="footer">
     © 2025 Observatorio del Servicio Civil - SERVIR. Todos los derechos reservados.
   </footer>
-  <script>
-  // ---------- Persistencia inicial del tema ----------
-  (function(){
-    const root = document.documentElement;
+
+<script>
+/* ---------- Persistencia del tema ---------- */
+(function(){
+  const root = document.documentElement;
+  try{
     const saved = localStorage.getItem('osc-theme');
-    if (saved === 'dark') {
-      root.setAttribute('data-theme', 'dark');
+    if(saved === 'dark'){ 
+      root.setAttribute('data-theme','dark'); 
     }
-  })();
+  }catch(e){
+    // Si localStorage está bloqueado, simplemente ignorar
+  }
+})();
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const root = document.documentElement;
+/* Toggle de tema */
+document.addEventListener('DOMContentLoaded', () => {
+  const checkbox = document.getElementById('toggleTheme');
+  const root = document.documentElement;
+  const isDark = root.getAttribute('data-theme') === 'dark';
+  checkbox.checked = isDark;
 
-    /* ====== Toggle de tema claro/oscuro ====== */
-    const checkbox = document.getElementById('toggleTheme');
-    if (checkbox) {
-      const isDark = root.getAttribute('data-theme') === 'dark';
-      checkbox.checked = isDark;
-
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          root.setAttribute('data-theme', 'dark');
-          localStorage.setItem('osc-theme', 'dark');
-        } else {
-          root.removeAttribute('data-theme');
-          localStorage.setItem('osc-theme', 'light');
-        }
-      });
-    }
-
-    /* ====== Router SPA (cambio de vistas) ====== */
-    const navBtns = document.querySelectorAll('.nav-btn');
-    const views  = document.querySelectorAll('.view');
-
-    const showView = (route, push = true) => {
-      navBtns.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.route === route);
-      });
-      views.forEach(view => {
-        view.classList.toggle('active', view.id === `view-${route}`);
-      });
-      if (push) {
-        history.pushState({ route }, '', `#${route}`);
+  checkbox.addEventListener('change', () => {
+    try{
+      if(checkbox.checked){
+        root.setAttribute('data-theme','dark');
+        localStorage.setItem('osc-theme','dark');
+      }else{
+        root.removeAttribute('data-theme');
+        localStorage.setItem('osc-theme','light');
       }
-    };
-
-    navBtns.forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        const route = btn.dataset.route;
-        showView(route);
-      });
-    });
-
-    // Ruta inicial desde el hash o 'inicio'
-    const initialRoute = (location.hash || '#inicio').replace('#', '');
-    showView(initialRoute, false);
-
-    // Manejar botón atrás/adelante del navegador
-    window.addEventListener('popstate', e => {
-      const route = e.state && e.state.route ? e.state.route : 'inicio';
-      showView(route, false);
-    });
-
-    /* ====== Sidebar retráctil con persistencia ====== */
-    const sidebar = document.querySelector('.nav-sidebar');
-    const body    = document.body;
-    const btn     = document.getElementById('toggleNav');
-    const arrow   = document.getElementById('collapseIcon');
-    const KEY     = 'osc-nav-collapsed';
-
-    if (sidebar && btn && arrow) {
-      const apply = (collapsed) => {
-        sidebar.classList.toggle('collapsed', collapsed);
-        body.classList.toggle('nav-collapsed', collapsed);
-        arrow.src = collapsed ? 'assets/icons/arrow-right.svg' : 'assets/icons/arrow-left.svg';
-        btn.setAttribute('aria-label', collapsed ? 'Expandir menú' : 'Contraer menú');
-        localStorage.setItem(KEY, collapsed ? '1' : '0');
-      };
-
-      // Estado inicial desde localStorage
-      apply(localStorage.getItem(KEY) === '1');
-
-      // Click para alternar
-      btn.addEventListener('click', () => {
-        const next = !sidebar.classList.contains('collapsed');
-        apply(next);
-      });
-    }
-
-    /* ====== Publicaciones: tabs que cambian el PDF ====== */
-    const pubButtons = document.querySelectorAll('.pub-btn');
-    const pubFrame   = document.getElementById('pub-frame');
-
-    if (pubButtons.length && pubFrame) {
-      pubButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const src = btn.getAttribute('data-src');
-          if (src) {
-            pubFrame.src = src;
-          }
-          pubButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
-
-      // Asegurar que el primer botón activo carga su PDF al iniciar
-      const firstActive = document.querySelector('.pub-btn.active') || pubButtons[0];
-      if (firstActive) {
-        const initialSrc = firstActive.getAttribute('data-src');
-        if (initialSrc) {
-          pubFrame.src = initialSrc;
-        }
+    }catch(e){
+      if(checkbox.checked){
+        root.setAttribute('data-theme','dark');
+      }else{
+        root.removeAttribute('data-theme');
       }
     }
   });
-  </script>
+});
+
+/* ---------- Router SPA mejorado ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const views = document.querySelectorAll('.view');
+
+  const getRouteFromHash = () => {
+    const hash = (location.hash || '#inicio').replace('#', '');
+    const exists = [...navBtns].some(b => b.dataset.route === hash);
+    return exists ? hash : 'inicio';
+  };
+
+  const showView = (route, doPush = true) => {
+    navBtns.forEach(b => {
+      const isActive = b.dataset.route === route;
+      b.classList.toggle('active', isActive);
+      if(isActive){
+        b.setAttribute('aria-current','page');
+      }else{
+        b.removeAttribute('aria-current');
+      }
+    });
+
+    views.forEach(v => {
+      v.classList.toggle('active', v.id === `view-${route}`);
+    });
+
+    if(doPush){
+      history.pushState({route}, "", `#${route}`);
+    }
+  };
+
+  navBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const route = btn.dataset.route;
+      showView(route);
+    });
+  });
+
+  const initialRoute = getRouteFromHash();
+  showView(initialRoute, false);
+  history.replaceState({route: initialRoute}, "", `#${initialRoute}`);
+
+  window.addEventListener('popstate', (e) => {
+    const route = e.state?.route || getRouteFromHash();
+    showView(route, false);
+  });
+});
+
+/* ====== Sidebar retráctil con persistencia ====== */
+document.addEventListener('DOMContentLoaded', () => {
+  const sidebar = document.querySelector('.nav-sidebar');
+  const body = document.body;
+  const btn = document.getElementById('toggleNav');
+  const arrow = document.getElementById('collapseIcon');
+  const KEY = 'osc-nav-collapsed';
+
+  const apply = (collapsed) => {
+    sidebar.classList.toggle('collapsed', collapsed);
+    body.classList.toggle('nav-collapsed', collapsed);
+    arrow.src = collapsed ? 'assets/icons/arrow-right.svg' : 'assets/icons/arrow-left.svg';
+    btn.setAttribute('aria-label', collapsed ? 'Expandir menú' : 'Contraer menú');
+    try{
+      localStorage.setItem(KEY, collapsed ? '1' : '0');
+    }catch(e){
+      // Ignorar si localStorage no está disponible
+    }
+  };
+
+  let collapsed = false;
+  try{
+    collapsed = localStorage.getItem(KEY) === '1';
+  }catch(e){
+    collapsed = false;
+  }
+  apply(collapsed);
+
+  btn.addEventListener('click', () => {
+    const next = !sidebar.classList.contains('collapsed');
+    apply(next);
+  });
+});
+
+/* ====== Lógica de Publicaciones (tabs PDF) ====== */
+document.addEventListener('DOMContentLoaded', () => {
+  const pubButtons = document.querySelectorAll('.pub-btn');
+  const frame = document.getElementById('pub-frame');
+
+  if (!pubButtons.length || !frame) return;
+
+  pubButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const src = btn.dataset.src;
+      if (src){
+        frame.src = src;
+      }
+      pubButtons.forEach(b => b.classList.toggle('active', b === btn));
+    });
+  });
+});
+</script>
 </body>
 </html>

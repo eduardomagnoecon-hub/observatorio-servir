@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Observatorio del Servicio Civil - Dashboard Pro</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* -------------------- 1. Variables & Sistema de Diseño -------------------- */
+:root {
+  /* Paleta de Marca Refinada */
+  --brand-primary: #C41B3F;       /* Rojo SERVIR */
+  --brand-primary-dark: #96122E;
+  --brand-secondary: #0F172A;     /* Azul Marino Profundo (Slate 900) */
+  --brand-accent: #3B82F6;        /* Azul Brillante para UI */
+  
+  /* Superficies y Fondos (Modo Claro) */
+  --bg-app: #F1F5F9;              /* Gris azulado muy claro */
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #0F172A;          /* Sidebar oscuro elegante */
+  
+  /* Textos */
+  --text-main: #1E293B;           /* Gris oscuro casi negro */
+  --text-muted: #64748B;          /* Gris medio */
+  --text-light: #F8FAFC;          /* Blanco humo */
+
+  /* Sombras Modernas (Elevation) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 15px rgba(196, 27, 63, 0.3); /* Resplandor rojo suave */
+
+  /* Otros */
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --font-main: 'Inter', sans-serif;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modo Oscuro (Midnight Theme) */
+:root[data-theme="dark"] {
+  --bg-app: #0B1120;              /* Azul noche muy oscuro */
+  --bg-card: #1E293B;             /* Slate oscuro */
+  --bg-sidebar: #020617;          /* Casi negro */
+  --text-main: #F1F5F9;
+  --text-muted: #94A3B8;
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* Reset Básico */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  padding-bottom: 80px; /* Espacio para el footer fijo */
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #475569; }
+
+/* -------------------- 2. Header Glassmorphism -------------------- */
+.header-servir {
+  position: fixed; top: 0; left: 0; right: 0; height: 70px; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.85); /* Transparencia */
+  backdrop-filter: blur(12px);           /* Efecto vidrio */
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  transition: var(--transition);
+}
+:root[data-theme="dark"] .header-servir {
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.header-brand {
+  display: flex; align-items: center; gap: 16px;
+  padding-left: 260px; /* Espacio para el sidebar */
+}
+@media(max-width: 900px) { .header-brand { padding-left: 60px; } }
+
+.title-text {
+  font-weight: 800; font-size: 1.1rem; color: var(--brand-secondary);
+  letter-spacing: -0.5px;
+}
+:root[data-theme="dark"] .title-text { color: #fff; }
+
+.theme-toggle { display: flex; align-items: center; gap: 12px; }
+.btn-icon {
+  background: transparent; border: none; color: var(--text-muted); cursor: pointer;
+  padding: 8px; border-radius: 50%; transition: var(--transition);
+}
+.btn-icon:hover { background: rgba(0,0,0,0.05); color: var(--brand-primary); }
+
+/* -------------------- 3. Sidebar Moderno -------------------- */
+.nav-sidebar {
+  width: 280px; position: fixed; top: 0; left: 0; height: 100%; z-index: 1100;
+  background: var(--bg-sidebar);
+  display: flex; flex-direction: column;
+  transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+  padding: 20px 16px;
+}
+
+.sidebar-header {
+  height: 60px; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar-header img { height: 42px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+.nav-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+.nav-btn {
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  border-radius: 12px; text-decoration: none;
+  color: #94A3B8; font-weight: 500; font-size: 0.95rem;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+.nav-btn:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff; transform: translateX(4px);
+}
+.nav-btn.active {
+  background: var(--brand-primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(196, 27, 63, 0.4);
+}
+.nav-icon { width: 22px; height: 22px; filter: grayscale(100%) brightness(200%); }
+.nav-btn.active .nav-icon { filter: brightness(0) invert(1); }
+.nav-btn .material-icons { color: inherit; filter: none; font-size: 22px; }
+
+/* Botón colapsar */
+.collapse-btn {
+  position: absolute; right: -14px; top: 85px;
+  width: 28px; height: 28px; background: var(--brand-primary);
+  border: 2px solid var(--bg-app); border-radius: 50%;
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+/* Estado colapsado */
+.nav-sidebar.collapsed { width: 80px; }
+.nav-sidebar.collapsed .label, .nav-sidebar.collapsed .sidebar-header { display: none; }
+.nav-sidebar.collapsed .nav-btn { justify-content: center; padding: 14px; }
+.nav-sidebar.collapsed .nav-list { gap: 12px; margin-top: 60px; }
+
+/* -------------------- 4. Layout & Contenido -------------------- */
+.contenido-principal {
+  margin-left: 280px; margin-top: 70px; padding: 32px;
+  transition: margin-left 0.4s ease;
+  min-height: calc(100vh - 70px);
+}
+body.nav-collapsed .contenido-principal { margin-left: 80px; }
+
+/* Animación de entrada de vistas */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.view { display: none; animation: fadeInUp 0.5s ease forwards; }
+.view.active { display: block; }
+
+/* Títulos de Sección */
+.page-header { margin-bottom: 32px; }
+.page-title {
+  font-size: 1.8rem; font-weight: 800; color: var(--text-main);
+  letter-spacing: -0.5px; margin-bottom: 8px;
+}
+.page-subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+/* Tarjetas Estilo "Bento" */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0,0,0,0.04);
+  transition: var(--transition);
+}
+:root[data-theme="dark"] .card { border: 1px solid rgba(255,255,255,0.05); }
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* -------------------- 5. KPIs (Key Performance Indicators) -------------------- */
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px; margin-bottom: 32px;
+}
+.kpi-card {
+  position: relative; overflow: hidden;
+  border-bottom: 4px solid transparent;
+}
+.kpi-card:hover { border-bottom-color: var(--brand-primary); }
+
+.kpi-label { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 12px; }
+.kpi-number { font-size: 2.5rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-bottom: 8px; }
+.kpi-sub { font-size: 0.8rem; color: var(--brand-primary); font-weight: 600; background: rgba(196, 27, 63, 0.1); padding: 4px 10px; border-radius: 20px; display: inline-block; }
+.kpi-icon-bg {
+  position: absolute; right: -10px; bottom: -10px;
+  font-size: 100px; opacity: 0.05; color: var(--text-main);
+  transform: rotate(-15deg); pointer-events: none;
+}
+
+/* -------------------- 6. Hero Section (Bienvenida) -------------------- */
+.hero-grid {
+  display: grid; grid-template-columns: 1.2fr 1.8fr; gap: 24px;
+}
+@media(max-width: 1100px) { .hero-grid { grid-template-columns: 1fr; } }
+
+.hero-text-card {
+  display: flex; flex-direction: column; justify-content: center;
+}
+.hero-text-card h2 { font-size: 1.4rem; margin-bottom: 16px; color: var(--brand-primary); }
+.hero-text-card p { margin-bottom: 16px; color: var(--text-muted); font-size: 1rem; }
+
+.hero-media-card {
+  background: var(--bg-app); /* Contraste sutil */
+  display: flex; align-items: center; justify-content: center;
+  padding: 0; overflow: hidden; cursor: pointer;
+}
+.hero-media-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.hero-media-card:hover img { transform: scale(1.03); }
+
+/* -------------------- 7. Iframes Container -------------------- */
+.iframe-wrapper {
+  width: 100%; height: calc(100vh - 180px); min-height: 600px;
+  background: #fff; border-radius: var(--radius-md);
+  overflow: hidden; box-shadow: var(--shadow-md);
+  position: relative;
+}
+/* Loader visual simple */
+.iframe-wrapper::before {
+  content: "Cargando Dashboard...";
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-app); color: var(--text-muted);
+  z-index: 0;
+}
+.iframe-wrapper iframe {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%; border: none;
+}
+
+/* -------------------- 8. Publicaciones & Tabs -------------------- */
+.tabs-container {
+  display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 10px 20px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.1);
+  background: var(--bg-card); color: var(--text-muted);
+  font-weight: 600; cursor: pointer; transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+.tab-btn:hover { transform: translateY(-2px); color: var(--brand-primary); }
+.tab-btn.active {
+  background: var(--brand-primary); color: #fff; border-color: var(--brand-primary);
+  box-shadow: var(--shadow-glow);
+}
+.pdf-viewer {
+  width: 100%; height: 70vh; border-radius: var(--radius-md);
+  border: 1px solid rgba(0,0,0,0.1); background: #fff;
+}
+
+/* -------------------- 9. Footer Fijo Estilo App -------------------- */
+.app-footer {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+  background: #1E293B; z-index: 1200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; color: #fff;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+}
+.footer-logos { display: flex; align-items: center; gap: 20px; }
+.footer-logos img { height: 32px; filter: brightness(0) invert(1); opacity: 0.8; }
+.footer-social { display: flex; gap: 16px; }
+.social-link {
+  color: rgba(255,255,255,0.7); transition: 0.2s; font-size: 18px;
+}
+.social-link:hover { color: #fff; transform: scale(1.2); }
+
+/* -------------------- 10. Botón Datos Abiertos -------------------- */
+.cta-box {
+  text-align: center; max-width: 600px; margin: 40px auto;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 32px; border-radius: 50px;
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+  color: #fff; font-weight: 700; text-decoration: none;
+  box-shadow: 0 10px 20px rgba(196, 27, 63, 0.3);
+  transition: var(--transition);
+}
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 30px rgba(196, 27, 63, 0.4);
+}
+
+</style>
+</head>
+
+<body>
+
+  <header class="header-servir">
+    <div class="header-brand">
+      <span class="title-text">Autoridad Nacional del Servicio Civil</span>
+    </div>
+    <div class="theme-toggle">
+      <button class="btn-icon" id="themeBtn" title="Cambiar Tema">
+        <span class="material-icons-round">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <aside class="nav-sidebar">
+    <div class="sidebar-header">
+      <img src="assets/logos/Logo_Observatorio.png" alt="Observatorio Logo">
+    </div>
+
+    <button class="collapse-btn" id="toggleNav">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <nav class="nav-list">
+      <a class="nav-btn active" data-route="inicio">
+        <img class="nav-icon" src="assets/icons/inicio.svg" alt=""> <span class="label">Inicio</span>
+      </a>
+      <a class="nav-btn" data-route="caracteristicas">
+        <img class="nav-icon" src="assets/icons/caracteristicas_servidorp.svg" alt=""> <span class="label">Características</span>
+      </a>
+      <a class="nav-btn" data-route="sagrh">
+        <img class="nav-icon" src="assets/icons/gestion_talento.svg" alt=""> <span class="label">Monitoreo SAGRH</span>
+      </a>
+      <a class="nav-btn" data-route="competencias">
+        <img class="nav-icon" src="assets/icons/desarrollo_competencias.svg" alt=""> <span class="label">Competencias</span>
+      </a>
+      <a class="nav-btn" data-route="gestion-publica">
+        <img class="nav-icon" src="assets/icons/liderazgo_gp.svg" alt=""> <span class="label">Gestión Pública</span>
+      </a>
+      <a class="nav-btn" data-route="capacitacion">
+        <img class="nav-icon" src="assets/icons/Capacitacion_desarrollo_con.svg" alt=""> <span class="label">Capacitación</span>
+      </a>
+      <a class="nav-btn" data-route="justicia">
+        <img class="nav-icon" src="assets/icons/justicia_adm.svg" alt=""> <span class="label">Justicia Adm.</span>
+      </a>
+      <div style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top:10px;">
+        <a class="nav-btn" data-route="publicaciones">
+            <img class="nav-icon" src="assets/icons/publicaciones.svg" alt=""> <span class="label">Publicaciones</span>
+        </a>
+        <a class="nav-btn" data-route="datos-abiertos">
+            <img class="nav-icon" src="assets/icons/Datos_abiertos.svg" alt=""> <span class="label">Datos Abiertos</span>
+        </a>
+        <a class="nav-btn" data-route="manual">
+            <span class="material-icons nav-icon">menu_book</span> <span class="label">Manual</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="contenido-principal">
+
+    <section id="view-inicio" class="view active">
+      <div class="page-header">
+        <h1 class="page-title">Bienvenido al Dashboard Gerencial</h1>
+        <p class="page-subtitle">Resumen estratégico del Servicio Civil Peruano</p>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="card kpi-card">
+          <div class="kpi-label">Servidores Civiles</div>
+          <div class="kpi-number">1.5M+</div>
+          <div class="kpi-sub">Dic 2024</div>
+          <span class="material-icons-round kpi-icon-bg">groups</span>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-label">Capacitados (PDP)</div>
+          <div class="kpi-number">267k</div>
+          <div class="kpi-sub">Total 2024</div>
+          <span class="material-icons-round kpi-icon-bg">school</span>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-label">Entidades en Tránsito</div>
+          <div class="kpi-number">534</div>
+          <div class="kpi-sub">Avance 2025</div>
+          <span class="material-icons-round kpi-icon-bg">domain</span>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-label">Gerentes Públicos</div>
+          <div class="kpi-number">1,066</div>
+          <div class="kpi-sub">Asignados</div>
+          <span class="material-icons-round kpi-icon-bg">analytics</span>
+        </div>
+      </div>
+
+      <div class="card hero-grid">
+        <div class="hero-text-card">
+          <h2>Visión Integral de RR.HH.</h2>
+          <p>
+            El <strong>Observatorio del Servicio Civil</strong> consolida la información clave sobre el empleo público. 
+            Transformamos datos en activos estratégicos para la toma de decisiones basada en evidencia.
+          </p>
+          <p>Acceda a tableros interactivos en tiempo real.</p>
+        </div>
+        <div class="card hero-media-card" style="padding:0;">
+           <a href="https://app.powerbi.com/view?r=eyJrIjoiOTEwODk2OTgtYjk3Zi00NjFmLWEyNmUtY2E0YWI0OTFkMzdmIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" target="_blank" style="display:block; width:100%; height:100%;">
+             <img src="assets/images/tablero.png" alt="Preview Power BI">
+           </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-caracteristicas" class="view">
+      <div class="page-header"><h1 class="page-title">Características del Servicio Civil</h1></div>
+      <div class="iframe-wrapper">
+        <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNjA5ZWMzZjgtNmU5Mi00YWZhLWE0N2EtMzQ4ZmM4MTI4Yzk5IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+      </div>
+    </section>
+
+    <section id="view-sagrh" class="view">
+      <div class="page-header"><h1 class="page-title">Monitoreo del SAGRH</h1></div>
+      <div class="iframe-wrapper">
+        <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNTZiNDIwNjAtZDQ5YS00NDRhLWFiMWItNTE5MDkzMDQzNmMzIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+      </div>
+    </section>
+
+    <section id="view-competencias" class="view">
+      <div class="page-header"><h1 class="page-title">Desarrollo de Competencias</h1></div>
+      <div class="iframe-wrapper">
+        <iframe src="https://app.powerbi.com/view?r=eyJrIjoiZjYyMjVhMzctOTYxYS00ZDY3LWE1OWEtYjI3MzQ2OWMzYTNkIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+      </div>
+    </section>
+
+    <section id="view-gestion-publica" class="view">
+      <div class="page-header"><h1 class="page-title">Dirección de Gestión Pública</h1></div>
+      <div class="iframe-wrapper">
+        <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNWVjNmQ3NTEtYjE5OC00MWY1LWJjZWQtZDIzZWQ0YTk5MDc5IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+      </div>
+    </section>
+
+    <section id="view-capacitacion" class="view">
+        <div class="page-header"><h1 class="page-title">Fortalecimiento de Capacidades</h1></div>
+        <div class="iframe-wrapper">
+          <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNGM4NmYwOWMtMTM5Ni00MWM3LThkOGEtMTE4MjNiNGY1ZTY4IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+        </div>
+    </section>
+
+    <section id="view-justicia" class="view">
+        <div class="page-header"><h1 class="page-title">Justicia Administrativa</h1></div>
+        <div class="iframe-wrapper">
+          <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNmRhMmVmYzMtNTE1YS00M2M4LWI3ZDEtMmI2MTdmYjIzODgyIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
+        </div>
+    </section>
+
+    <section id="view-publicaciones" class="view">
+      <div class="page-header">
+        <h1 class="page-title">Biblioteca de Publicaciones</h1>
+        <p class="page-subtitle">Documentos técnicos y estudios recientes</p>
+      </div>
+      
+      <div class="card">
+        <div class="tabs-container">
+          <button class="tab-btn active" data-src="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">Características Servicio Civil</button>
+          <button class="tab-btn" data-src="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">Mujer en el Servicio Civil</button>
+          <button class="tab-btn" data-src="https://cdn.www.gob.pe/uploads/document/file/7341602/6266346-personas-con-discapacidad-en-el-empleo-publico-analisis-y-propuesta-de-calculo-de-la-cuota-de-empleo-en-la-administracion-publica.pdf?v=1733761163">Discapacidad en el Empleo</button>
+        </div>
+        <iframe id="pub-frame" class="pdf-viewer" src="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715"></iframe>
+      </div>
+    </section>
+
+    <section id="view-datos-abiertos" class="view">
+      <div class="cta-box">
+        <div class="card" style="padding: 40px;">
+          <span class="material-icons-round" style="font-size: 64px; color: var(--brand-primary); margin-bottom:20px;">cloud_download</span>
+          <h1 class="page-title">Datos Abiertos</h1>
+          <p style="margin-bottom:30px; color: var(--text-muted);">
+            Transparencia total. Acceda a las bases de datos crudas utilizadas en nuestros estudios para realizar sus propios análisis e investigaciones académicas.
+          </p>
+          <a href="https://www.gob.pe/institucion/servir/informes-publicaciones/2775933-datos-abiertos-servir" target="_blank" class="btn-primary">
+            <span>Ir al Portal de Datos</span>
+            <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-manual" class="view">
+      <div class="page-header"><h1 class="page-title">Manual de Usuario</h1></div>
+      <div class="card" style="display:flex; gap:30px; flex-wrap:wrap;">
+         <div style="flex: 2; min-width: 300px;">
+            <h2 style="color: var(--brand-secondary); margin-bottom:15px;">Preguntas Frecuentes</h2>
+            <p style="color: var(--text-muted); margin-bottom:10px;">El Observatorio es una herramienta viva. Aquí resolvemos las dudas principales sobre la navegación y los datos.</p>
+            <ul style="padding-left:20px; line-height:1.8; color: var(--text-main);">
+                <li><strong>¿Cada cuánto se actualiza?</strong> Depende de la fuente (MEF mensual, Planilla semestral).</li>
+                <li><strong>¿Puedo descargar los gráficos?</strong> Sí, desde la barra inferior de Power BI.</li>
+                <li><strong>¿Es accesible desde móviles?</strong> Sí, el diseño es 100% responsivo.</li>
+            </ul>
+         </div>
+         <div style="flex: 1; background: var(--bg-app); padding:20px; border-radius:12px;">
+            <h3 style="font-size:1rem; color:var(--brand-primary); margin-bottom:10px;">Soporte Técnico</h3>
+            <p style="font-size:0.9rem;">¿Problemas con la visualización?</p>
+            <a href="mailto:observatorio@servir.gob.pe" style="color: var(--brand-accent); font-weight:600; text-decoration:none;">observatorio@servir.gob.pe</a>
+         </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-logos">
+      <img src="assets/logos/PCM_logo.png" alt="PCM">
+      <img src="assets/logos/Servir_logo.png" alt="SERVIR">
+    </div>
+    <div class="footer-social">
+        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </footer>
+
+<script>
+/* ---------------- LOGICA JS (Optimizada) ---------------- */
+
+/* 1. Modo Oscuro */
+const themeBtn = document.getElementById('themeBtn');
+const root = document.documentElement;
+// Cargar preferencia
+if(localStorage.getItem('theme') === 'dark') root.setAttribute('data-theme', 'dark');
+
+themeBtn.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    if(isDark) {
+        root.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        themeBtn.innerHTML = '<span class="material-icons-round">dark_mode</span>';
+    } else {
+        root.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeBtn.innerHTML = '<span class="material-icons-round">light_mode</span>';
+    }
+});
+
+/* 2. Navegación SPA */
+const navBtns = document.querySelectorAll('.nav-btn');
+const views = document.querySelectorAll('.view');
+
+function loadView(route) {
+    // Active class en sidebar
+    navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.route === route));
+    
+    // Mostrar vista
+    views.forEach(view => {
+        if(view.id === `view-${route}`) {
+            view.classList.add('active');
+        } else {
+            view.classList.remove('active');
+        }
+    });
+}
+
+navBtns.forEach(btn => {
+    btn.addEventListener('click', () => loadView(btn.dataset.route));
+});
+
+// Cargar inicio por defecto
+loadView('inicio');
+
+/* 3. Sidebar Collapse */
+const toggleNav = document.getElementById('toggleNav');
+const sidebar = document.querySelector('.nav-sidebar');
+const body = document.body;
+
+toggleNav.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+    body.classList.toggle('nav-collapsed');
+    const icon = toggleNav.querySelector('i');
+    icon.classList.toggle('fa-chevron-left');
+    icon.classList.toggle('fa-chevron-right');
+});
+
+/* 4. Tabs Publicaciones */
+const tabs = document.querySelectorAll('.tab-btn');
+const iframe = document.getElementById('pub-frame');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        iframe.src = tab.dataset.src;
+    });
+});
+</script>
+
+</body>
+</html>

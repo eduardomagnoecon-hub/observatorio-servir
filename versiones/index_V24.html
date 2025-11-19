@@ -134,18 +134,6 @@ input:checked + .slider:before{ transform:translateX(22px); }
   cursor:pointer;
 }
 .nav-btn .nav-icon{ filter: invert(1) grayscale(100%); }
-/* Ajuste específico para el ícono Material del botón "Manual de Usuario" */
-/* Ícono del botón "Manual de Usuario" alineado al tono gris de los demás */
-.nav-btn .nav-icon.material-icons{
-  filter:none;
-  color:#E5E7EB;   /* gris claro, similar al resultado del filter */
-}
-
-.nav-btn.active .nav-icon.material-icons{
-  color:var(--color-principal-oscuro); /* cuando está activo sigue igual que el texto */
-}
-
-
 .nav-btn:hover{ transform:translateY(-1px); background:var(--color-principal-oscuro); box-shadow: 0 6px 14px rgba(0,0,0,.3); }
 .nav-btn.active{ background:#fff; color:var(--color-principal-oscuro); border-color:rgba(17,17,17,.08); }
 .nav-btn.active .nav-icon{ filter:none; }
@@ -437,77 +425,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   font-size:22px;
 }
 
-/* ===== MANUAL DE USUARIO ===== */
-.manual-layout{
-  display:flex;
-  flex-wrap:wrap;
-  gap:24px;
-  align-items:flex-start;
-}
-.manual-main{
-  flex:2 1 540px;
-  font-size:1rem;
-  color:var(--color-texto);
-  line-height:1.7;
-}
-.manual-main h2{
-  font-family:var(--font-titulo);
-  font-size:1.3rem;
-  margin-bottom:14px;
-  color:var(--color-secundario);
-}
-.manual-main p{
-  margin-bottom:12px;
-  text-align:justify;
-}
-.manual-main ul{
-  margin:8px 0 16px 1.4rem;
-  text-align:left;
-}
-.manual-main li{
-  margin-bottom:8px;
-}
-.manual-main strong{
-  color:#111827;
-}
-:root[data-theme="dark"] .manual-main strong{
-  color:#E5E7EB;
-}
-
-.manual-side{
-  flex:1 1 260px;
-  border-radius:16px;
-  border:1px dashed rgba(1,75,148,.25);
-  background:linear-gradient(180deg,rgba(249,251,252,.85) 0%, rgba(243,246,249,.9) 100%);
-  padding:18px 16px;
-  font-size:.9rem;
-  color:#374151;
-}
-.manual-side h3{
-  font-family:var(--font-titulo);
-  font-size:1rem;
-  margin-bottom:6px;
-  color:var(--color-secundario);
-}
-.manual-side p{
-  margin-bottom:8px;
-}
-.manual-side .tag{
-  display:inline-block;
-  margin-top:4px;
-  padding:4px 8px;
-  border-radius:999px;
-  font-size:.75rem;
-  background:rgba(196,27,63,.08);
-  color:var(--color-principal-oscuro);
-  font-weight:700;
-}
-:root[data-theme="dark"] .manual-side{
-  background:linear-gradient(180deg,rgba(15,23,42,.85) 0%, rgba(17,24,39,.9) 100%);
-  border-color:rgba(1,75,148,.45);
-  color:#E5E7EB;
-}
-
 /* Responsivo */
 @media (max-width:1100px){
   .layout-explicacion{ flex-direction:column; }
@@ -582,11 +499,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 
         <li><a class="nav-btn" data-route="datos-abiertos" title="Datos Abiertos">
           <img class="nav-icon" src="assets/icons/Datos_abiertos.svg" alt=""> <span class="label">Datos abiertos</span>
-        </a></li>
-
-        <li><a class="nav-btn" data-route="manual" title="Manual de Usuario">
-          <span class="material-icons nav-icon" aria-hidden="true">menu_book</span>
-          <span class="label">Manual de Usuario</span>
         </a></li>
       </ul>
     </aside>
@@ -755,113 +667,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
                <i class="material-icons">dataset</i>
                Ir a Datos Abiertos SERVIR
             </a>
-          </div>
-        </section>
-      </section>
-
-
-      <!-- ====================== MANUAL DE USUARIO ====================== -->
-      <section id="view-manual" class="view">
-        <section class="seccion-tablero neu">
-          <h1>Manual de Usuario</h1>
-
-          <div class="manual-layout">
-            <div class="manual-main">
-              <h2>Instructivo del Observatorio del Servicio Civil</h2>
-
-              <p>
-                <strong>¿Qué es el Observatorio del Servicio Civil?</strong><br>
-                Es un espacio para mirar con lupa —pero también con perspectiva— cómo evoluciona el servicio civil y 
-                el Sistema Administrativo de Gestión de Recursos Humanos (SAGRH) en el Perú. Reúne información de 
-                diversas fuentes para entender quiénes son los servidores públicos, cómo se capacitan, cómo se gestiona 
-                su desempeño, cómo se fortalecen las entidades donde trabajan, entre otros aspectos.
-              </p>
-
-              <p>
-                Su objetivo es convertir los datos en conocimiento claro y útil para apoyar decisiones, mejorar la 
-                transparencia y promover políticas públicas basadas en evidencia. El Observatorio ofrece información y 
-                análisis para gestores públicos, investigadores y ciudadanía, permitiendo evaluar con mayor precisión 
-                cómo funciona y qué impacto tiene el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Y por qué debería interesarme?</strong><br>
-                Porque detrás de cada número hay una historia del Estado en acción. Saber cómo se distribuyen los 
-                servidores por regímenes laborales, cómo se supervisan a las entidades, o qué porcentaje del presupuesto 
-                en capacitación se ejecuta, ayuda a entender cómo se está transformando el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Qué puedo encontrar aquí?</strong><br>
-                Indicadores y secciones que resumen grandes temas:
-              </p>
-
-              <ul>
-                <li>
-                  <strong>Características del servicio civil:</strong>
-                  ¿Cómo ha evolucionado la composición del empleo público y la distribución del gasto en personal en los últimos años? 
-                  ¿Cómo se distribuyen los servidores por régimen, edad, sexo o educación?
-                </li>
-                <li>
-                  <strong>Gestión del talento humano:</strong>
-                  ¿Cuál es el nivel de implementación del SAGRH? ¿Cuál es el avance del tránsito al régimen del servicio civil? 
-                  ¿Cómo se ha avanzado en el diseño de herramientas de gestión? ¿Qué tanto se responden las solicitudes de las entidades 
-                  y se cumplen las recomendaciones? ¿Cuáles son las modalidades y coberturas de las convocatorias públicas?
-                </li>
-                <li>
-                  <strong>Desarrollo de competencias:</strong>
-                  ¿Cuántas entidades implementan la gestión del rendimiento? ¿Qué tanto se cumplen con las capacitaciones planificadas?
-                </li>
-                <li>
-                  <strong>Liderazgo en la gestión pública:</strong>
-                  ¿Cuántos gerentes públicos han sido incorporados y asignados? ¿Cómo se distribuyen los gerentes por edad, sexo, entre otros?
-                </li>
-                <li>
-                  <strong>Capacitación y desarrollo continuo:</strong>
-                  ¿Cómo se distribuyen las capacitaciones por edad, sexo o nivel de gobierno gestionadas por la ENAP?
-                </li>
-                <li>
-                  <strong>Justicia administrativa:</strong>
-                  ¿Cuántos expedientes ingresados y resueltos reporta el Tribunal del Servicio Civil?
-                </li>
-                <li>
-                  <strong>Publicaciones:</strong>
-                  ¿Cuáles son los estudios e informes más relevantes y vigentes sobre el servicio civil?
-                </li>
-                <li>
-                  <strong>Datos abiertos:</strong>
-                  ¿Dónde están los datos más relevantes sobre el SAGRH?
-                </li>
-              </ul>
-
-              <p>
-                <strong>¿Y cuál es el objetivo de mostrar todo esto?</strong><br>
-                Que la información sea una herramienta de gestión, no solo de reporte. El observatorio busca visibilizar 
-                patrones, contrastar esfuerzos entre niveles de gobierno y abrir preguntas sobre qué está funcionando y qué no, 
-                para ir construyendo una cultura de medición y evidencia en el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Qué sigue después?</strong><br>
-                Seguir conectando los datos: integrar bases, mejorar la periodicidad, comparar entre segmentos más desagregados. 
-                En el fondo, el observatorio busca que los datos sirvan para tomar decisiones más informadas y transparentes sobre 
-                cómo se gestiona el talento público en el Perú.
-              </p>
-            </div>
-
-            <div class="manual-side">
-              <h3>Cómo usar este Observatorio</h3>
-              <p>
-                Recorre las secciones desde el menú lateral para explorar indicadores, tableros y publicaciones especializadas. 
-                Cada pestaña corresponde a un eje clave de la política de servicio civil.
-              </p>
-              <p>
-                Te sugerimos iniciar por <strong>Características del Servicio Civil</strong> y luego revisar los módulos de 
-                <strong>Gestión del Talento Humano</strong>, <strong>Desarrollo de Competencias</strong> y 
-                <strong>Justicia Administrativa</strong>.
-              </p>
-              <span class="tag">Versión inicial del Manual</span>
-            </div>
           </div>
         </section>
       </section>
