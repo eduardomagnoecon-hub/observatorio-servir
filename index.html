@@ -37,15 +37,7 @@
   --transition-fast: .22s ease;
 }
 
-/* Modo oscuro */
-:root[data-theme="dark"]{
-  --color-texto:#E6E6E6;
-  --color-fondo:#0F172A;
-  --color-blanco:#0B1220;
-  --color-header-bg:#111827;
-  --neu-shadow-dark:rgba(0,0,0,0.6);
-  --neu-shadow-light:rgba(255,255,255,0.07);
-}
+
 
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;}
@@ -69,7 +61,7 @@ body{
   font-family:var(--font-titulo); font-weight:700; color:#fff;
 }
 .header-servir .title-text{ color:#fff; }
-:root:not([data-theme="dark"]) .header-servir .title-text{ color:#111; }
+
 
 /* Alinear logo cabecera al centro del área del sidebar */
 .header-logo-observatorio{
@@ -233,7 +225,8 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 .media-frame{
   width:100%;
   max-width:820px;
-  height:420px;
+  aspect-ratio: 16 / 9; /* NUEVO: Define una proporción de pantalla ancha */
+  min-height: 380px; /* NUEVO: Asegura una altura mínima razonable */
   border-radius:16px;
   background:#fff;
   box-shadow:0 12px 26px rgba(0,0,0,.20);
@@ -245,7 +238,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 .media-frame img{
   width:100%;
   height:100%;
-  object-fit:contain;
+  object-fit:cover; /* CAMBIO: Hace que la imagen llene el área (16:9), recortando los bordes si es necesario */
   display:block;
   border-radius:16px;
 }
@@ -322,11 +315,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 }
 .sello .sello-texto{ text-align:center; line-height:1.2; font-family:var(--font-titulo); font-weight:800; letter-spacing:.4px; color:#0F172A; font-size:.95rem; text-transform:uppercase; }
 .sello .sello-sub{ display:block; margin-top:6px; font-size:.7rem; font-weight:700; letter-spacing:.6px; opacity:.9; }
-:root[data-theme="dark"] .sello{
-  border-color:rgba(255,255,255,.08);
-  box-shadow:14px 18px 32px rgba(0,0,0,.5), -12px -14px 28px rgba(255,255,255,.06), inset 2px 2px 8px rgba(255,255,255,.08);
-  color:#E5E7EB;
-}
+
 
 /* === BARRA INFERIOR FIJA CON LOGOS + REDES === */
 .fixed-footer{
@@ -437,77 +426,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   font-size:22px;
 }
 
-/* ===== MANUAL DE USUARIO ===== */
-.manual-layout{
-  display:flex;
-  flex-wrap:wrap;
-  gap:24px;
-  align-items:flex-start;
-}
-.manual-main{
-  flex:2 1 540px;
-  font-size:1rem;
-  color:var(--color-texto);
-  line-height:1.7;
-}
-.manual-main h2{
-  font-family:var(--font-titulo);
-  font-size:1.3rem;
-  margin-bottom:14px;
-  color:var(--color-secundario);
-}
-.manual-main p{
-  margin-bottom:12px;
-  text-align:justify;
-}
-.manual-main ul{
-  margin:8px 0 16px 1.4rem;
-  text-align:left;
-}
-.manual-main li{
-  margin-bottom:8px;
-}
-.manual-main strong{
-  color:#111827;
-}
-:root[data-theme="dark"] .manual-main strong{
-  color:#E5E7EB;
-}
-
-.manual-side{
-  flex:1 1 260px;
-  border-radius:16px;
-  border:1px dashed rgba(1,75,148,.25);
-  background:linear-gradient(180deg,rgba(249,251,252,.85) 0%, rgba(243,246,249,.9) 100%);
-  padding:18px 16px;
-  font-size:.9rem;
-  color:#374151;
-}
-.manual-side h3{
-  font-family:var(--font-titulo);
-  font-size:1rem;
-  margin-bottom:6px;
-  color:var(--color-secundario);
-}
-.manual-side p{
-  margin-bottom:8px;
-}
-.manual-side .tag{
-  display:inline-block;
-  margin-top:4px;
-  padding:4px 8px;
-  border-radius:999px;
-  font-size:.75rem;
-  background:rgba(196,27,63,.08);
-  color:var(--color-principal-oscuro);
-  font-weight:700;
-}
-:root[data-theme="dark"] .manual-side{
-  background:linear-gradient(180deg,rgba(15,23,42,.85) 0%, rgba(17,24,39,.9) 100%);
-  border-color:rgba(1,75,148,.45);
-  color:#E5E7EB;
-}
-
 /* Responsivo */
 @media (max-width:1100px){
   .layout-explicacion{ flex-direction:column; }
@@ -529,14 +447,10 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       <img alt="Observatorio del Servicio Civil" src="assets/logos/Logo_Observatorio.png" style="height:44px;">
     </div>
     <span class="title-text" style="opacity:0; pointer-events:none;">Autoridad Nacional del Servicio Civil - SERVIR</span>
+    <button id="infoButton" class="header-button neu-header" title="¿Qué es el Observatorio del Servicio Civil?">
+      ¿Qué es el OSC?
+    </button>
 
-    <div class="theme-toggle">
-      <span class="material-icons" aria-hidden="true">dark_mode</span>
-      <label class="switch" title="Cambiar tema">
-        <input type="checkbox" id="toggleTheme" aria-label="Cambiar entre modo claro y oscuro">
-        <span class="slider"></span>
-      </label>
-    </div>
   </header>
 
   <div class="contenedor-observatorio">
@@ -552,10 +466,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
           <img class="nav-icon" src="assets/icons/inicio.svg" alt=""> <span class="label">Inicio</span>
         </a></li>
 
-        <li><a class="nav-btn" data-route="caracteristicas" title="Características del Servicio Civil">
-          <img class="nav-icon" src="assets/icons/caracteristicas_servidorp.svg" alt=""> <span class="label">Características del Servicio Civil</span>
-        </a></li>
-
+        
         <li><a class="nav-btn" data-route="sagrh" title="Monitoreo y Supervisión del SAGRH">
           <img class="nav-icon" src="assets/icons/gestion_talento.svg" alt=""> <span class="label">Monitoreo y Supervisión del SAGRH</span>
         </a></li>
@@ -584,10 +495,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
           <img class="nav-icon" src="assets/icons/Datos_abiertos.svg" alt=""> <span class="label">Datos abiertos</span>
         </a></li>
 
-        <li><a class="nav-btn" data-route="manual" title="Manual de Usuario">
-          <span class="material-icons nav-icon" aria-hidden="true">menu_book</span>
-          <span class="label">Manual de Usuario</span>
-        </a></li>
+        
       </ul>
     </aside>
 
@@ -601,25 +509,25 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Servidores Civiles</span><span class="chip">Diciembre 2024</span></div>
               <div class="kpi-value">1,589,245</div>
-              <div class="kpi-foot">Fuente: Planilla electrónica MTPPE</div>
+              
               <i class="material-icons kpi-icon">groups</i>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Servidores capacitados mediante PDP</span><span class="chip">2024</span></div>
               <div class="kpi-value">267,886</div>
-              <div class="kpi-foot">Fuente: GDCRSG-SERVIR 2024</div>
+              
               <i class="material-icons kpi-icon">school</i>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Entidades en proceso de tránsito</span><span class="chip">2025</span></div>
               <div class="kpi-value">534</div>
-              <div class="kpi-foot">Fuente: GDGDRH-SERVIR 2025</div>
+              
               <i class="material-icons kpi-icon">domain</i>
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Gerentes públicos asignados</span><span class="chip">Total</span></div>
               <div class="kpi-value">1,066</div>
-              <div class="kpi-foot">Fuente: GDGP-SERVIR 2009-2025</div>
+              
               <i class="material-icons kpi-icon">analytics</i>
             </div>
           </div>
@@ -640,9 +548,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 
             <div class="columna-media">
               <div class="media-frame">
-                <a href="https://app.powerbi.com/view?r=eyJrIjoiOTEwODk2OTgtYjk3Zi00NjFmLWEyNmUtY2E0YWI0OTFkMzdmIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9"
-                   target="_blank">
-                  <img src="assets/images/tablero.png" alt="Tablero interactivo Power BI">
+                <img src="assets/images/trabajadores.png" alt="Trabajadores del Servicio Civil">
                 </a>
               </div>
             </div>
@@ -759,113 +665,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
         </section>
       </section>
 
-
-      <!-- ====================== MANUAL DE USUARIO ====================== -->
-      <section id="view-manual" class="view">
-        <section class="seccion-tablero neu">
-          <h1>Manual de Usuario</h1>
-
-          <div class="manual-layout">
-            <div class="manual-main">
-              <h2>Instructivo del Observatorio del Servicio Civil</h2>
-
-              <p>
-                <strong>¿Qué es el Observatorio del Servicio Civil?</strong><br>
-                Es un espacio para mirar con lupa —pero también con perspectiva— cómo evoluciona el servicio civil y 
-                el Sistema Administrativo de Gestión de Recursos Humanos (SAGRH) en el Perú. Reúne información de 
-                diversas fuentes para entender quiénes son los servidores públicos, cómo se capacitan, cómo se gestiona 
-                su desempeño, cómo se fortalecen las entidades donde trabajan, entre otros aspectos.
-              </p>
-
-              <p>
-                Su objetivo es convertir los datos en conocimiento claro y útil para apoyar decisiones, mejorar la 
-                transparencia y promover políticas públicas basadas en evidencia. El Observatorio ofrece información y 
-                análisis para gestores públicos, investigadores y ciudadanía, permitiendo evaluar con mayor precisión 
-                cómo funciona y qué impacto tiene el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Y por qué debería interesarme?</strong><br>
-                Porque detrás de cada número hay una historia del Estado en acción. Saber cómo se distribuyen los 
-                servidores por regímenes laborales, cómo se supervisan a las entidades, o qué porcentaje del presupuesto 
-                en capacitación se ejecuta, ayuda a entender cómo se está transformando el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Qué puedo encontrar aquí?</strong><br>
-                Indicadores y secciones que resumen grandes temas:
-              </p>
-
-              <ul>
-                <li>
-                  <strong>Características del servicio civil:</strong>
-                  ¿Cómo ha evolucionado la composición del empleo público y la distribución del gasto en personal en los últimos años? 
-                  ¿Cómo se distribuyen los servidores por régimen, edad, sexo o educación?
-                </li>
-                <li>
-                  <strong>Gestión del talento humano:</strong>
-                  ¿Cuál es el nivel de implementación del SAGRH? ¿Cuál es el avance del tránsito al régimen del servicio civil? 
-                  ¿Cómo se ha avanzado en el diseño de herramientas de gestión? ¿Qué tanto se responden las solicitudes de las entidades 
-                  y se cumplen las recomendaciones? ¿Cuáles son las modalidades y coberturas de las convocatorias públicas?
-                </li>
-                <li>
-                  <strong>Desarrollo de competencias:</strong>
-                  ¿Cuántas entidades implementan la gestión del rendimiento? ¿Qué tanto se cumplen con las capacitaciones planificadas?
-                </li>
-                <li>
-                  <strong>Liderazgo en la gestión pública:</strong>
-                  ¿Cuántos gerentes públicos han sido incorporados y asignados? ¿Cómo se distribuyen los gerentes por edad, sexo, entre otros?
-                </li>
-                <li>
-                  <strong>Capacitación y desarrollo continuo:</strong>
-                  ¿Cómo se distribuyen las capacitaciones por edad, sexo o nivel de gobierno gestionadas por la ENAP?
-                </li>
-                <li>
-                  <strong>Justicia administrativa:</strong>
-                  ¿Cuántos expedientes ingresados y resueltos reporta el Tribunal del Servicio Civil?
-                </li>
-                <li>
-                  <strong>Publicaciones:</strong>
-                  ¿Cuáles son los estudios e informes más relevantes y vigentes sobre el servicio civil?
-                </li>
-                <li>
-                  <strong>Datos abiertos:</strong>
-                  ¿Dónde están los datos más relevantes sobre el SAGRH?
-                </li>
-              </ul>
-
-              <p>
-                <strong>¿Y cuál es el objetivo de mostrar todo esto?</strong><br>
-                Que la información sea una herramienta de gestión, no solo de reporte. El observatorio busca visibilizar 
-                patrones, contrastar esfuerzos entre niveles de gobierno y abrir preguntas sobre qué está funcionando y qué no, 
-                para ir construyendo una cultura de medición y evidencia en el servicio civil.
-              </p>
-
-              <p>
-                <strong>¿Qué sigue después?</strong><br>
-                Seguir conectando los datos: integrar bases, mejorar la periodicidad, comparar entre segmentos más desagregados. 
-                En el fondo, el observatorio busca que los datos sirvan para tomar decisiones más informadas y transparentes sobre 
-                cómo se gestiona el talento público en el Perú.
-              </p>
-            </div>
-
-            <div class="manual-side">
-              <h3>Cómo usar este Observatorio</h3>
-              <p>
-                Recorre las secciones desde el menú lateral para explorar indicadores, tableros y publicaciones especializadas. 
-                Cada pestaña corresponde a un eje clave de la política de servicio civil.
-              </p>
-              <p>
-                Te sugerimos iniciar por <strong>Características del Servicio Civil</strong> y luego revisar los módulos de 
-                <strong>Gestión del Talento Humano</strong>, <strong>Desarrollo de Competencias</strong> y 
-                <strong>Justicia Administrativa</strong>.
-              </p>
-              <span class="tag">Versión inicial del Manual</span>
-            </div>
-          </div>
-        </section>
-      </section>
-
+            
     </main>
   </div>
 
