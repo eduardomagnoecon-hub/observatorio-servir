@@ -47,7 +47,7 @@ body{
   font-size:16px;
   overflow-x:hidden;
   /* Evita que el contenido quede tapado por la barra fija */
-  padding-bottom:72px;
+  padding-bottom:120px;
 }
 
 /* -------------------- Header fijo -------------------- */
@@ -71,37 +71,35 @@ body{
 }
 
 /* BOTÓN ¿Qué es el OSC? EN LA DERECHA SUPERIOR */
+/* BOTÓN ¿Qué es el OSC? EN LA DERECHA SUPERIOR */
 .header-button{
-.header-button-icon{
-  width:20px;
-  height:20px;
-  margin-right:8px;
-}
-  
- position:absolute;
+  position:absolute;
   right:24px;
   top:50%;
   transform:translateY(-50%);
   padding:8px 16px;
   border-radius:999px;
   border:1px solid rgba(0,0,0,.08);
-
-  /* 🔥 COLOR INSTITUCIONAL SERVIR */
   background:#C41B3F;
   color:#fff;
-
   font-family:var(--font-botones);
   font-weight:700;
   font-size:.85rem;
   cursor:pointer;
-
+  display:flex;              /* 🔥 ALINEA TEXTO + ICONO */
+  align-items:center;        /* 🔥 CENTRA VERTICALMENTE */
   box-shadow:0 4px 10px rgba(0,0,0,.15),
               inset 0 1px 2px rgba(255,255,255,.3);
-
   transition:background .2s, transform .15s, box-shadow .15s;
 }
 
-/* Hover rojo oscuro institucional */
+/* Icono dentro del botón */
+.header-button-icon{
+  width:20px;
+  height:20px;
+  margin-right:8px;
+}
+
 .header-button:hover{
   background:#90142E;
   transform:translateY(-50%) scale(1.02);
@@ -362,12 +360,33 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 .fixed-footer img{ height:40px; width:auto; display:block; filter:none; }
 .fixed-footer .logo-pcm{ margin-right:auto; }
 .fixed-footer .logo-servir{
-  position:absolute; left:50%; transform:translateX(-50%);
   filter:brightness(0) invert(1);
 }
+.footer-center{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  text-align:center;
+}
+
+.footer-leyenda{
+  font-size:.75rem;
+  color:#FFFFFF;
+  max-width:700px;
+  margin-top:-28px; /* 🔥 ESTO LO SUBE SIN MOVER EL LOGO */
+  white-space:nowrap;   /* ❗ NO PERMITE SALTOS DE LÍNEA */
+  overflow:hidden;      /* ❗ EVITA DESBORDES */
+
+}
+
 /* Tamaño nuevo del logo SERVIR */
 .logo-servir{
-  height:160px !important;
+  height:80px !important;
   width:auto !important;
 }
 
@@ -786,11 +805,20 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       </section>
     </main>
   </div>
-  <div class="fixed-footer">
-    <img src="assets/logos/PCM_logo.png" alt="PCM" class="logo-pcm">
-    <img src="assets/logos/Logo Servir BN.svg" alt="SERVIR" class="logo-servir">
 
-    <div class="social-right">
+<div class="fixed-footer">
+  <img src="assets/logos/PCM_logo.png" alt="PCM" class="logo-pcm">
+
+  <div class="footer-center">
+    <img src="assets/logos/Logo Servir BN.svg" alt="SERVIR" class="logo-servir">
+    <div class="footer-leyenda">
+      Proyecto implementado con el apoyo del Gobierno de Canadá, a través del proyecto Modernización del Servicio Civil - MODSERV
+    </div>
+  </div>
+
+  <div class="social-right">
+
+
       <span class="label">Síguenos en:</span>
       <div class="icons">
         <a href="#"><i class="fab fa-facebook-f"></i></a>
