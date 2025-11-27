@@ -479,18 +479,16 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   flex-direction:column;
   gap:10px;
   margin-top:4px;
-  align-items:center;   /* CENTRA los botones */
+  align-items:flex-start;
 }
-
 
 .pub-btn-link{
   position:relative;
   display:flex;
   align-items:center;
-  justify-content:center;   /* <-- NUEVO: centra el contenido */
   gap:10px;
-  width:260px;
-  max-width:260px;
+  width:260px;       /* ancho fijo según mockup */
+  max-width:260px;   /* asegura consistencia */
   outline:none;
   cursor:pointer;
   padding:11px 16px 11px 18px;
@@ -501,15 +499,9 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   font-family:var(--font-botones);
   font-weight:700;
   font-size:.92rem;
-  text-align:center;        /* <-- ahora centrado */
+  text-align:left;
   transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
 }
-/* Botones más angostos solo en columnas 1 y 2 */
-.compact-buttons .pub-btn-link{
-  width:190px;      /* puedes ajustar: 180, 200, etc. */
-  max-width:190px;
-}
-
 .pub-btn-link:hover{
   transform:translateY(-2px);
   box-shadow:0 14px 26px rgba(0,0,0,.30);
@@ -521,12 +513,10 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 }
 
 .pub-btn-text{
-  flex:0 1 auto;        /* ya no se estira a todo el ancho */
+  flex:1;
   line-height:1.2;
   white-space:normal;
-  text-align:center;    /* refuerzo del centrado */
 }
-
 
 .pub-badge-new{
   font-size:.7rem;
@@ -849,7 +839,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       </section>
       <!-- ====================== PUBLICACIONES (NEUMORFISMO) ====================== -->
       <section id="view-publicaciones" class="view">
-        <article class="pub-card-neu compact-buttons">
+        <section class="seccion-tablero neu">
           <h1>Publicaciones</h1>
 
           <div class="pub-grid">
@@ -870,28 +860,28 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
               <div class="pub-buttons">
                 <button class="pub-btn-link" data-link="">
                   <span class="pub-btn-text">
-                    2024
+                    Edición 2024
                   </span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">
                   <span class="pub-btn-text">
-                    2023
+                    Edición 2023
                   </span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/5534164/4923815-caracteristicas-del-servicio-civil-peruano_2023.pdf?v=1702302148">
                   <span class="pub-btn-text">
-                    2022
+                    Edición 2022
                   </span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/2916882/Caracter%C3%ADsticas%20del%20Servicio%20Civil%20Peruano%202021.pdf?v=1647529800">
                   <span class="pub-btn-text">
-                    2021
+                    Edición 2021
                   </span>
                 </button>
 
@@ -905,7 +895,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
             </article>
 
             <!-- Columna 2: La Mujer en el Servicio Civil -->
-            <article class="pub-card-neu compact-buttons">
+            <article class="pub-card-neu">
               <div class="pub-card-header">
                 <div class="pub-card-icon">
                   <img src="assets/icons/Mujer.svg"
@@ -921,21 +911,21 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">
                   <span class="pub-btn-text">
-                    2025
+                    Edición 2025
                   </span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/6014370/5328453-informe-la-mujer-en-el-servicio-civil-peruano%282%29.pdf?v=1709927477">
                   <span class="pub-btn-text">
-                    2024
+                    Edición 2024
                   </span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/4229152/La%20Mujer%20en%20el%20servicio%20civil%20peruano%202023_SERVIR.pdf?v=1685724456">
                   <span class="pub-btn-text">
-                    2023
+                    Edición 2023
                   </span>
                 </button>
 
@@ -965,21 +955,21 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/7341602/6266346-personas-con-discapacidad-en-el-empleo-publico-analisis-y-propuesta-de-calculo-de-la-cuota-de-empleo-en-la-administracion-publica.pdf?v=1733761163">
                   <span class="pub-btn-text">
-                    Personas con discapacidad en el empleo público
+                    Discapacidad en el empleo público
                   </span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/7626736/7949-resumenes-de-diagnosticos-de-conocimiento-ejecutados.pdf">
                   <span class="pub-btn-text">
-                    Resultados de los Diagnósticos de Conocimiento 2025
+                    Diagnósticos de Conocimiento 2025
                   </span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/8701153/7199599-compendio-normativo-de-la-ley-n-30057-ley-del-servicio-civil-y-del-sistema-administrativo-de-gestion-de-recursos-humanos.pdf?v=1758647952">
                   <span class="pub-btn-text">
-                    Compendio normativo de la Ley 30057
+                    Compendio Ley 30057
                   </span>
                 </button>
               </div>

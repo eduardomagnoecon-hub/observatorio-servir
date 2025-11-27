@@ -71,7 +71,6 @@ body{
 }
 
 /* BOTÓN ¿Qué es el OSC? EN LA DERECHA SUPERIOR */
-/* BOTÓN ¿Qué es el OSC? EN LA DERECHA SUPERIOR */
 .header-button{
   position:absolute;
   right:24px;
@@ -86,8 +85,8 @@ body{
   font-weight:700;
   font-size:.85rem;
   cursor:pointer;
-  display:flex;              /* 🔥 ALINEA TEXTO + ICONO */
-  align-items:center;        /* 🔥 CENTRA VERTICALMENTE */
+  display:flex;
+  align-items:center;
   box-shadow:0 4px 10px rgba(0,0,0,.15),
               inset 0 1px 2px rgba(255,255,255,.3);
   transition:background .2s, transform .15s, box-shadow .15s;
@@ -105,7 +104,6 @@ body{
   transform:translateY(-50%) scale(1.02);
   box-shadow:0 6px 14px rgba(0,0,0,.25);
 }
-
 
 .neu-header{
   border-radius:999px;
@@ -159,7 +157,7 @@ input:checked + .slider:before{ transform:translateX(22px); }
   font-weight:700; font-size:15px; color:#fff;
   background:var(--color-principal);
   border:1px solid rgba(255,255,255,.1);
-  box-shadow:0 4px 10px rgba(0,0,0,.2), inset 0 2px 4px rgba(255,255,255,.2);
+  box-shadow:0 4px 10px rgba(0,0,0,.2), inset 2px 4px rgba(255,255,255,.2);
   transition:transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), opacity var(--transition-fast);
   cursor:pointer;
 }
@@ -167,7 +165,7 @@ input:checked + .slider:before{ transform:translateX(22px); }
 /* Ajuste específico para el ícono Material del botón "Manual de Usuario" */
 .nav-btn .nav-icon.material-icons{
   filter:none;
-  color:#E5E7EB;   /* gris claro, similar al resultado del filter */
+  color:#E5E7EB;
 }
 .nav-btn.active .nav-icon.material-icons{
   color:var(--color-principal-oscuro);
@@ -378,10 +376,9 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   font-size:.75rem;
   color:#FFFFFF;
   max-width:700px;
-  margin-top:-28px; /* 🔥 ESTO LO SUBE SIN MOVER EL LOGO */
-  white-space:nowrap;   /* ❗ NO PERMITE SALTOS DE LÍNEA */
-  overflow:hidden;      /* ❗ EVITA DESBORDES */
-
+  margin-top:-28px;
+  white-space:nowrap;
+  overflow:hidden;
 }
 
 /* Tamaño nuevo del logo SERVIR */
@@ -389,7 +386,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   height:80px !important;
   width:auto !important;
 }
-
 
 .fixed-footer .social-right{
   position:absolute; right:40px; display:flex; align-items:center; gap:14px; white-space:nowrap;
@@ -407,49 +403,138 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 .fixed-footer .social-right .icons a:hover{ transform:translateY(-1px); opacity:.9; }
 .fixed-footer .social-right .icons i{ font-size:16px; color:#111; }
 
-/* ===== PUBLICACIONES: TABS + VISOR PDF ===== */
-.pub-tabs{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-bottom:18px;
+/* ===== PUBLICACIONES (NEUMORFISMO) ===== */
+.pub-header-text{
+  font-size:1.02rem;
+  color:#4B5563;
+  max-width:820px;
+  margin-bottom:22px;
 }
-.pub-btn{
+
+.pub-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(260px,1fr));
+  gap:26px;
+}
+@media(max-width:1200px){
+  .pub-grid{
+    grid-template-columns:repeat(2, minmax(260px,1fr));
+  }
+}
+@media(max-width:900px){
+  .pub-grid{
+    grid-template-columns:1fr;
+  }
+}
+.pub-card-neu{
+  position:relative;
+  background:var(--color-blanco);
+  border-radius:22px;
+  padding:22px 22px 24px;
+  box-shadow:10px 14px 32px rgba(0,0,0,.18),
+             -10px -14px 30px rgba(255,255,255,.90);
+  border:1px solid rgba(15,23,42,.06);
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.pub-card-header{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  padding-bottom:12px;
+  border-bottom:2px solid rgba(148,163,184,.35);
+}
+
+.pub-card-icon{
+  width:54px;
+  height:54px;
   border-radius:18px;
-  border:1px solid rgba(17,17,17,.08);
-  padding:10px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#C41B3F,#E64264);
+  color:#fff;
+  font-size:26px;
+  box-shadow:0 10px 22px rgba(0,0,0,.25);
+}
+.pub-card-title-group{
+  flex:1;
+}
+.pub-card-title{
+  font-family:var(--font-titulo);
+  font-size:1.15rem;
+  font-weight:800;
+  color:#111827;
+  margin-bottom:2px;
+}
+.pub-card-subtitle{
+  font-size:.88rem;
+  color:#6B7280;
+}
+
+.pub-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:4px;
+  align-items:flex-start;
+}
+
+.pub-btn-link{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;   /* <-- NUEVO: centra el contenido */
+  gap:10px;
+  width:260px;
+  max-width:260px;
+  outline:none;
+  cursor:pointer;
+  padding:11px 16px 11px 18px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#C41B3F,#E64264);
+  box-shadow:0 10px 22px rgba(0,0,0,.22);
+  color:#fff;
   font-family:var(--font-botones);
   font-weight:700;
-  font-size:.9rem;
-  background:var(--color-blanco);
-  color:#111827;
-  cursor:pointer;
-  box-shadow:0 4px 10px rgba(0,0,0,.12);
-  transition:background .2s, color .2s, transform .2s, box-shadow .2s;
+  font-size:.92rem;
+  text-align:center;        /* <-- ahora centrado */
+  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
 }
-.pub-btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 6px 14px rgba(0,0,0,.18);
+.pub-btn-link:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 26px rgba(0,0,0,.30);
+  filter:brightness(1.03);
 }
-.pub-btn.active{
-  background:var(--color-principal);
-  color:#fff;
+.pub-btn-link:active{
+  transform:translateY(0);
+  box-shadow:0 8px 18px rgba(0,0,0,.22);
 }
-.pub-viewer{
-  margin-top:4px;
-  width:100%;
-  height:calc(100vh - 64px - 72px - 32px - 120px);
-  min-height:520px;
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 12px 26px rgba(0,0,0,.14);
-  background:#fff;
+
+.pub-btn-text{
+  flex:0 1 auto;        /* ya no se estira a todo el ancho */
+  line-height:1.2;
+  white-space:normal;
+  text-align:center;    /* refuerzo del centrado */
 }
-.pub-viewer iframe{
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
+
+
+.pub-badge-new{
+  font-size:.7rem;
+  padding:4px 9px;
+  border-radius:999px;
+  background:#FFC729;
+  color:#7C2D12;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.pub-btn-icon{
+  font-size:18px;
+  opacity:.9;
 }
 
 /* ===== DATOS ABIERTOS ===== */
@@ -503,13 +588,13 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 .osc-modal-backdrop{
   position:absolute;
   inset:0;
-  background:rgba(15,23,42,.35);  /* sin desenfoque, solo oscurece un poco */
+  background:rgba(15,23,42,.35);
 }
 .osc-modal-content{
   position:relative;
   max-width:1400px;
   width:90vw;
-  max-height:92vh;   /* casi pantalla completa */
+  max-height:92vh;
   background:var(--color-blanco);
   border-radius:18px;
   padding:10px 16px 10px;
@@ -529,7 +614,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   width:100%;
   flex:1;
   height:100%;
-  min-height:75vh;   /* ALTURA grande del PDF */
+  min-height:75vh;
   border:0;
   border-radius:12px;
 }
@@ -593,10 +678,10 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
     </span>
 
     <!-- BOTÓN SUPERIOR DERECHA: ¿Qué es el OSC? -->
-  <button id="infoButton" class="header-button neu-header" title="¿Qué es el Observatorio del Servicio Civil?">
-  <img src="assets/icons/Qué es el OSC.svg" class="header-button-icon">
-  ¿Qué es el OSC?
-  </button>
+    <button id="infoButton" class="header-button neu-header" title="¿Qué es el Observatorio del Servicio Civil?">
+      <img src="assets/icons/Qué es el OSC.svg" class="header-button-icon">
+      ¿Qué es el OSC?
+    </button>
 
   </header>
 
@@ -615,15 +700,15 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 
         <!-- 🔁 BOTÓN RECUPERADO: Características del Servicio Civil (segunda posición) -->
         <li><a class="nav-btn" data-route="caracteristicas" title="Características del Servicio Civil">
-          <img class="nav-icon" src="assets/icons/caracteristicas_servidorp.svg" alt=""> <span class="label">Características del Servicio Civil</span>
+          <img class="nav-icon" src="assets/icons/caracteristicas_servidorp.svg" alt=""> <span class="label">Características del Servidor Público</span>
         </a></li>
 
         <li><a class="nav-btn" data-route="sagrh" title="Monitoreo y Supervisión del SAGRH">
           <img class="nav-icon" src="assets/icons/gestion_talento.svg" alt=""> <span class="label">Monitoreo y Supervisión del SAGRH</span>
         </a></li>
 
-        <li><a class="nav-btn" data-route="competencias" title="Desarrollo de Competencias">
-          <img class="nav-icon" src="assets/icons/desarrollo_competencias.svg" alt=""> <span class="label">Desarrollo de Competencias</span>
+        <li><a class="nav-btn" data-route="competencias" title="Desarrollo de Capacidades y Rendimiento">
+          <img class="nav-icon" src="assets/icons/desarrollo_competencias.svg" alt=""> <span class="label">Desarrollo de Capacidades y Rendimiento</span>
         </a></li>
 
         <li><a class="nav-btn" data-route="gestion-publica" title="Dirección de la Gestión Pública">
@@ -662,8 +747,8 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
             </div>
             <div class="kpi-card">
               <div class="kpi-top"><span class="label">Servidores capacitados mediante PDP</span>
-             <span class="chip">2009-2025</span>
-             </div>
+                <span class="chip">2009-2025</span>
+              </div>
               <div class="kpi-value">267,886</div>
               <i class="material-icons kpi-icon">school</i>
             </div>
@@ -694,9 +779,8 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
             <div class="columna-media">
               <div class="media-frame">
                 <div class="media-frame">
-    <img src="assets/images/trabajadora.png" alt="Trabajadora del Servicio Civil">
-</div>
-
+                  <img src="assets/images/trabajadora.png" alt="Trabajadora del Servicio Civil">
+                </div>
               </div>
             </div>
           </div>
@@ -706,7 +790,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       <!-- ====================== CARACTERÍSTICAS ====================== -->
       <section id="view-caracteristicas" class="view">
         <section class="seccion-tablero neu">
-          <h1>Características del Servicio Civil</h1>
           <div class="full-iframe-container">
             <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNjA5ZWMzZjgtNmU5Mi00YWZhLWE0N2EtMzQ4ZmM4MTI4Yzk5IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
           </div>
@@ -716,7 +799,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       <!-- ====================== SAGRH ====================== -->
       <section id="view-sagrh" class="view">
         <section class="seccion-tablero neu">
-          <h1>Monitoreo y Supervisión del SAGRH</h1>
           <div class="full-iframe-container">
             <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNTZiNDIwNjAtZDQ5YS00NDRhLWFiMWItNTE5MDkzMDQzNmMzIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
           </div>
@@ -726,7 +808,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       <!-- ====================== COMPETENCIAS ====================== -->
       <section id="view-competencias" class="view">
         <section class="seccion-tablero neu">
-          <h1>Desarrollo de Competencias</h1>
           <div class="full-iframe-container">
             <iframe src="https://app.powerbi.com/view?r=eyJrIjoiZjYyMjVhMzctOTYxYS00ZDY3LWE1OWEtYjI3MzQ2OWMzYTNkIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
           </div>
@@ -736,7 +817,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       <!-- ====================== GESTIÓN PÚBLICA ====================== -->
       <section id="view-gestion-publica" class="view">
         <section class="seccion-tablero neu">
-          <h1>Dirección de la Gestión Pública</h1>
           <div class="full-iframe-container">
             <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNWVjNmQ3NTEtYjE5OC00MWY1LWJjZWQtZDIzZWQ0YTk5MDc5IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
           </div>
@@ -746,7 +826,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       <!-- ====================== CAPACITACIÓN ====================== -->
       <section id="view-capacitacion" class="view">
         <section class="seccion-tablero neu">
-          <h1>Fortalecimiento de Capacidades</h1>
           <div class="full-iframe-container">
             <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNGM4NmYwOWMtMTM5Ni00MWM3LThkOGEtMTE4MjNiNGY1ZTY4IiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
           </div>
@@ -756,32 +835,152 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       <!-- ====================== JUSTICIA ====================== -->
       <section id="view-justicia" class="view">
         <section class="seccion-tablero neu">
-          <h1>Justicia Administrativa</h1>
           <div class="full-iframe-container">
             <iframe src="https://app.powerbi.com/view?r=eyJrIjoiNmRhMmVmYzMtNTE1YS00M2M4LWI3ZDEtMmI2MTdmYjIzODgyIiwidCI6ImU5OWJhNTM0LTk0ZDktNDY5Yy05OTk0LTRlMWIyN2JkMDU1YSJ9" allowFullScreen></iframe>
           </div>
         </section>
       </section>
-
-      <!-- ====================== PUBLICACIONES ====================== -->
+      <!-- ====================== PUBLICACIONES (NEUMORFISMO) ====================== -->
       <section id="view-publicaciones" class="view">
         <section class="seccion-tablero neu">
           <h1>Publicaciones</h1>
 
-          <div class="pub-tabs">
-            <button class="pub-btn active" data-src="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">Características del Servicio Civil</button>
+          <div class="pub-grid">
 
-            <button class="pub-btn" data-src="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">La mujer en el Servicio Civil</button>
+            <!-- Columna 1: Características del Servicio Civil -->
+            <article class="pub-card-neu">
+              <div class="pub-card-header">
+                <div class="pub-card-icon">
+                  <img src="assets/icons/Servicio Civil.svg"
+                       style="width:32px; height:32px;"
+                       alt="Servicio Civil">
+                </div>
+                <div class="pub-card-title-group">
+                  <h2 class="pub-card-title">Características del Servicio Civil</h2>
+                </div>
+              </div>
 
-            <button class="pub-btn" data-src="https://cdn.www.gob.pe/uploads/document/file/7341602/6266346-personas-con-discapacidad-en-el-empleo-publico-analisis-y-propuesta-de-calculo-de-la-cuota-de-empleo-en-la-administracion-publica.pdf?v=1733761163">Otras Publicaciones</button>
-          </div>
+              <div class="pub-buttons">
+                <button class="pub-btn-link" data-link="">
+                  <span class="pub-btn-text">
+                    2024
+                  </span>
+                </button>
 
-          <div class="pub-viewer">
-            <iframe id="pub-frame" src="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715"></iframe>
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">
+                  <span class="pub-btn-text">
+                    2023
+                  </span>
+                </button>
+
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/5534164/4923815-caracteristicas-del-servicio-civil-peruano_2023.pdf?v=1702302148">
+                  <span class="pub-btn-text">
+                    2022
+                  </span>
+                </button>
+
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/2916882/Caracter%C3%ADsticas%20del%20Servicio%20Civil%20Peruano%202021.pdf?v=1647529800">
+                  <span class="pub-btn-text">
+                    2021
+                  </span>
+                </button>
+
+                <button class="pub-btn-link"
+                        data-link="https://www.gob.pe/institucion/servir/colecciones/1257-el-servicio-civil-peruano">
+                  <span class="pub-btn-text">
+                    Años anteriores
+                  </span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Columna 2: La Mujer en el Servicio Civil -->
+            <article class="pub-card-neu">
+              <div class="pub-card-header">
+                <div class="pub-card-icon">
+                  <img src="assets/icons/Mujer.svg"
+                       style="width:32px; height:32px;"
+                       alt="Mujer">
+                </div>
+                <div class="pub-card-title-group">
+                  <h2 class="pub-card-title">La mujer en el Servicio Civil</h2>
+                </div>
+              </div>
+
+              <div class="pub-buttons">
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">
+                  <span class="pub-btn-text">
+                    2025
+                  </span>
+                </button>
+
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/6014370/5328453-informe-la-mujer-en-el-servicio-civil-peruano%282%29.pdf?v=1709927477">
+                  <span class="pub-btn-text">
+                    2024
+                  </span>
+                </button>
+
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/4229152/La%20Mujer%20en%20el%20servicio%20civil%20peruano%202023_SERVIR.pdf?v=1685724456">
+                  <span class="pub-btn-text">
+                    2023
+                  </span>
+                </button>
+
+                <button class="pub-btn-link"
+                        data-link="https://www.gob.pe/institucion/servir/colecciones/1258-la-mujer-en-el-servicio-civil-peruano">
+                  <span class="pub-btn-text">
+                    Años anteriores
+                  </span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Columna 3: Otras Publicaciones -->
+            <article class="pub-card-neu">
+              <div class="pub-card-header">
+                <div class="pub-card-icon">
+                  <img src="assets/icons/Publicación.svg"
+                       style="width:32px; height:32px;"
+                       alt="Publicaciones">
+                </div>
+                <div class="pub-card-title-group">
+                  <h2 class="pub-card-title">Otras publicaciones</h2>
+                </div>
+              </div>
+
+              <div class="pub-buttons">
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/7341602/6266346-personas-con-discapacidad-en-el-empleo-publico-analisis-y-propuesta-de-calculo-de-la-cuota-de-empleo-en-la-administracion-publica.pdf?v=1733761163">
+                  <span class="pub-btn-text">
+                    Personas con discapacidad en el empleo público
+                  </span>
+                </button>
+
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/7626736/7949-resumenes-de-diagnosticos-de-conocimiento-ejecutados.pdf">
+                  <span class="pub-btn-text">
+                    Resultados de los Diagnósticos de Conocimiento 2025
+                  </span>
+                </button>
+
+                <button class="pub-btn-link"
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/8701153/7199599-compendio-normativo-de-la-ley-n-30057-ley-del-servicio-civil-y-del-sistema-administrativo-de-gestion-de-recursos-humanos.pdf?v=1758647952">
+                  <span class="pub-btn-text">
+                    Compendio normativo de la Ley 30057
+                  </span>
+                </button>
+              </div>
+            </article>
+
           </div>
         </section>
       </section>
-
       <!-- ====================== DATOS ABIERTOS ====================== -->
       <section id="view-datos-abiertos" class="view">
         <section class="seccion-tablero neu">
@@ -806,64 +1005,62 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
     </main>
   </div>
 
-<div class="fixed-footer">
-  <img src="assets/logos/PCM_logo.png" alt="PCM" class="logo-pcm">
+  <div class="fixed-footer">
+    <img src="assets/logos/PCM_logo.png" alt="PCM" class="logo-pcm">
 
-  <div class="footer-center">
-    <img src="assets/logos/Logo Servir BN.svg" alt="SERVIR" class="logo-servir">
-    <div class="footer-leyenda">
-      Proyecto implementado con el apoyo del Gobierno de Canadá, a través del proyecto Modernización del Servicio Civil - MODSERV
+    <div class="footer-center">
+      <img src="assets/logos/Logo Servir BN.svg" alt="SERVIR" class="logo-servir">
+      <div class="footer-leyenda">
+        Iniciativa implementada con el apoyo del Gobierno de Canadá, a través del proyecto Modernización del Servicio Civil - MODSERV
+      </div>
     </div>
-  </div>
 
-  <div class="social-right">
-  <span class="label">Síguenos en:</span>
-  <div class="icons">
+    <div class="social-right">
+      <span class="label">Síguenos en:</span>
+      <div class="icons">
 
-    <!-- Facebook -->
-    <a href="https://www.facebook.com/SERVIRPERU" target="_blank" title="Facebook SERVIR">
-      <i class="fab fa-facebook-f"></i>
-    </a>
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/SERVIRPERU" target="_blank" title="Facebook SERVIR">
+          <i class="fab fa-facebook-f"></i>
+        </a>
 
-    <!-- X (Twitter) -->
-    <a href="https://x.com/SERVIR_PERU" target="_blank" title="X (Twitter) SERVIR">
-      <i class="fab fa-x-twitter"></i>
-    </a>
+        <!-- X (Twitter) -->
+        <a href="https://x.com/SERVIR_PERU" target="_blank" title="X (Twitter) SERVIR">
+          <i class="fab fa-x-twitter"></i>
+        </a>
 
-    <!-- YouTube -->
-    <a href="https://www.youtube.com/ServirTV" target="_blank" title="YouTube SERVIRTV">
-      <i class="fab fa-youtube"></i>
-    </a>
+        <!-- YouTube -->
+        <a href="https://www.youtube.com/ServirTV" target="_blank" title="YouTube SERVIRTV">
+          <i class="fab fa-youtube"></i>
+        </a>
 
-    <!-- Instagram -->
-    <a href="https://instagram.com/servir_peru" target="_blank" title="Instagram SERVIR">
-      <i class="fab fa-instagram"></i>
-    </a>
+        <!-- Instagram -->
+        <a href="https://instagram.com/servir_peru" target="_blank" title="Instagram SERVIR">
+          <i class="fab fa-instagram"></i>
+        </a>
 
-    <!-- LinkedIn -->
-    <a href="https://www.linkedin.com/company/servir-peru" target="_blank" title="LinkedIn SERVIR">
-      <i class="fab fa-linkedin-in"></i>
-    </a>
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/company/servir-peru" target="_blank" title="LinkedIn SERVIR">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
 
-    <!-- TikTok -->
-    <a href="https://www.tiktok.com/@servir_peru" target="_blank" title="TikTok SERVIR">
-      <i class="fab fa-tiktok"></i>
-    </a>
+        <!-- TikTok -->
+        <a href="https://www.tiktok.com/@servir_peru" target="_blank" title="TikTok SERVIR">
+          <i class="fab fa-tiktok"></i>
+        </a>
 
-    <!-- Flickr -->
-    <a href="https://flickr.com/photos/servirperu/albums/" target="_blank" title="Flickr SERVIR">
-      <i class="fab fa-flickr"></i>
-    </a>
+        <!-- Flickr -->
+        <a href="https://flickr.com/photos/servirperu/albums/" target="_blank" title="Flickr SERVIR">
+          <i class="fab fa-flickr"></i>
+        </a>
 
-    <!-- Spotify -->
-    <a href="https://open.spotify.com/show/1Xh18pk82T3AePpw6mUS1H" target="_blank" title="Spotify SERVIR Podcast">
-      <i class="fab fa-spotify"></i>
-    </a>
+        <!-- Spotify -->
+        <a href="https://open.spotify.com/show/1Xh18pk82T3AePpw6mUS1H" target="_blank" title="Spotify SERVIR Podcast">
+          <i class="fab fa-spotify"></i>
+        </a>
 
-  </div>
-</div>
-
-
+      </div>
+    </div>
   </div>
 
   <div class="marca">
@@ -978,30 +1175,16 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       });
     }
 
-    /* ====== Publicaciones: tabs que cambian el PDF ====== */
-    const pubButtons = document.querySelectorAll('.pub-btn');
-    const pubFrame   = document.getElementById('pub-frame');
-
-    if (pubButtons.length && pubFrame) {
+    /* === PUBLICACIONES: BOTONES QUE ABREN EN NUEVA PESTAÑA === */
+    const pubButtons = document.querySelectorAll('.pub-btn-link');
+    if (pubButtons.length) {
       pubButtons.forEach(btn => {
+        const link = btn.getAttribute('data-link');
+        if (!link) return; // si no hay link, no hace nada
         btn.addEventListener('click', () => {
-          const src = btn.getAttribute('data-src');
-          if (src) {
-            pubFrame.src = src;
-          }
-          pubButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
+          window.open(link, '_blank');
         });
       });
-
-      // Asegurar que el primer botón activo carga su PDF al iniciar
-      const firstActive = document.querySelector('.pub-btn.active') || pubButtons[0];
-      if (firstActive) {
-        const initialSrc = firstActive.getAttribute('data-src');
-        if (initialSrc) {
-          pubFrame.src = initialSrc;
-        }
-      }
     }
 
     /* ====== MODAL: ¿Qué es el OSC? ====== */
@@ -1041,4 +1224,3 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   </script>
 </body>
 </html>
-

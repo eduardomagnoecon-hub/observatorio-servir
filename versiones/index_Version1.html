@@ -157,7 +157,7 @@ input:checked + .slider:before{ transform:translateX(22px); }
   font-weight:700; font-size:15px; color:#fff;
   background:var(--color-principal);
   border:1px solid rgba(255,255,255,.1);
-  box-shadow:0 4px 10px rgba(0,0,0,.2), inset 2px 4px rgba(255,255,255,.2);
+  box-shadow:0 4px 10px rgba(0,0,0,.2), inset 0 2px 4px rgba(255,255,255,.2);
   transition:transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), opacity var(--transition-fast);
   cursor:pointer;
 }
@@ -403,145 +403,87 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 .fixed-footer .social-right .icons a:hover{ transform:translateY(-1px); opacity:.9; }
 .fixed-footer .social-right .icons i{ font-size:16px; color:#111; }
 
-/* ===== PUBLICACIONES (NEUMORFISMO) ===== */
-.pub-header-text{
-  font-size:1.02rem;
-  color:#4B5563;
-  max-width:820px;
-  margin-bottom:22px;
-}
-
-.pub-grid{
+/* ===== PUBLICACIONES: TRES COLUMNAS SIN FLECHAS NI VISOR ===== */
+.pub-panel{
   display:grid;
   grid-template-columns:repeat(3, minmax(260px,1fr));
-  gap:26px;
+  gap:32px;
+  margin-top:18px;
 }
-@media(max-width:1200px){
-  .pub-grid{
+@media (max-width:1200px){
+  .pub-panel{
     grid-template-columns:repeat(2, minmax(260px,1fr));
   }
 }
-@media(max-width:900px){
-  .pub-grid{
+@media (max-width:900px){
+  .pub-panel{
     grid-template-columns:1fr;
   }
 }
-.pub-card-neu{
-  position:relative;
-  background:var(--color-blanco);
-  border-radius:22px;
-  padding:22px 22px 24px;
-  box-shadow:10px 14px 32px rgba(0,0,0,.18),
-             -10px -14px 30px rgba(255,255,255,.90);
-  border:1px solid rgba(15,23,42,.06);
+
+.pub-column{
+  background:linear-gradient(180deg,#ffffff 0%, #f8fafc 100%);
+  border-radius:18px;
+  border:2px solid #d4d4d4;
+  padding:26px 20px 24px;
   display:flex;
   flex-direction:column;
   gap:18px;
+  box-shadow:6px 10px 22px rgba(0,0,0,.10);
 }
 
-.pub-card-header{
-  display:flex;
-  gap:14px;
-  align-items:center;
-  padding-bottom:12px;
-  border-bottom:2px solid rgba(148,163,184,.35);
-}
-
-.pub-card-icon{
-  width:54px;
-  height:54px;
-  border-radius:18px;
-  display:flex;
+.pub-column-title{
+  display:inline-flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg,#C41B3F,#E64264);
+  align-self:center;
+  padding:12px 40px;
+  border-radius:18px;
+  background:var(--color-principal);
   color:#fff;
-  font-size:26px;
-  box-shadow:0 10px 22px rgba(0,0,0,.25);
-}
-.pub-card-title-group{
-  flex:1;
-}
-.pub-card-title{
   font-family:var(--font-titulo);
-  font-size:1.15rem;
   font-weight:800;
-  color:#111827;
-  margin-bottom:2px;
-}
-.pub-card-subtitle{
-  font-size:.88rem;
-  color:#6B7280;
+  font-size:1.15rem;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
 }
 
-.pub-buttons{
+.pub-items{
   display:flex;
   flex-direction:column;
-  gap:10px;
-  margin-top:4px;
-  align-items:center;   /* CENTRA los botones */
+  gap:12px;
+  margin-top:10px;
 }
 
+.pub-item{
+  display:block;
+}
 
-.pub-btn-link{
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;   /* <-- NUEVO: centra el contenido */
-  gap:10px;
-  width:260px;
-  max-width:260px;
+/* Tarjetas (botones) */
+.pub-card{
+  width:100%;
+  border:none;
   outline:none;
-  cursor:pointer;
-  padding:11px 16px 11px 18px;
-  border-radius:16px;
-  background:linear-gradient(135deg,#C41B3F,#E64264);
-  box-shadow:0 10px 22px rgba(0,0,0,.22);
+  text-align:center;
+  padding:11px 18px;
+  border-radius:999px;
+  background:#E64264;              /* rosa fuerte tipo diseño */
   color:#fff;
   font-family:var(--font-botones);
   font-weight:700;
-  font-size:.92rem;
-  text-align:center;        /* <-- ahora centrado */
-  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
-}
-/* Botones más angostos solo en columnas 1 y 2 */
-.compact-buttons .pub-btn-link{
-  width:190px;      /* puedes ajustar: 180, 200, etc. */
-  max-width:190px;
-}
-
-.pub-btn-link:hover{
-  transform:translateY(-2px);
-  box-shadow:0 14px 26px rgba(0,0,0,.30);
-  filter:brightness(1.03);
-}
-.pub-btn-link:active{
-  transform:translateY(0);
-  box-shadow:0 8px 18px rgba(0,0,0,.22);
-}
-
-.pub-btn-text{
-  flex:0 1 auto;        /* ya no se estira a todo el ancho */
-  line-height:1.2;
+  font-size:.9rem;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(0,0,0,.18);
+  transition:transform .15s, box-shadow .15s, background .15s, letter-spacing .15s;
   white-space:normal;
-  text-align:center;    /* refuerzo del centrado */
 }
-
-
-.pub-badge-new{
-  font-size:.7rem;
-  padding:4px 9px;
-  border-radius:999px;
-  background:#FFC729;
-  color:#7C2D12;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.5px;
+.pub-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 24px rgba(0,0,0,.25);
+  letter-spacing:.3px;
 }
-
-.pub-btn-icon{
-  font-size:18px;
-  opacity:.9;
+.pub-card.active{
+  background:var(--color-principal-oscuro);
+  box-shadow:0 10px 22px rgba(0,0,0,.35);
 }
 
 /* ===== DATOS ABIERTOS ===== */
@@ -847,147 +789,112 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
           </div>
         </section>
       </section>
-      <!-- ====================== PUBLICACIONES (NEUMORFISMO) ====================== -->
+
+      <!-- ====================== PUBLICACIONES (TRES COLUMNAS LIMPIAS) ====================== -->
       <section id="view-publicaciones" class="view">
-        <article class="pub-card-neu compact-buttons">
+        <section class="seccion-tablero neu">
           <h1>Publicaciones</h1>
 
-          <div class="pub-grid">
+          <div class="pub-panel">
 
-            <!-- Columna 1: Características del Servicio Civil -->
-            <article class="pub-card-neu">
-              <div class="pub-card-header">
-                <div class="pub-card-icon">
-                  <img src="assets/icons/Servicio Civil.svg"
-                       style="width:32px; height:32px;"
-                       alt="Servicio Civil">
+            <!-- Columna 1 -->
+            <div class="pub-column">
+              <div class="pub-column-title">Características del Servicio Civil</div>
+
+              <div class="pub-items">
+                <div class="pub-item">
+                  <button class="pub-card active" data-link="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">
+                    Características del Servicio Civil 2023
+                  </button>
                 </div>
-                <div class="pub-card-title-group">
-                  <h2 class="pub-card-title">Características del Servicio Civil</h2>
+
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
+                    Características del Servicio Civil 2024
+                  </button>
                 </div>
-              </div>
 
-              <div class="pub-buttons">
-                <button class="pub-btn-link" data-link="">
-                  <span class="pub-btn-text">
-                    2024
-                  </span>
-                </button>
-
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">
-                  <span class="pub-btn-text">
-                    2023
-                  </span>
-                </button>
-
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/5534164/4923815-caracteristicas-del-servicio-civil-peruano_2023.pdf?v=1702302148">
-                  <span class="pub-btn-text">
-                    2022
-                  </span>
-                </button>
-
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/2916882/Caracter%C3%ADsticas%20del%20Servicio%20Civil%20Peruano%202021.pdf?v=1647529800">
-                  <span class="pub-btn-text">
-                    2021
-                  </span>
-                </button>
-
-                <button class="pub-btn-link"
-                        data-link="https://www.gob.pe/institucion/servir/colecciones/1257-el-servicio-civil-peruano">
-                  <span class="pub-btn-text">
-                    Años anteriores
-                  </span>
-                </button>
-              </div>
-            </article>
-
-            <!-- Columna 2: La Mujer en el Servicio Civil -->
-            <article class="pub-card-neu compact-buttons">
-              <div class="pub-card-header">
-                <div class="pub-card-icon">
-                  <img src="assets/icons/Mujer.svg"
-                       style="width:32px; height:32px;"
-                       alt="Mujer">
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
+                    Características del Servicio Civil 2022
+                  </button>
                 </div>
-                <div class="pub-card-title-group">
-                  <h2 class="pub-card-title">La mujer en el Servicio Civil</h2>
+
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
+                    Características del Servicio Civil 2021
+                  </button>
+                </div>
+
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
+                    Características del Servicio Civil (años previos)
+                  </button>
                 </div>
               </div>
+            </div>
 
-              <div class="pub-buttons">
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">
-                  <span class="pub-btn-text">
-                    2025
-                  </span>
-                </button>
+            <!-- Columna 2 -->
+            <div class="pub-column">
+              <div class="pub-column-title">La Mujer en el Servicio Civil</div>
 
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/6014370/5328453-informe-la-mujer-en-el-servicio-civil-peruano%282%29.pdf?v=1709927477">
-                  <span class="pub-btn-text">
-                    2024
-                  </span>
-                </button>
-
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/4229152/La%20Mujer%20en%20el%20servicio%20civil%20peruano%202023_SERVIR.pdf?v=1685724456">
-                  <span class="pub-btn-text">
-                    2023
-                  </span>
-                </button>
-
-                <button class="pub-btn-link"
-                        data-link="https://www.gob.pe/institucion/servir/colecciones/1258-la-mujer-en-el-servicio-civil-peruano">
-                  <span class="pub-btn-text">
-                    Años anteriores
-                  </span>
-                </button>
-              </div>
-            </article>
-
-            <!-- Columna 3: Otras Publicaciones -->
-            <article class="pub-card-neu">
-              <div class="pub-card-header">
-                <div class="pub-card-icon">
-                  <img src="assets/icons/Publicación.svg"
-                       style="width:32px; height:32px;"
-                       alt="Publicaciones">
+              <div class="pub-items">
+                <div class="pub-item">
+                  <button class="pub-card" data-link="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">
+                    La mujer en Servicio Civil 2025
+                  </button>
                 </div>
-                <div class="pub-card-title-group">
-                  <h2 class="pub-card-title">Otras publicaciones</h2>
+
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
+                    La mujer en Servicio Civil 2024
+                  </button>
+                </div>
+
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
+                    La mujer en Servicio Civil 2023
+                  </button>
+                </div>
+
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
+                    La mujer en Servicio Civil (años previos)
+                  </button>
                 </div>
               </div>
+            </div>
 
-              <div class="pub-buttons">
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/7341602/6266346-personas-con-discapacidad-en-el-empleo-publico-analisis-y-propuesta-de-calculo-de-la-cuota-de-empleo-en-la-administracion-publica.pdf?v=1733761163">
-                  <span class="pub-btn-text">
+            <!-- Columna 3 -->
+            <div class="pub-column">
+              <div class="pub-column-title">Otras Publicaciones</div>
+
+              <div class="pub-items">
+                <div class="pub-item">
+                  <button class="pub-card" data-link="https://cdn.www.gob.pe/uploads/document/file/7341602/6266346-personas-con-discapacidad-en-el-empleo-publico-analisis-y-propuesta-de-calculo-de-la-cuota-de-empleo-en-la-administracion-publica.pdf?v=1733761163">
                     Personas con discapacidad en el empleo público
-                  </span>
-                </button>
+                  </button>
+                </div>
 
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/7626736/7949-resumenes-de-diagnosticos-de-conocimiento-ejecutados.pdf">
-                  <span class="pub-btn-text">
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
                     Resultados de los Diagnósticos de Conocimiento 2025
-                  </span>
-                </button>
+                  </button>
+                </div>
 
-                <button class="pub-btn-link"
-                        data-link="https://cdn.www.gob.pe/uploads/document/file/8701153/7199599-compendio-normativo-de-la-ley-n-30057-ley-del-servicio-civil-y-del-sistema-administrativo-de-gestion-de-recursos-humanos.pdf?v=1758647952">
-                  <span class="pub-btn-text">
-                    Compendio normativo de la Ley 30057
-                  </span>
-                </button>
+                <div class="pub-item">
+                  <button class="pub-card" data-link="">
+                    Compendio normativo del Servicio Civil
+                  </button>
+                </div>
               </div>
-            </article>
+            </div>
 
           </div>
+
         </section>
       </section>
+
       <!-- ====================== DATOS ABIERTOS ====================== -->
       <section id="view-datos-abiertos" class="view">
         <section class="seccion-tablero neu">
@@ -1182,14 +1089,22 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
       });
     }
 
-    /* === PUBLICACIONES: BOTONES QUE ABREN EN NUEVA PESTAÑA === */
-    const pubButtons = document.querySelectorAll('.pub-btn-link');
-    if (pubButtons.length) {
-      pubButtons.forEach(btn => {
-        const link = btn.getAttribute('data-link');
-        if (!link) return; // si no hay link, no hace nada
-        btn.addEventListener('click', () => {
-          window.open(link, '_blank');
+    /* === SISTEMA DE TARJETAS DE PUBLICACIONES (abre en nueva pestaña) === */
+    const pubCards = document.querySelectorAll('.pub-card');
+
+    if (pubCards.length) {
+      pubCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const link = card.getAttribute('data-link') || '';
+
+          // marcar activa
+          pubCards.forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+
+          // abrir PDF si hay enlace
+          if (link.trim() !== '') {
+            window.open(link, '_blank');
+          }
         });
       });
     }
