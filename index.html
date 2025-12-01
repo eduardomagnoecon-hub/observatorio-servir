@@ -248,14 +248,29 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 
 .columna-texto{
   flex:1 1 520px;
-  padding:18px;
+  padding:24px;
   background:linear-gradient(180deg,rgba(249,251,252,.75) 0%, rgba(243,246,249,.75) 100%);
   border-radius:14px;
   border:1px dashed rgba(1,75,148,.18);
 
-  font-size:1.4rem;   /* 🔥 Agranda TODO el texto */
-  line-height:1.8;   /* 🔥 Mejora la lectura */
+  font-family:'Calibri', sans-serif;
+
+  font-size:1.85rem;
+  line-height:1.74;
+
+  /*  NEGRO REAL */
+  color:#000 !important;
+
+  /* Justificar estilo Word */
+  text-align:justify;
+  text-justify:inter-word;
 }
+
+/* Negro dentro del texto */
+.columna-texto *{
+  color:#000 !important;
+}
+
 
 :root[data-theme="dark"] .columna-texto{
   background:linear-gradient(180deg,rgba(15,23,42,.8) 0%, rgba(17,24,39,.8) 100%);
@@ -1061,7 +1076,7 @@ body.page-loaded .fixed-footer{
           <div class="datos-box">
             <p class="datos-texto">
               Consolida las bases de datos empleadas para realizar los estudios e informes publicados por 
-              la Autoridad Nacional del Servicio Civil SERVIR, útil para la academia y el público en general que 
+              la Autoridad Nacional del Servicio Civil (SERVIR), útil para la academia y el público en general que 
               necesite datos desagregados.
             </p>
 

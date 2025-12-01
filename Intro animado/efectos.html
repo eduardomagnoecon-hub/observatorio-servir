@@ -1,0 +1,122 @@
+<script>
+    // ================== DIBUJAR LOGO EN CANVAS ==================
+    function drawObservatorioLogo() {
+        const canvas = document.getElementById('logoCanvas');
+        if (!canvas || !canvas.getContext) return;
+
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+        const maxR = Math.min(w, h) * 0.42;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Suave sombra general
+        ctx.save();
+        ctx.shadowColor = 'rgba(228, 30, 77, 0.8)';
+        ctx.shadowBlur = 35;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
+        // Círculo exterior
+        ctx.fillStyle = '#C41B3F';
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Círculo medio
+        ctx.fillStyle = '#A51438';
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxR * 0.78, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Círculo interior rojo claro
+        ctx.fillStyle = '#E7325D';
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxR * 0.56, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Disco blanco (cuerpo de la Q)
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxR * 0.34, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Disco central rosado
+        ctx.fillStyle = '#F45B7A';
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxR * 0.20, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore(); // quitamos la sombra para la cola
+
+        // Cola de la Q
+        const tailWidth = maxR * 0.18;
+        const tailLen   = maxR * 0.9;
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(40 * Math.PI / 180); // inclinación de la cola
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(maxR * 0.10, -tailWidth / 2, tailLen * 0.55, tailWidth);
+
+        ctx.restore();
+    }
+
+    // ================== ANIMACIONES EXISTENTES ==================
+
+    // Generar líneas de escaneo
+    const scanLines = document.getElementById('scanLines');
+    for (let i = 0; i < 5; i++) {
+        const line = document.createElement('div');
+        line.className = 'scan-line';
+        line.style.left = `${20 * i}%`;
+        line.style.animationDelay = `${i * 0.2}s`;
+        scanLines.appendChild(line);
+    }
+
+    // Generar círculos concéntricos
+    const circlesContainer = document.getElementById('circlesContainer');
+    for (let i = 0; i < 5; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'circle';
+        circle.style.animationDelay = `${i * 0.25}s`;
+        circlesContainer.appendChild(circle);
+    }
+
+    // Generar partículas
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 40; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        const angle = (i / 40) * Math.PI * 2;
+        const distance = 150 + Math.random() * 200;
+        particle.style.left = '50%';
+        particle.style.top = '50%';
+        particle.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
+        particle.style.setProperty('--ty', `${Math.sin(angle) * distance}px`);
+        particle.style.animationDelay = `${0.8 + Math.random() * 0.6}s`;
+        particlesContainer.appendChild(particle);
+    }
+
+    // Dibujar el logo cuando cargue la página
+    window.addEventListener('load', drawObservatorioLogo);
+
+    // Auto-finalizar
+    setTimeout(() => {
+        endIntro();
+    }, 4000);
+
+    function endIntro() {
+        const intro = document.querySelector('.intro-container');
+        intro.style.transition = 'opacity 0.6s ease-out';
+        intro.style.opacity = '0';
+        setTimeout(() => {
+            // window.location.href = 'index.html';
+            console.log('Intro finalizado');
+        }, 600);
+    }
+</script>
