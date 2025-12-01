@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Observatorio del Servicio Civil – Intro Ejecutiva</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===================== RESET ===================== */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  width:100%;height:100%;
+  background:#000;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow:hidden;
+}
+
+/* ===================== FONDO ===================== */
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size:48px 48px;
+  opacity:.16;
+  z-index:-1;
+}
+
+/* ===================== CANVAS ===================== */
+#bg{
+  position:fixed;inset:0;
+  display:block;
+  z-index:1;
+}
+
+/* ===================== CONTENIDO FINAL ===================== */
+#main{
+  position:relative;z-index:3;
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity 1.4s ease-in-out;
+  background:radial-gradient(circle at top, #111 0, #000 55%);
+}
+
+#main.show{
+  opacity:1;pointer-events:auto;
+}
+
+#logo-final{
+  width:min(270px,65vw);
+  filter:drop-shadow(0 25px 40px rgba(0,0,0,.75));
+  transition:transform .45s ease, filter .45s ease;
+}
+#logo-link:hover #logo-final{
+  transform:scale(1.04);
+  filter:drop-shadow(0 40px 65px rgba(0,0,0,.9));
+}
+
+#main h1{
+  font-size:clamp(28px,4vw,42px);
+  color:white;margin-top:20px;
+  letter-spacing:.5px;
+}
+#main p{
+  color:#d8d8d8;
+  max-width:720px;
+  margin-top:6px;
+  text-align:center;
+  font-size:clamp(15px,2.5vw,18px);
+}
+
+/* Fade out del canvas */
+.fade-out{ opacity:0;transition:opacity 1s ease-in-out; }
+</style>
+
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div id="main">
+  <a id="logo-link" href="https://observatorio-servir.netlify.app/#inicio" target="_blank">
+    <img id="logo-final" src="logo-observatorio.png">
+  </a>
+  <h1>Observatorio del Servicio Civil</h1>
+  <p>Haz clic en el isotipo para ir al dashboard gerencial del Observatorio.</p>
+</div>
+
+<!-- Three.js -->
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+<script>
+/* ===================== ESCENA ===================== */
+const canvas=document.getElementById("bg");
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setClearColor(0x000000,1);
+
+const scene=new THREE.Scene();
+
+const camera=new THREE.PerspectiveCamera(38,window.innerWidth/window.innerHeight,0.1,1800);
+camera.position.set(0,0,52);
+
+/* LUCES */
+scene.add(new THREE.DirectionalLight(0xffffff,1).position.set(10,16,28));
+scene.add(new THREE.AmbientLight(0xffffff,0.55));
+
+/* ===================== LOGO ===================== */
+const logoGroup=new THREE.Group();
+scene.add(logoGroup);
+
+new THREE.TextureLoader().load("logo-observatorio.png",(tex)=>{
+  const geo=new THREE.PlaneGeometry(22,22);
+  const mat=new THREE.MeshStandardMaterial({map:tex,transparent:true});
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh.castShadow=true;
+  logoGroup.add(mesh);
+});
+
+/* Posición inicial estilo Apple keynote */
+logoGroup.position.set(0,0,-16);
+logoGroup.scale.set(.18,.18,.18);
+
+/* ===================== DASHBOARDS ===================== */
+const dashboards=new THREE.Group();
+scene.add(dashboards);
+
+const baseColor=new THREE.Color(0x15171d);
+const red1=new THREE.Color(0xC41B3F);
+const red2=new THREE.Color(0xE13B61);
+
+function miniKpiPanel(){
+  const g=new THREE.Group();
+
+  const panel=new THREE.Mesh(
+    new THREE.PlaneGeometry(2.8,1.6),
+    new THREE.MeshBasicMaterial({color:baseColor})
+  );
+  g.add(panel);
+
+  for(let i=0;i<5;i++){
+    const bar=new THREE.Mesh(
+      new THREE.PlaneGeometry(.23, .12 + Math.random()*0.45),
+      new THREE.MeshBasicMaterial({color:Math.random()<0.5?red1:red2,opacity:.92})
+    );
+    bar.position.set(-0.9 + i*0.45, -0.35 + bar.geometry.parameters.height/2, .01);
+    g.add(bar);
+  }
+
+  const top=new THREE.Mesh(
+    new THREE.PlaneGeometry(1.9,.07),
+    new THREE.MeshBasicMaterial({color:0xffffff,opacity:.4})
+  );
+  top.position.set(0,.58,.02);
+  g.add(top);
+
+  return g;
+}
+
+for(let i=0;i<160;i++){
+  const p=miniKpiPanel();
+  p.position.set(
+    (Math.random()-.5)*75,
+    (Math.random()-.5)*45,
+    -90 - Math.random()*120
+  );
+  dashboards.add(p);
+}
+
+/* ===================== ANIMACIÓN ===================== */
+let tm=performance.now();
+let ended=false;
+
+function anim(t){
+  requestAnimationFrame(anim);
+  const d=(t-tm)/1000;
+
+/* Lluvia de dashboards */
+  dashboards.children.forEach(p=>{
+    p.position.z+=0.36;
+    p.position.y-=0.018;
+    if(p.position.z>28){
+      p.position.z=-170 - Math.random()*50;
+      p.position.x=(Math.random()-.5)*75;
+      p.position.y=(Math.random()-.5)*45;
+    }
+  });
+
+/* Entrada Apple del logo */
+  if(d<2.4){
+    const k=Math.min(1,d/2.4);
+    const s=0.18 + k*0.82;
+    logoGroup.scale.set(s,s,s);
+    logoGroup.position.z=-16 + k*8;
+  }
+
+/* Zoom cinematográfico */
+  if(d>=2.4 && d<5){
+    const k=(d-2.4)/2.6;
+    camera.position.z=52 - k*26;
+    dashboards.position.z=-k*16;
+  }
+
+/* Final */
+  if(d>=5 && !ended){
+    ended=true;
+    finish();
+  }
+
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(anim);
+
+function finish(){
+  setTimeout(()=>{
+    canvas.classList.add("fade-out");
+    document.getElementById("main").classList.add("show");
+    document.body.style.overflow="auto";
+  },900);
+}
+
+window.addEventListener("resize",()=>{
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+</script>
+
+</body>
+</html>

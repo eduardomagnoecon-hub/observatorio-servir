@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Observatorio del Servicio Civil – Sistema Solar de Tableros</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    width:100%;height:100%;
+    background:#000;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    overflow:hidden;
+  }
+
+  :root{
+    --rojo-servir:#C41B3F;
+    --rosa-servir:#E13B61;
+    --fondo:#020308;
+  }
+
+  /* Fondo general */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background:
+      radial-gradient(circle at top,#111827 0,var(--fondo) 65%);
+    z-index:-2;
+  }
+  body::after{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size:52px 52px;
+    opacity:.16;
+    z-index:-1;
+    pointer-events:none;
+  }
+
+  /* ============ INTRO ============ */
+  #intro{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:10;
+    transition:opacity 1s ease-in-out;
+  }
+  #intro.hidden{
+    opacity:0;
+    pointer-events:none;
+  }
+
+  .universe{
+    position:relative;
+    width:min(700px,95vw);
+    height:min(700px,95vw);
+  }
+
+  /* halo central */
+  .core-glow{
+    position:absolute;
+    inset:22%;
+    border-radius:50%;
+    background:
+      radial-gradient(circle,var(--rosa-servir) 0,transparent 55%);
+    filter:blur(20px);
+    opacity:.0;
+    transition:opacity 1.2s ease-out;
+  }
+  .core-glow.on{
+    opacity:.55;
+  }
+
+  /* logo central (sol) */
+  .core-logo{
+    position:absolute;
+    inset:32%;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 0%,#ffffffaa,transparent 60%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:
+      0 24px 55px rgba(0,0,0,.9),
+      0 0 40px rgba(196,27,63,.7);
+    transform:scale(.7);
+    opacity:0;
+    transition:opacity 1.1s ease-out .2s,
+               transform 1.1s cubic-bezier(.19,1,.22,1) .2s;
+  }
+  .core-logo.show{
+    opacity:1;
+    transform:scale(1);
+  }
+  .core-logo img{
+    width:70%;
+    max-width:260px;
+  }
+
+  /* órbitas (contenedores que giran) */
+  .orbit{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+  }
+
+  .orbit-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+  }
+
+  /* animaciones de giro */
+  @keyframes orbit-slow {
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+  }
+  @keyframes orbit-fast {
+    from{transform:rotate(0deg);}
+    to{transform:rotate(-360deg);}
+  }
+
+  .orbit.level-1{
+    animation:orbit-slow 26s linear infinite;
+  }
+  .orbit.level-2{
+    animation:orbit-fast 18s linear infinite;
+  }
+  .orbit.level-3{
+    animation:orbit-slow 32s linear infinite;
+  }
+
+  /* tarjeta de tablero (planeta) */
+  .planet-card{
+    position:absolute;
+    width:180px;
+    max-width:30vw;
+    border-radius:16px;
+    padding:10px 10px 12px;
+    background:linear-gradient(135deg,#020617,#020308);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:0 18px 40px rgba(0,0,0,.92);
+    color:#e5e7eb;
+    transform-origin:center;
+    transform:translate(-50%,-50%) scale(.85);
+    opacity:0;
+    transition:
+      opacity .9s ease-out,
+      transform 1.1s cubic-bezier(.19,1,.22,1),
+      top 1.1s cubic-bezier(.19,1,.22,1),
+      left 1.1s cubic-bezier(.19,1,.22,1),
+      filter .9s ease-out;
+  }
+  .planet-card.visible{
+    opacity:1;
+  }
+
+  .planet-header{
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:#9ca3af;
+    margin-bottom:4px;
+  }
+  .planet-title{
+    font-size:12px;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+
+  .planet-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-bottom:6px;
+  }
+  .planet-chip{
+    padding:3px 7px;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,.7);
+    font-size:8px;
+    color:#e5e7eb;
+    background:rgba(15,23,42,.9);
+  }
+  .planet-chip.primary{
+    border-color:rgba(225,59,97,.9);
+    background:linear-gradient(120deg,#C41B3F,#E13B61);
+    color:white;
+  }
+
+  .planet-kpis{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:4px;
+  }
+  .planet-kpi{
+    border-radius:10px;
+    padding:4px 6px;
+    background:radial-gradient(circle at 0 0,#C41B3F33 0,transparent 60%);
+    border:1px solid rgba(148,163,184,.45);
+  }
+  .planet-kpi-label{
+    font-size:8px;
+    color:#9ca3af;
+    margin-bottom:2px;
+  }
+  .planet-kpi-value{
+    font-size:11px;
+    font-weight:600;
+  }
+
+  /* estados de colapso al centro */
+  .collapse .planet-card{
+    top:50% !important;
+    left:50% !important;
+    transform:translate(-50%,-50%) scale(.1);
+    opacity:0.15;
+    filter:blur(1px);
+  }
+
+  .collapse .core-glow{
+    opacity:.9;
+    filter:blur(26px);
+  }
+
+  /* destello final */
+  .flash{
+    position:absolute;
+    inset:0;
+    background:#ffffff;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease-out;
+  }
+  .flash.on{
+    opacity:1;
+  }
+
+  /* ============ PANTALLA FINAL ============ */
+  #main{
+    position:relative;
+    z-index:1;
+    width:100%;height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:32px 20px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 1.2s ease-in-out;
+    background:radial-gradient(circle at top,#111827 0,#020308 60%);
+  }
+  #main.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  #logo-link{
+    display:inline-block;
+  }
+  #logo-final{
+    width:min(260px,60vw);
+    filter:drop-shadow(0 26px 48px rgba(0,0,0,.9));
+    transition:transform .35s ease, filter .35s ease;
+  }
+  #logo-link:hover #logo-final{
+    transform:translateY(-4px) scale(1.04);
+    filter:drop-shadow(0 40px 80px rgba(0,0,0,1));
+  }
+
+  #main h1{
+    color:#fff;
+    font-size:clamp(26px,4vw,40px);
+    margin-top:18px;
+    letter-spacing:.04em;
+  }
+  #main p{
+    color:#d4d4d4;
+    max-width:720px;
+    margin:10px auto 0;
+    font-size:clamp(15px,2.4vw,18px);
+  }
+
+  .btn-go{
+    margin-top:22px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 22px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.22);
+    background:radial-gradient(circle at 0 0,var(--rojo-servir) 0,transparent 55%);
+    color:#fff;
+    text-decoration:none;
+    font-size:15px;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:
+      transform .2s ease,
+      box-shadow .2s ease,
+      background .2s ease,
+      border-color .2s ease;
+  }
+  .btn-go span.icon{font-size:18px;}
+  .btn-go:hover{
+    transform:translateY(-1px);
+    box-shadow:0 12px 30px rgba(0,0,0,.85);
+    background:radial-gradient(circle at 0 0,var(--rosa-servir) 0,transparent 60%);
+    border-color:rgba(255,255,255,.4);
+  }
+
+  @media (max-width:600px){
+    .universe{
+      width:100%;
+      height:100%;
+    }
+    .planet-card{
+      width:160px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- INTRO SISTEMA SOLAR -->
+<div id="intro">
+  <div class="universe" id="universe">
+    <div class="core-glow" id="coreGlow"></div>
+
+    <div class="core-logo" id="coreLogo">
+      <img src="logo-observatorio.png" alt="Observatorio del Servicio Civil">
+    </div>
+
+    <!-- órbitas -->
+    <div class="orbit level-1">
+      <div class="orbit-inner" id="orbit1"></div>
+    </div>
+    <div class="orbit level-2">
+      <div class="orbit-inner" id="orbit2"></div>
+    </div>
+    <div class="orbit level-3">
+      <div class="orbit-inner" id="orbit3"></div>
+    </div>
+
+    <div class="flash" id="flash"></div>
+  </div>
+</div>
+
+<!-- PANTALLA FINAL -->
+<div id="main">
+  <a id="logo-link" href="https://observatorio-servir.netlify.app/#inicio" target="_blank" rel="noopener">
+    <img id="logo-final" src="logo-observatorio.png" alt="Ir al Observatorio del Servicio Civil">
+  </a>
+  <h1>Observatorio del Servicio Civil</h1>
+  <p>
+    Haz clic en el isotipo para ingresar al dashboard gerencial del Observatorio.
+  </p>
+  <a class="btn-go" href="https://observatorio-servir.netlify.app/#inicio" target="_blank" rel="noopener">
+    <span class="icon">➜</span> Ir al Observatorio
+  </a>
+</div>
+
+<script>
+  window.addEventListener("load", () => {
+    const orbit1 = document.getElementById("orbit1");
+    const orbit2 = document.getElementById("orbit2");
+    const orbit3 = document.getElementById("orbit3");
+    const coreGlow = document.getElementById("coreGlow");
+    const coreLogo = document.getElementById("coreLogo");
+    const universe = document.getElementById("universe");
+    const flash = document.getElementById("flash");
+    const intro = document.getElementById("intro");
+    const main = document.getElementById("main");
+
+    // función para crear una tarjeta (planeta-tablero)
+    function createPlanet(textTop, chipMain, ringElement, radiusPercent, angleDeg){
+      const planet = document.createElement("div");
+      planet.className = "planet-card";
+
+      planet.innerHTML = `
+        <div class="planet-header">${textTop}</div>
+        <div class="planet-title">Indicadores de gestión pública</div>
+        <div class="planet-chips">
+          <div class="planet-chip primary">${chipMain}</div>
+          <div class="planet-chip">Calidad</div>
+          <div class="planet-chip">Cobertura</div>
+        </div>
+        <div class="planet-kpis">
+          <div class="planet-kpi">
+            <div class="planet-kpi-label">Entidades</div>
+            <div class="planet-kpi-value">2 3${Math.floor(Math.random()*10)}</div>
+          </div>
+          <div class="planet-kpi">
+            <div class="planet-kpi-label">% actualizadas</div>
+            <div class="planet-kpi-value">${(90 + Math.random()*8).toFixed(1)}%</div>
+          </div>
+          <div class="planet-kpi">
+            <div class="planet-kpi-label">Indicadores</div>
+            <div class="planet-kpi-value">${120+Math.floor(Math.random()*12)}</div>
+          </div>
+          <div class="planet-kpi">
+            <div class="planet-kpi-label">Años</div>
+            <div class="planet-kpi-value">2009–2025</div>
+          </div>
+        </div>
+      `;
+
+      // colocación en la órbita (usando angle y radius)
+      const center = 50; // %
+      const r = radiusPercent;
+      const rad = angleDeg * Math.PI / 180;
+      const top = center + r * Math.sin(rad);
+      const left = center + r * Math.cos(rad);
+
+      planet.style.top = top + "%";
+      planet.style.left = left + "%";
+
+      ringElement.appendChild(planet);
+
+      // hacer visible con pequeño delay
+      setTimeout(() => {
+        planet.classList.add("visible");
+      }, 500 + Math.random()*800);
+
+      return planet;
+    }
+
+    // Crear planetas en distintas órbitas
+    const planets = [];
+
+    // órbita 1 (más cercana)
+    for(let i=0;i<5;i++){
+      const angle = i * (360/5);
+      planets.push(
+        createPlanet("NIVEL NACIONAL","Nacional", orbit1, 23, angle)
+      );
+    }
+
+    // órbita 2 (media)
+    for(let i=0;i<6;i++){
+      const angle = i * (360/6) + 30;
+      const chip = (i%2===0) ? "Regional" : "Local";
+      planets.push(
+        createPlanet("GESTIÓN REGIONAL / LOCAL", chip, orbit2, 34, angle)
+      );
+    }
+
+    // órbita 3 (externa)
+    for(let i=0;i<7;i++){
+      const angle = i * (360/7) + 15;
+      planets.push(
+        createPlanet("SERVICIO CIVIL", "Comparativo", orbit3, 43, angle)
+      );
+    }
+
+    // Encender centro (halo + logo)
+    setTimeout(() => {
+      coreGlow.classList.add("on");
+      coreLogo.classList.add("show");
+    }, 400);
+
+    // Fase colapso tipo “agujero de gusano”
+    setTimeout(() => {
+      universe.classList.add("collapse");
+    }, 2600);
+
+    // Destello blanco breve
+    setTimeout(() => {
+      flash.classList.add("on");
+    }, 3600);
+
+    // Pasar a pantalla final
+    setTimeout(() => {
+      intro.classList.add("hidden");
+      flash.classList.remove("on");
+      main.classList.add("show");
+      document.body.style.overflow = "auto";
+    }, 4200);
+  });
+</script>
+
+</body>
+</html>

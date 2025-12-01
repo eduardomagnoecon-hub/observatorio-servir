@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso: Observatorio Estadístico Activo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap'); /* Fuente para el código/datos, más grueso */
+
+        :root {
+            --primary-color: #00e6e6; /* Cian (Datos y Resplandor) */
+            --secondary-color: #ff00ff; /* Magenta (Acento y Error) */
+            --background-dark: #000005; /* Fondo más oscuro para mayor contraste */
+            --text-light: #e0f7fa;
+            --fade-delay: 1s; /* Entrada muy rápida */
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--background-dark) 0%, #100518 100%); /* Degradado más oscuro */
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-light);
+            position: relative;
+            cursor: none;
+        }
+
+        /* Lienzo de Datos (Efecto Dashboard/Matrix) */
+        #data-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.4; /* Reducido para mayor transparencia general */
+        }
+
+        /* Contenedor principal */
+        .intro-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 0.5s;
+            z-index: 5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Botón de entrada (Foco principal) */
+        .enter-button {
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 8px;
+            color: var(--background-dark);
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--primary-color), 0 0 40px var(--secondary-color);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            z-index: 20; /* Asegura que esté por encima del canvas */
+        }
+
+        .enter-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--primary-color), 0 0 60px var(--secondary-color);
+            filter: brightness(1.2);
+        }
+        
+        /* Cursor y Glitch overlay (Estilos esenciales mantenidos) */
+        .glitch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+        }
+
+        .glitch-overlay::before,
+        .glitch-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .glitch-overlay::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" stitchTiles="stitch" /><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.1"/></svg>');
+            animation: glitchEffect 0.3s infinite alternate;
+        }
+
+        .glitch-overlay::after {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="1" stitchTiles="stitch" /><feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.1"/></svg>');
+            animation: glitchEffect 0.3s infinite alternate-reverse;
+        }
+
+        @keyframes glitchEffect {
+            0% { transform: translate(-2px, 2px); opacity: 0.6; }
+            25% { transform: translate(4px, -4px); opacity: 0.8; }
+            50% { transform: translate(-3px, 3px); opacity: 0.7; }
+            75% { transform: translate(2px, -2px); opacity: 0.9; }
+            100% { transform: translate(-1px, 1px); opacity: 0.6; }
+        }
+
+        .glitch-active {
+            animation: glitchFadeInOut 0.2s linear forwards;
+        }
+        
+        @keyframes glitchFadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+            z-index: 9999;
+        }
+
+        .custom-cursor.active {
+            width: 30px;
+            height: 30px;
+            background-color: var(--secondary-color);
+            box-shadow: 0 0 15px var(--secondary-color), 0 0 25px var(--primary-color);
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .enter-button {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Lienzo para el efecto de Dashboard de Datos Animado -->
+    <canvas id="data-canvas"></canvas>
+
+    <div class="intro-container">
+        <div class="glitch-overlay"></div>
+
+        <!-- Cursor personalizado -->
+        <div class="custom-cursor"></div>
+
+        <!-- Botón de entrada: Único elemento interactivo -->
+        <button class="enter-button" onclick="goToWebsite()">ACCESO AL OBSERVATORIO</button>
+    </div>
+
+    <script>
+        const introContainer = document.querySelector('.intro-container');
+        const glitchOverlay = document.querySelector('.glitch-overlay');
+        const customCursor = document.querySelector('.custom-cursor');
+        
+        // Función para ir a la siguiente página
+        function goToWebsite() {
+            introContainer.style.opacity = 0;
+            introContainer.style.transition = 'opacity 1s ease-out';
+            setTimeout(() => {
+                window.location.href = 'tu-pagina-principal.html'; // Cambia esto a la URL de tu página principal
+            }, 1000);
+        }
+
+        // --- Efecto Matriz de Datos y Dashboard en Canvas ---
+        const canvas = document.getElementById('data-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+
+        let columns;
+        const fontSize = 16;
+        let drops;
+        const characters = '0123456789ABCDEF!@#$%^&*()'; // Caracteres para la lluvia de código (más enfocados en números/hex)
+        let time = 0; // Variable para la animación del dashboard
+
+        function initializeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            columns = Math.floor(width / fontSize);
+            drops = [];
+            for(let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+        }
+
+        // Dibuja la lluvia de código
+        function drawMatrix() {
+            // Fondo semitransparente para el efecto de estela (reducido a 0.05 para mayor transparencia)
+            ctx.fillStyle = 'rgba(0, 0, 5, 0.05)'; /* Usamos un color base muy oscuro */
+            ctx.fillRect(0, 0, width, height);
+            
+            ctx.fillStyle = '#00FFFF'; // Color Cian puro y más brillante (para el brillo)
+            ctx.font = `${fontSize}px 'Roboto Mono', monospace`;
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = characters[Math.floor(Math.random() * characters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                
+                drops[i]++;
+            }
+        }
+
+        // Dibuja el dashboard abstracto (simulación de gráfico de ondas)
+        function drawDashboard() {
+            const centerY = height * 0.5;
+            const waveAmplitude = 50;
+            const waveFrequency = 0.005;
+            const lineThickness = 2;
+            
+            // 1. Línea Central Fija (Eje)
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.strokeStyle = 'rgba(255, 0, 255, 0.5)'; // Magenta semi-transparente
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // 2. Onda de Datos (Simulación de actividad)
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+
+            for (let x = 0; x < width; x += 5) {
+                // Genera una onda basada en el tiempo para el movimiento
+                const y = centerY + waveAmplitude * Math.sin(x * waveFrequency + time * 0.05);
+                ctx.lineTo(x, y);
+            }
+
+            ctx.strokeStyle = 'var(--primary-color)'; // Cian brillante
+            ctx.lineWidth = lineThickness;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = 'var(--primary-color)';
+            ctx.stroke();
+
+            ctx.shadowBlur = 0; // Restaura el blur
+
+            time++; // Incrementa el tiempo para la animación
+        }
+
+        function gameLoop() {
+            // Dibuja la lluvia de código (fondo)
+            drawMatrix(); 
+            // Dibuja el dashboard animado (primer plano)
+            drawDashboard();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        let isMatrixRunning = false;
+
+        function startMatrixEffect() {
+            if (isMatrixRunning) return;
+            initializeCanvas();
+            // Usar requestAnimationFrame para una animación más suave y menos uso de CPU
+            requestAnimationFrame(gameLoop); 
+            isMatrixRunning = true;
+        }
+
+        window.addEventListener('resize', initializeCanvas);
+
+        // --- Efecto Glitch intermitente ---
+        function activateGlitch() {
+            glitchOverlay.classList.add('glitch-active');
+            setTimeout(() => {
+                glitchOverlay.classList.remove('glitch-active');
+            }, 200);
+        }
+
+        // Activa el glitch en intervalos aleatorios
+        setTimeout(() => {
+            setInterval(activateGlitch, Math.random() * 5000 + 3000); 
+        }, 1500); // Comienza a activar el glitch después de que la pantalla aparece
+
+
+        // --- Cursor personalizado ---
+        document.addEventListener('mousemove', e => {
+            customCursor.style.left = `${e.clientX}px`;
+            customCursor.style.top = `${e.clientY}px`;
+        });
+
+        document.addEventListener('mousedown', () => {
+            customCursor.classList.add('active');
+        });
+
+        document.addEventListener('mouseup', () => {
+            customCursor.classList.remove('active');
+        });
+
+        // Inicializar el efecto de matriz al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            startMatrixEffect();
+        });
+
+    </script>
+</body>
+</html>

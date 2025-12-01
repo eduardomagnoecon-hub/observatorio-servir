@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Observatorio – Universo de Datos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    width:100%;height:100%;
+    background:#000;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    overflow:hidden;
+  }
+
+  /* sutil grilla de fondo para dar sensación tech */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size:56px 56px;
+    opacity:.15;
+    z-index:-1;
+    pointer-events:none;
+  }
+
+  canvas#bg{
+    position:fixed;inset:0;z-index:1;display:block;
+  }
+
+  /* CONTENIDO FINAL */
+  #main{
+    position:relative;z-index:3;
+    width:100%;height:100%;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;
+    padding:32px 20px;
+    opacity:0;pointer-events:none;
+    transition:opacity 1.3s ease-in-out;
+    background:radial-gradient(circle at top,#111827 0,#020308 60%);
+  }
+  #main.show{
+    opacity:1;pointer-events:auto;
+  }
+
+  #logo-link{
+    display:inline-block;
+  }
+  #logo-final{
+    width:min(260px,60vw);
+    filter:drop-shadow(0 26px 42px rgba(0,0,0,.85));
+    transition:transform .35s ease, filter .35s ease;
+  }
+  #logo-link:hover #logo-final{
+    transform:translateY(-4px) scale(1.04);
+    filter:drop-shadow(0 36px 70px rgba(0,0,0,1));
+  }
+
+  #main h1{
+    color:#fff;
+    font-size:clamp(26px,4vw,40px);
+    margin-top:18px;
+    letter-spacing:.04em;
+  }
+  #main p{
+    color:#d4d4d4;
+    max-width:720px;
+    margin:10px auto 0;
+    font-size:clamp(15px,2.4vw,18px);
+  }
+
+  .btn-go{
+    margin-top:22px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 22px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.22);
+    background:radial-gradient(circle at 0 0,#C41B3F 0,transparent 55%);
+    color:#fff;
+    text-decoration:none;
+    font-size:15px;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:
+      transform .2s ease,
+      box-shadow .2s ease,
+      background .2s ease,
+      border-color .2s ease;
+  }
+  .btn-go span.icon{
+    font-size:18px;
+  }
+  .btn-go:hover{
+    transform:translateY(-1px);
+    box-shadow:0 12px 30px rgba(0,0,0,.85);
+    background:radial-gradient(circle at 0 0,#E13B61 0,transparent 60%);
+    border-color:rgba(255,255,255,.4);
+  }
+
+  /* Fade out del canvas al final */
+  .fade-out{
+    opacity:0;
+    transition:opacity 1.1s ease-in-out;
+    pointer-events:none;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<!-- CONTENIDO FINAL -->
+<div id="main">
+  <a id="logo-link" href="https://observatorio-servir.netlify.app/#inicio" target="_blank" rel="noopener">
+    <img id="logo-final" src="logo-observatorio.png" alt="Ir al Observatorio del Servicio Civil">
+  </a>
+  <h1>Observatorio del Servicio Civil</h1>
+  <p>
+    Haz clic en el isotipo para ingresar al dashboard gerencial del Observatorio.
+  </p>
+  <a class="btn-go" href="https://observatorio-servir.netlify.app/#inicio" target="_blank" rel="noopener">
+    <span class="icon">➜</span> Ir al Observatorio
+  </a>
+</div>
+
+<!-- Three.js -->
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+<script>
+  const canvas = document.getElementById("bg");
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x020308, 1);
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(
+    40,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    3000
+  );
+  camera.position.set(0, 0, 60);
+
+  // Luces suaves
+  scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  dirLight.position.set(14, 20, 30);
+  scene.add(dirLight);
+
+  // ---------- ESTRELLAS / PUNTOS DE DATOS ----------
+  const starsGeom = new THREE.BufferGeometry();
+  const starCount = 2500;
+  const positions = new Float32Array(starCount * 3);
+  for(let i=0;i<starCount;i++){
+    positions[i*3+0] = (Math.random()-0.5)*260;
+    positions[i*3+1] = (Math.random()-0.5)*160;
+    positions[i*3+2] = -Math.random()*800 - 50;
+  }
+  starsGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const starsMat = new THREE.PointsMaterial({
+    color:0xffffff,
+    size:0.45,
+    transparent:true,
+    opacity:0.85
+  });
+  const stars = new THREE.Points(starsGeom, starsMat);
+  scene.add(stars);
+
+  // ---------- PANELES DE ESTADÍSTICAS ----------
+  const panelsGroup = new THREE.Group();
+  scene.add(panelsGroup);
+
+  const baseColor = new THREE.Color(0x101320);
+  const red1 = new THREE.Color(0xC41B3F);
+  const red2 = new THREE.Color(0xE13B61);
+  const accent = new THREE.Color(0xffffff);
+
+  function createPanel(){
+    const g = new THREE.Group();
+
+    // Panel base
+    const panelGeo = new THREE.PlaneGeometry(4, 2.2);
+    const panelMat = new THREE.MeshBasicMaterial({color:baseColor});
+    const panel = new THREE.Mesh(panelGeo, panelMat);
+    g.add(panel);
+
+    // Línea KPI arriba
+    const kpiGeo = new THREE.PlaneGeometry(2.4, 0.12);
+    const kpiMat = new THREE.MeshBasicMaterial({
+      color:accent,
+      transparent:true,
+      opacity:0.4
+    });
+    const kpi = new THREE.Mesh(kpiGeo, kpiMat);
+    kpi.position.set(0, 0.75, 0.01);
+    g.add(kpi);
+
+    // Barras tipo gráfico
+    const barsCount = 5;
+    for(let i=0;i<barsCount;i++){
+      const w = 0.32;
+      const h = 0.18 + Math.random()*0.9;
+      const barGeo = new THREE.PlaneGeometry(w, h);
+      const c = (i%2===0)? red1 : red2;
+      const barMat = new THREE.MeshBasicMaterial({
+        color: c,
+        transparent:true,
+        opacity:0.9
+      });
+      const bar = new THREE.Mesh(barGeo, barMat);
+      const xStart = -0.9;
+      bar.position.set(xStart + i*0.49, -0.5 + h/2, 0.02);
+      g.add(bar);
+    }
+
+    // línea del tiempo abajo
+    const lineGeo = new THREE.PlaneGeometry(2.7, 0.08);
+    const lineMat = new THREE.MeshBasicMaterial({
+      color:0xffffff,
+      transparent:true,
+      opacity:0.25
+    });
+    const line = new THREE.Mesh(lineGeo, lineMat);
+    line.position.set(0, -0.85, 0.02);
+    g.add(line);
+
+    return g;
+  }
+
+  const NUM_PANELS = 90;
+  for(let i=0;i<NUM_PANELS;i++){
+    const p = createPanel();
+    p.position.set(
+      (Math.random()-0.5)*140,
+      (Math.random()-0.5)*80,
+      -100 - Math.random()*600
+    );
+    p.rotation.set(
+      (Math.random()-0.5)*0.7,
+      (Math.random()-0.5)*0.7,
+      (Math.random()-0.5)*0.4
+    );
+    panelsGroup.add(p);
+  }
+
+  // ---------- LOGO (APARECE AL FINAL DEL VIAJE) ----------
+  const logoGroup = new THREE.Group();
+  scene.add(logoGroup);
+
+  const texLoader = new THREE.TextureLoader();
+  texLoader.load("logo-observatorio.png", (tex)=>{
+    const geo = new THREE.PlaneGeometry(22,22);
+    const mat = new THREE.MeshStandardMaterial({
+      map:tex,
+      transparent:true
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.castShadow = true;
+    logoGroup.add(mesh);
+  });
+
+  logoGroup.position.set(0,0,-140);
+  logoGroup.scale.set(0.1,0.1,0.1);
+
+  // ---------- ANIMACIÓN ----------
+  let start = performance.now();
+  let ended = false;
+
+  function animate(now){
+    requestAnimationFrame(animate);
+    const t = (now - start)/1000; // segundos
+
+    // Estrellas se desplazan hacia la cámara
+    const starPos = stars.geometry.attributes.position;
+    for(let i=0;i<starCount;i++){
+      let z = starPos.getZ(i);
+      z += 0.7; // velocidad hacia la cámara
+      if(z > 20){
+        z = -800 - Math.random()*200;
+      }
+      starPos.setZ(i,z);
+    }
+    starPos.needsUpdate = true;
+
+    // Paneles avanzan y rotan levemente
+    panelsGroup.children.forEach(p=>{
+      p.position.z += 0.75;
+      p.rotation.y += 0.002;
+      p.rotation.x += 0.001;
+      if(p.position.z > 30){
+        p.position.z = -700 - Math.random()*200;
+        p.position.x = (Math.random()-0.5)*140;
+        p.position.y = (Math.random()-0.5)*80;
+      }
+    });
+
+    // La cámara hace un ligero movimiento de paneo (para sensación cinemática)
+    camera.position.x = Math.sin(t*0.25) * 3;
+    camera.position.y = Math.sin(t*0.18) * 2;
+
+    // Fase 1: viaje profundo entre datos (0–4s)
+    if(t < 4){
+      camera.position.z = 60 - t*3; // se acerca un poco
+    }
+
+    // Fase 2: el logo aparece al frente (4–7s)
+    if(t >= 4 && t < 7){
+      const k = (t-4)/3; // 0..1
+      logoGroup.position.z = -140 + k*115;  // -140 -> -25
+      logoGroup.scale.setScalar(0.1 + k*0.9); // 0.1 -> 1.0
+    }
+
+    // Fase 3: foco en el logo y fade out (7s+)
+    if(t >= 7 && !ended){
+      ended = true;
+      endIntro();
+    }
+
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(animate);
+
+  function endIntro(){
+    const canvasEl = document.getElementById("bg");
+    const main = document.getElementById("main");
+    setTimeout(()=>{
+      canvasEl.classList.add("fade-out");
+      main.classList.add("show");
+      document.body.style.overflow = "auto";
+    }, 900);
+  }
+
+  window.addEventListener("resize", ()=>{
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    renderer.setSize(w,h);
+    camera.aspect = w/h;
+    camera.updateProjectionMatrix();
+  });
+</script>
+
+</body>
+</html>
