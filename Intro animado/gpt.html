@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intro EL OBSERVATORIO</title>
+
+<!-- Fuentes Google -->
+<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@300;400;600&family=Roboto+Condensed:wght@300;400&display=swap" rel="stylesheet">
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<style>
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  body{
+    background:#02030b;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    font-family:'Cabin',sans-serif;
+    color:#fff;
+  }
+
+  .intro-container{
+    width:100%;
+    height:100%;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+
+  /* Luces de fondo (glass vibes) */
+  .bg-glow{
+    position:absolute;
+    border-radius:999px;
+    filter:blur(70px);
+    opacity:0.55;
+    pointer-events:none;
+    mix-blend-mode:screen;
+  }
+
+  .bg-glow.glow-1{
+    width:420px;
+    height:420px;
+    background:radial-gradient(circle at 30% 30%, #35c2ff, transparent 65%);
+    top:5%;
+    left:8%;
+  }
+
+  .bg-glow.glow-2{
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle at 60% 70%, #c41b3f, transparent 65%);
+    bottom:-8%;
+    right:-4%;
+  }
+
+  .bg-glow.glow-3{
+    width:380px;
+    height:380px;
+    background:radial-gradient(circle at 50% 50%, #00f6ff, transparent 70%);
+    top:45%;
+    left:50%;
+    transform:translateX(-50%);
+    opacity:0.35;
+  }
+
+  /* Scanlines sutiles */
+  .scanlines{
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.08) 0px,
+      rgba(255,255,255,0.04) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+    opacity:0.08;
+    pointer-events:none;
+  }
+
+  svg{
+    width:80%;
+    max-width:980px;
+    overflow:visible;
+  }
+
+  /* Glass effect para el dashboard */
+  .glass{
+    fill:rgba(10,14,30,0.45);
+    stroke:rgba(255,255,255,0.14);
+    stroke-width:1.6;
+  }
+
+  .glass-strong{
+    fill:rgba(14,20,46,0.75);
+    stroke:rgba(255,255,255,0.18);
+    stroke-width:1.8;
+  }
+
+  .mini-label{
+    fill:#9fb3ff;
+    font-size:11px;
+    font-family:'Roboto Condensed',sans-serif;
+    letter-spacing:0.08em;
+  }
+
+  .mini-number{
+    fill:#ffffff;
+    font-size:16px;
+    font-family:'Cabin',sans-serif;
+    font-weight:400;
+  }
+
+  .chip{
+    fill:rgba(255,255,255,0.06);
+    stroke:rgba(255,255,255,0.16);
+    stroke-width:1.2;
+  }
+
+  .chip-text{
+    fill:#e0e7ff;
+    font-size:10px;
+    font-family:'Roboto Condensed',sans-serif;
+    letter-spacing:0.16em;
+  }
+
+  .spark{
+    fill:#35c2ff;
+  }
+
+  /* Texto final */
+  #textoFinal{
+    fill:#ffffff;
+    font-size:46px;
+    font-weight:300;
+    letter-spacing:0.55em;
+    text-transform:uppercase;
+  }
+
+  #subFinal{
+    fill:#9fa6c0;
+    font-size:15px;
+    font-family:'Roboto Condensed',sans-serif;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+  }
+</style>
+</head>
+
+<body>
+<div class="intro-container">
+  <!-- Luces de fondo -->
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+  <div class="scanlines"></div>
+
+  <!-- ========================= SVG INTRO ========================= -->
+  <svg id="svgIntro" viewBox="0 0 1000 600">
+
+    <!-- Fondo sutil central para el dashboard -->
+    <defs>
+      <linearGradient id="gradPanel" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#1b2340" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#050814" stop-opacity="0.92"/>
+      </linearGradient>
+
+      <filter id="shadowSoft" x="-40%" y="-40%" width="180%" height="180%">
+        <feDropShadow dx="0" dy="18" stdDeviation="30" flood-color="#000000" flood-opacity="0.75"/>
+      </filter>
+    </defs>
+
+    <!-- FASE 1: LÍNEA DE DATOS -->
+    <path id="lineaDatos"
+          d="M80 340 
+             Q 200 260 320 300 
+             T 560 310 
+             T 760 270 
+             T 930 310"
+          stroke="#35c2ff"
+          stroke-width="3"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+    <!-- Nodo inicial y final de la línea -->
+    <circle id="nodoInicio" cx="80" cy="340" r="5" fill="#35c2ff" opacity="0"/>
+    <circle id="nodoFinal" cx="930" cy="310" r="6" fill="#35c2ff" opacity="0"/>
+
+    <!-- FASE 2: DASHBOARD GLASS -->
+    <g id="dashboard" filter="url(#shadowSoft)" opacity="0">
+
+      <!-- Panel principal -->
+      <rect id="panelMain" x="260" y="150" width="480" height="300" rx="26"
+            fill="url(#gradPanel)" stroke="rgba(255,255,255,0.16)" stroke-width="1.7"/>
+
+      <!-- Barra superior tipo app window -->
+      <rect x="280" y="168" width="120" height="16" rx="8" class="chip"/>
+      <circle cx="292" cy="176" r="3" fill="#ff5f57"/>
+      <circle cx="304" cy="176" r="3" fill="#febc2e"/>
+      <circle cx="316" cy="176" r="3" fill="#28c840"/>
+
+      <!-- Panel KPI 1 -->
+      <g id="kpi1">
+        <rect x="282" y="196" width="188" height="90" rx="18" class="glass-strong"/>
+        <text x="302" y="220" class="mini-label">SERVIDORES ANALIZADOS</text>
+        <text x="302" y="249" class="mini-number">+ 124,580</text>
+
+        <!-- Sparklines -->
+        <polyline points="302,262 318,256 334,260 350,252 366,255 382,249"
+                  fill="none" stroke="#35c2ff" stroke-width="1.8" stroke-linecap="round" />
+        <circle cx="382" cy="249" r="3" class="spark"/>
+      </g>
+
+      <!-- Panel KPI 2 -->
+      <g id="kpi2">
+        <rect x="490" y="196" width="188" height="90" rx="18" class="glass"/>
+        <text x="510" y="220" class="mini-label">ENTIDADES SUPERVISADAS</text>
+        <text x="510" y="249" class="mini-number">316</text>
+
+        <rect x="510" y="258" width="120" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+        <rect id="kpi2Bar" x="510" y="258" width="78" height="6" rx="3" fill="#35c2ff"/>
+      </g>
+
+      <!-- Panel inferior tipo gráfico -->
+      <g id="panelChart">
+        <rect x="282" y="306" width="396" height="122" rx="20" class="glass"/>
+        <text x="300" y="332" class="mini-label">INDICADORES ESTRATÉGICOS</text>
+
+        <!-- Barras -->
+        <rect x="310" y="342" width="20" height="65" rx="6" fill="#35c2ff" opacity="0.9"/>
+        <rect x="344" y="352" width="20" height="55" rx="6" fill="#69e6ff" opacity="0.9"/>
+        <rect x="378" y="360" width="20" height="47" rx="6" fill="#c4f1ff" opacity="0.95"/>
+        <rect x="412" y="348" width="20" height="59" rx="6" fill="#c41b3f" opacity="0.95"/>
+        <rect x="446" y="357" width="20" height="50" rx="6" fill="#f493b3" opacity="0.92"/>
+        <rect x="480" y="350" width="20" height="57" rx="6" fill="#35c2ff" opacity="0.9"/>
+        <rect x="514" y="362" width="20" height="45" rx="6" fill="#69e6ff" opacity="0.9"/>
+
+        <!-- Línea sobre las barras -->
+        <polyline points="320,342 354,352 388,360 422,348 456,357 490,350 524,362"
+                  fill="none" stroke="#00f5ff" stroke-width="1.4" stroke-dasharray="3 4" opacity="0.85"/>
+
+        <!-- Chips abajo -->
+        <rect x="310" y="382" width="92" height="20" rx="10" class="chip"/>
+        <text x="325" y="396" class="chip-text">GOB. NACIONAL</text>
+        <rect x="414" y="382" width="96" height="20" rx="10" class="chip"/>
+        <text x="429" y="396" class="chip-text">GOB. REGIONAL</text>
+        <rect x="522" y="382" width="96" height="20" rx="10" class="chip"/>
+        <text x="537" y="396" class="chip-text">GOB. LOCAL</text>
+      </g>
+
+      <!-- Chips laterales tipo filtro -->
+      <g id="chipsLaterales">
+        <rect x="696" y="212" width="46" height="18" rx="9" class="chip"/>
+        <text x="704" y="225" class="chip-text">2024</text>
+
+        <rect x="696" y="238" width="70" height="18" rx="9" class="chip"/>
+        <text x="704" y="251" class="chip-text">REGÍMEN</text>
+
+        <rect x="696" y="264" width="96" height="18" rx="9" class="chip"/>
+        <text x="704" y="277" class="chip-text">ENFOQUE GPGSC</text>
+      </g>
+
+    </g>
+
+    <!-- FASE 3: LOGO FINAL -->
+    <g id="logoFinal" opacity="0">
+      <text id="textoFinal" x="500" y="298" text-anchor="middle">
+        EL OBSERVATORIO
+      </text>
+      <text id="subFinal" x="500" y="334" text-anchor="middle">
+        OBSERVATORIO DEL SERVICIO CIVIL
+      </text>
+    </g>
+
+  </svg>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Preparar efecto de "dibujo" para la línea
+  const linea = document.getElementById("lineaDatos");
+  const length = linea.getTotalLength();
+  linea.style.strokeDasharray = length;
+  linea.style.strokeDashoffset = length;
+
+  // Estados iniciales
+  gsap.set("#dashboard", { scale:0.9, transformOrigin:"50% 50%" });
+  gsap.set("#kpi1, #kpi2, #panelChart, #chipsLaterales", { opacity:0, y:10 });
+  gsap.set("#kpi2Bar", { scaleX:0, transformOrigin:"0% 50%" });
+  gsap.set("#logoFinal", { opacity:0, scale:0.9, transformOrigin:"50% 50%" });
+  gsap.set(["#textoFinal", "#subFinal"], { opacity:0 });
+  gsap.set("#nodoInicio, #nodoFinal", { opacity:0 });
+
+  const tl = gsap.timeline();
+
+  // ===================== FASE 1: Línea de datos =====================
+  tl.to(".bg-glow", {
+    duration:1.4,
+    opacity:0.65,
+    ease:"power2.out"
+  }, 0);
+
+  tl.to(linea, {
+    duration:2.2,
+    strokeDashoffset:0,
+    ease:"power2.out"
+  }, 0.1);
+
+  tl.to("#nodoInicio", {
+    duration:0.4,
+    opacity:1,
+    scale:1.2,
+    transformOrigin:"50% 50%",
+    ease:"power2.out"
+  }, 0.3);
+
+  tl.to("#nodoFinal", {
+    duration:0.4,
+    opacity:1,
+    scale:1.3,
+    transformOrigin:"50% 50%",
+    ease:"power2.out"
+  }, 1.7);
+
+  // Pequeño pulso
+  tl.to("#nodoFinal", {
+    duration:0.35,
+    scale:1.7,
+    opacity:1,
+    ease:"power3.out"
+  }, 2.0).to("#nodoFinal", {
+    duration:0.35,
+    scale:1.0,
+    ease:"power3.inOut"
+  }, 2.35);
+
+  // ===================== FASE 2: Dashboard Glass =====================
+  tl.to("#dashboard", {
+    duration:0.9,
+    opacity:1,
+    scale:1,
+    ease:"power3.out"
+  }, 2.4);
+
+  tl.to("#kpi1", {
+    duration:0.6,
+    opacity:1,
+    y:0,
+    ease:"power3.out"
+  }, 2.6);
+
+  tl.to("#kpi2", {
+    duration:0.6,
+    opacity:1,
+    y:0,
+    ease:"power3.out"
+  }, 2.8);
+
+  tl.to("#panelChart", {
+    duration:0.7,
+    opacity:1,
+    y:0,
+    ease:"power3.out"
+  }, 3.0);
+
+  tl.to("#chipsLaterales", {
+    duration:0.7,
+    opacity:1,
+    y:0,
+    ease:"power3.out"
+  }, 3.1);
+
+  // Animar barra KPI 2
+  tl.to("#kpi2Bar", {
+    duration:0.9,
+    scaleX:1,
+    ease:"power2.out"
+  }, 3.0);
+
+  // Pequeño breathing del panel completo
+  tl.to("#dashboard", {
+    duration:1.1,
+    scale:1.02,
+    y:-4,
+    ease:"power1.inOut"
+  }, 3.3);
+
+  // Pausa de contemplación
+  tl.to({}, { duration:0.7 });
+
+  // ===================== FASE 3: Colapso hacia el logo =====================
+  tl.to(["#dashboard", "#lineaDatos", "#nodoInicio", "#nodoFinal"], {
+    duration:0.9,
+    opacity:0,
+    scale:0.6,
+    y:10,
+    ease:"power2.inOut"
+  });
+
+  // Logo final aparece
+  tl.to("#logoFinal", {
+    duration:0.3,
+    opacity:1,
+    ease:"power1.out"
+  }, "-=0.1");
+
+  tl.to("#textoFinal", {
+    duration:1.1,
+    opacity:1,
+    letterSpacing:"0.42em",
+    ease:"power2.out"
+  }, "-=0.1");
+
+  tl.to("#subFinal", {
+    duration:1.0,
+    opacity:1,
+    y:3,
+    ease:"power2.out"
+  }, "-=0.6");
+
+  // Pequeño pulso elegante final
+  tl.to("#logoFinal", {
+    duration:1.6,
+    scale:1.02,
+    ease:"sine.inOut",
+    yoyo:true,
+    repeat:-1
+  });
+
+});
+</script>
+</body>
+</html>

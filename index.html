@@ -265,7 +265,7 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   text-align:justify;
   text-justify:inter-word;
 
-  /* 👇 NUEVO: hace más compactas las letras */
+  /* 👇 hace más compactas las letras */
   letter-spacing:-0.05em;
 }
 
@@ -378,7 +378,6 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
   transform-origin: top center;
   transition: transform .3s ease;
 }
-
 /* Marca institucional superior al footer clásico */
 .marca{ margin:8px 32px 4px 260px; font-size:.85rem; color:#9CA3AF; font-style:italic; }
 :root[data-theme="dark"] .marca{ color:#A3A3A3; }
@@ -570,6 +569,103 @@ body.nav-collapsed .marca, body.nav-collapsed .footer{ margin-left:120px; }
 .pub-btn-link:active{
   transform:translateY(0) scale(0.99);
   box-shadow:0 8px 18px rgba(0,0,0,.22);
+}
+
+/* Dropdown para Revista Saber Servir */
+.pub-year-toggle{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:260px;
+  max-width:260px;
+  outline:none;
+  cursor:pointer;
+  padding:11px 16px 11px 18px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#C41B3F,#E64264);
+  box-shadow:0 10px 22px rgba(0,0,0,.22);
+  color:#fff;
+  font-family:var(--font-botones);
+  font-weight:700;
+  font-size:.92rem;
+  text-align:center;
+  border:none;
+  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+/* Versión compacta para Saber Servir (mismo ancho que 'La Mujer en el Servicio Civil') */
+.compact-buttons .pub-year-toggle{
+  width:190px;
+  max-width:190px;
+}
+.pub-year-toggle:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 14px 26px rgba(0,0,0,.30);
+  filter:brightness(1.05);
+}
+.pub-year-toggle.open{
+  box-shadow:0 8px 18px rgba(0,0,0,.22);
+}
+.pub-year-arrow{
+  font-size:.85rem;
+  margin-left:4px;
+  transform-origin:center;
+  transition:transform .18s ease;
+}
+.pub-year-toggle.open .pub-year-arrow{
+  transform:rotate(180deg);
+}
+
+/* Contenedor de ediciones por año */
+.pub-year-panel{
+  width:260px;
+  max-width:260px;
+  display:none;
+  flex-direction:column;
+  gap:8px;
+  margin-top:6px;
+}
+.pub-year-panel.open{
+  display:flex;
+}
+
+/* Botones de edición (Edición I, II) */
+.pub-edition-link{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  outline:none;
+  cursor:pointer;
+  padding:9px 14px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#FCA5A5,#FECACA);
+  box-shadow:0 6px 14px rgba(0,0,0,.18);
+  color:#7C1F32;
+  font-family:var(--font-botones);
+  font-weight:700;
+  font-size:.86rem;
+  text-align:center;
+  border:1px solid rgba(0,0,0,.05);
+  transition:transform .16s ease, box-shadow .16s ease, filter .16s ease;
+}
+/* Ajuste compacto para Edición I / II en Revista Saber Servir */
+.compact-buttons .pub-year-panel .pub-edition-link{
+  width:190px;
+  max-width:190px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+
+
+.pub-edition-link:hover{
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 10px 18px rgba(0,0,0,.24);
+  filter:brightness(1.03);
 }
 
 .pub-btn-text{
@@ -866,9 +962,7 @@ body.page-loaded .fixed-footer{
 
             <div class="columna-media">
               <div class="media-frame">
-                <div class="media-frame">
-                  <img src="assets/images/trabajadora.png" alt="Trabajadora del Servicio Civil">
-                </div>
+                <img src="assets/images/trabajadora.png" alt="Trabajadora del Servicio Civil">
               </div>
             </div>
           </div>
@@ -928,7 +1022,6 @@ body.page-loaded .fixed-footer{
           </div>
         </section>
       </section>
-
       <!-- ====================== PUBLICACIONES (NEUMORFISMO) ====================== -->
       <section id="view-publicaciones" class="view">
         <section class="seccion-tablero neu">
@@ -936,7 +1029,7 @@ body.page-loaded .fixed-footer{
 
           <div class="pub-grid">
 
-            <!-- Columna 1: Características del Servicio Civil -->
+            <!-- 1. Características del Servicio Civil -->
             <article class="pub-card-neu compact-buttons">
               <div class="pub-card-header">
                 <div class="pub-card-icon">
@@ -951,42 +1044,32 @@ body.page-loaded .fixed-footer{
 
               <div class="pub-buttons">
                 <button class="pub-btn-link" data-link="">
-                  <span class="pub-btn-text">
-                    2024
-                  </span>
+                  <span class="pub-btn-text">2024</span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/7440404/6338244-caracteristicas-del-servicio-civil-peruano.pdf?v=1735653715">
-                  <span class="pub-btn-text">
-                    2023
-                  </span>
+                  <span class="pub-btn-text">2023</span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/5534164/4923815-caracteristicas-del-servicio-civil-peruano_2023.pdf?v=1702302148">
-                  <span class="pub-btn-text">
-                    2022
-                  </span>
+                  <span class="pub-btn-text">2022</span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/2916882/Caracter%C3%ADsticas%20del%20Servicio%20Civil%20Peruano%202021.pdf?v=1647529800">
-                  <span class="pub-btn-text">
-                    2021
-                  </span>
+                  <span class="pub-btn-text">2021</span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://www.gob.pe/institucion/servir/colecciones/1257-el-servicio-civil-peruano">
-                  <span class="pub-btn-text">
-                    Años anteriores
-                  </span>
+                  <span class="pub-btn-text">Años anteriores</span>
                 </button>
               </div>
             </article>
 
-            <!-- Columna 2: La Mujer en el Servicio Civil -->
+            <!-- 2. La Mujer en el Servicio Civil -->
             <article class="pub-card-neu compact-buttons">
               <div class="pub-card-header">
                 <div class="pub-card-icon">
@@ -1002,35 +1085,161 @@ body.page-loaded .fixed-footer{
               <div class="pub-buttons">
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/7738049/6543313-estudio-de-la-mujer-en-el-servicio-civil-2025.pdf?v=1741355964">
-                  <span class="pub-btn-text">
-                    2025
-                  </span>
+                  <span class="pub-btn-text">2025</span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/6014370/5328453-informe-la-mujer-en-el-servicio-civil-peruano%282%29.pdf?v=1709927477">
-                  <span class="pub-btn-text">
-                    2024
-                  </span>
+                  <span class="pub-btn-text">2024</span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://cdn.www.gob.pe/uploads/document/file/4229152/La%20Mujer%20en%20el%20servicio%20civil%20peruano%202023_SERVIR.pdf?v=1685724456">
-                  <span class="pub-btn-text">
-                    2023
-                  </span>
+                  <span class="pub-btn-text">2023</span>
                 </button>
 
                 <button class="pub-btn-link"
                         data-link="https://www.gob.pe/institucion/servir/colecciones/1258-la-mujer-en-el-servicio-civil-peruano">
-                  <span class="pub-btn-text">
-                    Años anteriores
-                  </span>
+                  <span class="pub-btn-text">Años anteriores</span>
                 </button>
               </div>
             </article>
 
-            <!-- Columna 3: Otras Publicaciones -->
+            <!-- 3. Diagnóstico de Conocimientos -->
+            <article class="pub-card-neu compact-buttons">
+              <div class="pub-card-header">
+                <div class="pub-card-icon">
+                  <img src="assets/icons/Diagnóstico.svg"
+                       style="width:32px; height:32px;"
+                       alt="Diagnóstico de Conocimientos">
+                </div>
+                <div class="pub-card-title-group">
+                  <h2 class="pub-card-title">Diagnóstico de Conocimientos</h2>
+                </div>
+              </div>
+
+              <div class="pub-buttons">
+                <button class="pub-btn-link" data-link="">
+                  <span class="pub-btn-text">2025</span>
+                </button>
+                <button class="pub-btn-link" data-link="">
+                  <span class="pub-btn-text">2024</span>
+                </button>
+                <button class="pub-btn-link"
+			data-link="https://cdn.www.gob.pe/uploads/document/file/7252379/22126-informe-final-del-iii-censo-y-diagnostico-orh-2023.pdf">
+                  <span class="pub-btn-text">2023</span>
+                </button>
+                <button class="pub-btn-link" 
+			data-link="https://www.gob.pe/institucion/servir/campañas/7949-diagnostico-de-conocimientos-en-el-estado">
+                  <span class="pub-btn-text">Años anteriores</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- 4. Resultados de la Gestión del Rendimiento -->
+            <article class="pub-card-neu compact-buttons">
+              <div class="pub-card-header">
+                <div class="pub-card-icon">
+                  <img src="assets/icons/GdR.svg"
+                       style="width:32px; height:32px;"
+                       alt="Resultados de la Gestión del Rendimiento">
+                </div>
+                <div class="pub-card-title-group">
+                  <h2 class="pub-card-title">Resultados de la Gestión del Rendimiento</h2>
+                </div>
+              </div>
+
+              <div class="pub-buttons">
+                <button class="pub-btn-link" 
+			data-link="https://cdn.www.gob.pe/uploads/document/file/9044609/2865878-informe-al-congreso-y-a-la-contraloria-general-de-la-republica-2024.pdf?v=1764022382">
+                  <span class="pub-btn-text">2024</span>
+                </button>
+                <button class="pub-btn-link" 
+                        data-link="https://cdn.www.gob.pe/uploads/document/file/5572666/2865878-informe-al-congreso-y-a-la-contraloria-general-de-la-republica-2023.pdf?v=1703014778">
+                  <span class="pub-btn-text">2023</span>
+                </button>
+                <button class="pub-btn-link" 
+			data-link="https://cdn.www.gob.pe/uploads/document/file/4725067/Informe%20al%20Congreso%20y%20a%20la%20Contralor%C3%ADa%20General%20de%20la%20Rep%C3%BAblica%20-%202022.pdf?v=1687561042">
+                  <span class="pub-btn-text">2022</span>
+                </button>
+                <button class="pub-btn-link" 
+			data-link="https://www.gob.pe/institucion/servir/informes-publicaciones/2865878-informes-al-congreso-y-a-la-contraloria-general-de-la-republica">
+                  <span class="pub-btn-text">Años anteriores</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- 5. Revista Especializada Saber Servir -->
+            <article class="pub-card-neu compact-buttons">
+              <div class="pub-card-header">
+                <div class="pub-card-icon">
+                  <img src="assets/icons/Saber Servir.svg"
+                       style="width:32px; height:32px;"
+                       alt="Revista Especializada Saber Servir">
+                </div>
+                <div class="pub-card-title-group">
+                  <h2 class="pub-card-title">Revista Académica Saber Servir</h2>
+                </div>
+              </div>
+
+              <div class="pub-buttons">
+
+                <!-- 2025 -->
+                <button class="pub-year-toggle" data-target="revista-2025-panel">
+                  <span class="pub-btn-text">2025</span>
+                  <span class="pub-year-arrow">▾</span>
+                </button>
+                <div id="revista-2025-panel" class="pub-year-panel">
+                  <button class="pub-edition-link" data-link="">
+                    <span class="pub-btn-text">Edición I</span>
+                  </button>
+                  <button class="pub-edition-link" 
+			  data-link="https://revista.enap.edu.pe/index.php/ss/issue/view/14/19">
+                    <span class="pub-btn-text">Edición II</span>
+                  </button>
+                </div>
+
+                <!-- 2024 -->
+                <button class="pub-year-toggle" data-target="revista-2024-panel">
+                  <span class="pub-btn-text">2024</span>
+                  <span class="pub-year-arrow">▾</span>
+                </button>
+                <div id="revista-2024-panel" class="pub-year-panel">
+                  <button class="pub-edition-link" 
+			  data-link="https://revista.enap.edu.pe/index.php/ss/issue/view/11/12">
+                    <span class="pub-btn-text">Edición I</span>
+                  </button>
+                  <button class="pub-edition-link" 
+			  data-link="https://revista.enap.edu.pe/index.php/ss/issue/view/13/16">
+                    <span class="pub-btn-text">Edición II</span>
+                  </button>
+                </div>
+
+                <!-- 2023 -->
+                <button class="pub-year-toggle" data-target="revista-2023-panel">
+                  <span class="pub-btn-text">2023</span>
+                  <span class="pub-year-arrow">▾</span>
+                </button>
+                <div id="revista-2023-panel" class="pub-year-panel">
+                  <button class="pub-edition-link" 
+			  data-link="https://revista.enap.edu.pe/index.php/ss/issue/view/9/10">
+                    <span class="pub-btn-text">Edición I</span>
+                  </button>
+                  <button class="pub-edition-link" 
+			  data-link="https://revista.enap.edu.pe/index.php/ss/issue/view/10/11">
+                    <span class="pub-btn-text">Edición II</span>
+                  </button>
+                </div>
+
+                <!-- Años anteriores -->
+                <button class="pub-btn-link" 
+			data-link="https://revista.enap.edu.pe/index.php/ss/issue/archive">
+                  <span class="pub-btn-text">Años anteriores</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- 6. Otras Publicaciones -->
             <article class="pub-card-neu">
               <div class="pub-card-header">
                 <div class="pub-card-icon">
@@ -1174,7 +1383,6 @@ body.page-loaded .fixed-footer{
       </iframe>
     </div>
   </div>
-
   <script>
   // ---------- Persistencia inicial del tema ---------- 
   (function(){
@@ -1269,13 +1477,45 @@ body.page-loaded .fixed-footer{
     }
 
     /* === PUBLICACIONES: BOTONES QUE ABREN EN NUEVA PESTAÑA === */
-    const pubButtons = document.querySelectorAll('.pub-btn-link');
+    // Incluye botones normales y los de ediciones
+    const pubButtons = document.querySelectorAll('.pub-btn-link, .pub-edition-link');
     if (pubButtons.length) {
       pubButtons.forEach(btn => {
         const link = btn.getAttribute('data-link');
-        if (!link) return; // si no hay link, no hace nada
+        if (!link) return; // si no hay link, todavía pendiente
         btn.addEventListener('click', () => {
           window.open(link, '_blank');
+        });
+      });
+    }
+
+    /* === REVISTA SABER SERVIR: DESPLEGABLE POR AÑO === */
+    const yearToggles = document.querySelectorAll('.pub-year-toggle');
+
+    if (yearToggles.length) {
+      yearToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+          const targetId = toggle.getAttribute('data-target');
+          const panel = document.getElementById(targetId);
+          if (!panel) return;
+
+          const parentCard = toggle.closest('.pub-card-neu');
+
+          const isOpen = panel.classList.contains('open');
+
+          // Cierra otros paneles del mismo card
+          if (parentCard) {
+            parentCard.querySelectorAll('.pub-year-panel.open').forEach(p => {
+              if (p !== panel) p.classList.remove('open');
+            });
+            parentCard.querySelectorAll('.pub-year-toggle.open').forEach(t => {
+              if (t !== toggle) t.classList.remove('open');
+            });
+          }
+
+          // Alterna el actual
+          panel.classList.toggle('open', !isOpen);
+          toggle.classList.toggle('open', !isOpen);
         });
       });
     }
