@@ -864,7 +864,7 @@ body.page-loaded .fixed-footer{
 <body>
   <header class="header-servir">
     <div class="header-logo-observatorio">
-      <img alt="Observatorio del Servicio Civil" src="assets/logos/Logo_Observatorio.png" style="height:44px;">
+      <img alt="Observatorio del Servicio Civil" src="assets/logos/Logo_Observatorio.png" style="height:60px;">
     </div>
 
     <span class="title-text" style="opacity:0; pointer-events:none;">
@@ -1379,43 +1379,52 @@ body.page-loaded .fixed-footer{
   })();
 
   document.addEventListener('DOMContentLoaded', () => {
+    // ====== ESC para cerrar cualquiera de los dos modales ======
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+
+      if (oscModal && oscModal.classList.contains('open')) {
+        closeOscModal();
+      }
+
+      if (reporteModal && reporteModal.classList.contains('open')) {
+        closeReporteModal();
+      }
+    });
+
     const root = document.documentElement;
 
     // Activar animaciones de carga de página
     document.body.classList.add('page-loaded');
 
-    /* ====== Toggle de tema claro/oscuro ====== */
-    const checkbox = document.getElementById('toggleTheme');
-    if (checkbox) {
-      const isDark = root.getAttribute('data-theme') === 'dark';
-      checkbox.checked = isDark;
-
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          root.setAttribute('data-theme', 'dark');
-          localStorage.setItem('osc-theme', 'dark');
-        } else {
-          root.removeAttribute('data-theme');
-          localStorage.setItem('osc-theme', 'light');
-        }
-      });
-    }
-
+    
     /* ====== Router SPA (cambio de vistas) ====== */
     const navBtns = document.querySelectorAll('.nav-btn');
     const views  = document.querySelectorAll('.view');
 
     const showView = (route, push = true) => {
+      let found = false;
+
       navBtns.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.route === route);
+        const isActive = btn.dataset.route === route;
+        btn.classList.toggle('active', isActive);
+        if (isActive) found = true;
       });
+
       views.forEach(view => {
         view.classList.toggle('active', view.id === `view-${route}`);
       });
+
+      // Si la ruta NO existe → vuelve a inicio
+      if (!found && route !== 'inicio') {
+        return showView('inicio', push);
+      }
+
       if (push) {
         history.pushState({ route }, '', `#${route}`);
       }
     };
+
 
     navBtns.forEach(btn => {
       btn.addEventListener('click', e => {
@@ -1529,12 +1538,6 @@ body.page-loaded .fixed-footer{
       oscBackdrop.addEventListener('click', closeOscModal);
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && oscModal && oscModal.classList.contains('open')) {
-        closeOscModal();
-      }
-    });
-
     /* ====== MODAL: REPORTE OSC ====== */
     const btnReporteOSC   = document.getElementById('reporteOSC');
     const reporteModal    = document.getElementById('reporteModal');
@@ -1557,11 +1560,6 @@ body.page-loaded .fixed-footer{
     if (reporteClose)    reporteClose.addEventListener('click', closeReporteModal);
     if (reporteBackdrop) reporteBackdrop.addEventListener('click', closeReporteModal);
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && reporteModal && reporteModal.classList.contains('open')) {
-        closeReporteModal();
-      }
-    });
 
   });
   </script>
