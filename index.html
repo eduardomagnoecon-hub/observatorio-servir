@@ -912,6 +912,48 @@ body.page-loaded .fixed-footer{
     padding:10px 10px 8px;
   }
 }
+/* ===== Ajuste especial del footer para CELULAR ===== */
+@media (max-width: 768px){
+  .fixed-footer{
+    height:auto;
+    padding:8px 12px;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .fixed-footer img{
+    height:28px;
+  }
+
+  .fixed-footer .logo-pcm{
+    margin-right:0;
+  }
+
+  .footer-center{
+    position:static;
+    transform:none;
+    bottom:auto;
+  }
+
+  .footer-leyenda{
+    white-space:normal;
+    text-align:center;
+    font-size:.7rem;
+  }
+
+  .fixed-footer .social-right{
+    position:static;
+    right:auto;
+    margin-top:4px;
+    justify-content:center;
+  }
+
+  .fixed-footer .social-right .icons{
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+}
+
 </style>
 </head>
 <body>
