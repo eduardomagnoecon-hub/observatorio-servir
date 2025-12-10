@@ -915,11 +915,17 @@ body.page-loaded .fixed-footer{
 
 /* ===== FOOTER ESPECIAL PARA CELULAR ===== */
 @media (max-width: 768px){
+
+  /* Menos espacio al fondo porque el footer ya no será fijo */
+  body{
+    padding-bottom:20px;
+  }
+
   .fixed-footer{
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
+    position:relative;   /* ← deja de ser fijo en celular */
+    left:auto;
+    right:auto;
+    bottom:auto;
     height:auto;
     padding:8px 10px 10px;
     flex-direction:column;
@@ -981,6 +987,7 @@ body.page-loaded .fixed-footer{
     font-size:14px;
   }
 }
+
 
 </style>
 </head>
