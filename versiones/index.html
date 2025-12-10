@@ -65,8 +65,11 @@ body{
   position:absolute; left:0; top:0; bottom:0; display:flex; 
   align-items:center; width:260px; justify-content:center;
 }
+/* Tamaño base del logo (PC / pantallas grandes) */
 .header-logo-observatorio img{
-  height:44px; width:auto; display:block; 
+  height:60px;
+  width:auto;
+  display:block; 
   filter:drop-shadow(0 1px 1px rgba(0,0,0,.12));
 }
 
@@ -841,14 +844,64 @@ body.page-loaded .fixed-footer{
   animation:slideUp .55s ease-out .08s;
 }
 
-/* Responsivo */
+/* ---------- RESPONSIVO / AJUSTES PARA TABLET & MÓVIL ---------- */
+
+/* Tablet: ajustamos texto del pie institucional */
 @media (max-width:1100px){
   .layout-explicacion{ flex-direction:column; }
   .marca, .footer{ margin-left:28px; }
 }
+
+/* Nav compacto automático en pantallas medianas/pequeñas */
+@media (max-width:900px){
+  .nav-sidebar{
+    width:72px;
+  }
+  .nav-sidebar .nav-btn{
+    justify-content:center;
+    padding:12px;
+  }
+  .nav-sidebar .nav-btn .label{
+    display:none;
+  }
+
+  .contenido-principal{
+    margin-left:80px;
+  }
+  .marca,
+  .footer{
+    margin-left:80px;
+  }
+}
+
+/* Logo y botones del header más compactos en móvil */
+@media (max-width:768px){
+  .header-logo-observatorio{
+    width:200px;
+  }
+  .header-logo-observatorio img{
+    height:40px !important;  /* Logo más pequeño en celular */
+  }
+
+  .header-buttons-group{
+    right:10px;
+    gap:6px;
+  }
+  .header-button{
+    padding:6px 10px;
+    font-size:.75rem;
+  }
+  .header-button-icon{
+    width:18px;
+    height:18px;
+    margin-right:6px;
+  }
+}
+
 @media (max-width:700px){
   .fixed-footer .social-right .label{ display:none; }
 }
+
 @media (max-width:600px){
   .sello{ width:120px; height:120px; }
   .sello .sello-texto{ font-size:.8rem; }
@@ -859,12 +912,89 @@ body.page-loaded .fixed-footer{
     padding:10px 10px 8px;
   }
 }
+
+/* ===== FOOTER ESPECIAL PARA CELULAR ===== */
+@media (max-width: 768px){
+
+  /* Menos espacio al fondo porque el footer ya no será fijo */
+  body{
+    padding-bottom:20px;
+  }
+
+  .fixed-footer{
+    position:relative;   /* ← deja de ser fijo en celular */
+    left:auto;
+    right:auto;
+    bottom:auto;
+    height:auto;
+    padding:8px 10px 10px;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+  }
+
+  .fixed-footer img{
+    height:26px;
+  }
+
+  .fixed-footer .logo-pcm{
+    margin-right:0;
+  }
+
+  .logo-servir{
+    height:60px !important;
+  }
+
+  .footer-center{
+    position:static;
+    transform:none;
+    bottom:auto;
+    margin-top:2px;
+  }
+
+  .footer-leyenda{
+    white-space:normal;
+    text-align:center;
+    font-size:.7rem;
+    margin-top:0;
+    padding:0 8px;
+  }
+
+  .fixed-footer .social-right{
+    position:static;
+    right:auto;
+    margin-top:4px;
+    justify-content:center;
+  }
+
+  .fixed-footer .social-right .label{
+    display:none;
+  }
+
+  .fixed-footer .social-right .icons{
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+  }
+
+  .fixed-footer .social-right .icons a{
+    width:28px;
+    height:28px;
+  }
+
+  .fixed-footer .social-right .icons i{
+    font-size:14px;
+  }
+}
+
+
 </style>
 </head>
 <body>
   <header class="header-servir">
     <div class="header-logo-observatorio">
-      <img alt="Observatorio del Servicio Civil" src="assets/logos/Logo_Observatorio.png" style="height:60px;">
+      <img alt="Observatorio del Servicio Civil" src="assets/logos/Logo_Observatorio.png">
     </div>
 
     <span class="title-text" style="opacity:0; pointer-events:none;">
@@ -1017,7 +1147,6 @@ body.page-loaded .fixed-footer{
           </div>
         </section>
       </section>
-
       <!-- ====================== CAPACITACIÓN ====================== -->
       <section id="view-capacitacion" class="view">
         <section class="seccion-tablero neu">
@@ -1338,6 +1467,7 @@ body.page-loaded .fixed-footer{
   <footer class="footer">
     © 2025 Observatorio del Servicio Civil - SERVIR. Todos los derechos reservados.
   </footer>
+
   <!-- ===== MODAL FLOTANTE ¿QUÉ es el OSC? ===== -->
   <div id="oscModal" class="osc-modal" aria-hidden="true">
     <div id="oscModalBackdrop" class="osc-modal-backdrop"></div>
@@ -1367,7 +1497,6 @@ body.page-loaded .fixed-footer{
       </iframe>
     </div>
   </div>
-
   <script>
   // ---------- Persistencia inicial del tema ---------- 
   (function(){
@@ -1515,7 +1644,6 @@ body.page-loaded .fixed-footer{
     const oscModal     = document.getElementById('oscModal');
     const oscClose     = document.getElementById('oscModalClose');
     const oscBackdrop  = document.getElementById('oscModalBackdrop');
-
     const openOscModal = () => {
       if (!oscModal) return;
       oscModal.classList.add('open');
@@ -1559,7 +1687,6 @@ body.page-loaded .fixed-footer{
     if (btnReporteOSC)   btnReporteOSC.addEventListener('click', openReporteModal);
     if (reporteClose)    reporteClose.addEventListener('click', closeReporteModal);
     if (reporteBackdrop) reporteBackdrop.addEventListener('click', closeReporteModal);
-
 
   });
   </script>
